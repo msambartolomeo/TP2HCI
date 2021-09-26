@@ -11,46 +11,36 @@
           width="40"
         />
 
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100"
-        />
+        <h2 class="hidden-sm-and-down">WorkIn</h2>
       </div>
 
       <v-spacer></v-spacer>
+      <v-btn text><span class="mr-2 ml-2">Inicio</span></v-btn>
+      <v-btn text><span class="mr-2 ml-2">Mis rutinas</span></v-btn>
+      <v-btn text><span class="mr-2 ml-2">Mis ejercicios</span></v-btn>
+      <v-spacer></v-spacer>
 
-      <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-        text
-      >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>mdi-open-in-new</v-icon>
+      <v-btn text>
+        <span class="mr-2 hidden-sm-and-down">{{
+          user_name + " " + user_surname
+        }}</span>
+        <v-icon x-large>account_circle</v-icon>
       </v-btn>
     </v-app-bar>
 
-    <v-main>
-      <HelloWorld />
-    </v-main>
+    <v-main> </v-main>
   </v-app>
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld";
-
 export default {
   name: "App",
 
-  components: {
-    HelloWorld,
-  },
+  components: {},
 
   data: () => ({
-    //
+    user_name: "Pepe",
+    user_surname: "Rodriguez",
   }),
 };
 </script>
