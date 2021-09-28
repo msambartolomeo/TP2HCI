@@ -15,29 +15,41 @@
       </div>
 
       <v-spacer></v-spacer>
-      <v-btn text><span class="mr-2 ml-2">Inicio</span></v-btn>
-      <v-btn text><span class="mr-2 ml-2">Mis rutinas</span></v-btn>
-      <v-btn text><span class="mr-2 ml-2">Mis ejercicios</span></v-btn>
+
+      <router-link to="/">
+        <v-btn text>
+          <span class="mr-2 ml-2">Inicio</span>
+        </v-btn>
+      </router-link>
+      <router-link to="/perfil/rutinas">
+        <v-btn text>
+          <span class="mr-2 ml-2">Mis rutinas</span>
+        </v-btn>
+      </router-link>
+      <router-link to="/perfil/ejercicios">
+        <v-btn text>
+          <span class="mr-2 ml-2">Mis ejercicios</span>
+        </v-btn>
+      </router-link>
+
       <v-spacer></v-spacer>
 
-      <v-btn text>
-        <span class="mr-2 hidden-sm-and-down">{{
-          user_name + " " + user_surname
-        }}</span>
-        <v-icon x-large>account_circle</v-icon>
-      </v-btn>
+      <router-link to="/perfil">
+        <v-btn text>
+          <span class="mr-2 hidden-sm-and-down">
+            {{ user_name + " " + user_surname }}
+          </span>
+          <v-icon x-large>account_circle</v-icon>
+        </v-btn>
+      </router-link>
     </v-app-bar>
-
-    <v-main> </v-main>
+    <v-main><router-view /></v-main>
   </v-app>
 </template>
 
 <script>
 export default {
   name: "App",
-
-  components: {},
-
   data: () => ({
     user_name: "Pepe",
     user_surname: "Rodriguez",
