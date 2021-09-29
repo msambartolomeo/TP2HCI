@@ -1,6 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
+import MisEjercicios from "@/views/MisEjercicios";
 
 Vue.use(VueRouter);
 
@@ -9,6 +10,11 @@ const routes = [
     path: "/",
     name: "Inicio",
     component: Home,
+  },
+  {
+    path: "/new",
+    name: "MisEjercicios",
+    component: MisEjercicios,
   },
   {
     path: "/*",
