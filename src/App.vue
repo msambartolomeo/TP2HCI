@@ -1,1 +1,100 @@
-<template>  <v-app>    <v-app-bar app color="primary" dark>      <div class="d-flex align-center">        <v-img          alt="Vuetify Logo"          class="shrink mr-2"          contain          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"          transition="scale-transition"          width="40"        />        <h2 class="hidden-sm-and-down">WorkIn</h2>      </div>      <v-spacer></v-spacer>      <router-link to="/">        <v-btn text>          <span class="mr-2 ml-2">Inicio</span>        </v-btn>      </router-link>      <router-link to="/perfil/rutinas">        <v-btn text>          <span class="mr-2 ml-2">Mis rutinas</span>        </v-btn>      </router-link>      <router-link to="/perfil/ejercicios">        <v-btn text>          <span class="mr-2 ml-2">Mis ejercicios</span>        </v-btn>      </router-link>      <v-spacer></v-spacer>      <router-link to="/perfil">        <v-btn text>          <span class="mr-2 hidden-sm-and-down">            {{ user_name + " " + user_surname }}          </span>          <v-icon x-large>account_circle</v-icon>        </v-btn>      </router-link>    </v-app-bar>    <v-main>      <v-container>        <v-row >          <v-col v-for="aux in Routines" :key="aux" xs="4" sm="4" md="4" lg="4" xl="4" >            <Routine :title=aux.tile :difficulty=aux.diffi :score=aux.score />          </v-col>        </v-row>      </v-container>      <!--<router-view />-->    </v-main>  </v-app></template><script>import Routine from "./components/Routine.vue";export default {  name: "App",  components: {    Routine,  },  data: () => ({    user_name: "Pepe",    user_surname: "Rodriguez",    Routines: [{tile:"Rutina A", diffi:"1", score:"3"},      {tile:"Rutina B", diffi:"1", score:"3"},      {tile:"Rutina C", diffi:"3", score:"3"},      {tile:"Rutina D", diffi:"2", score:"3"},      {tile:"Rutina E", diffi:"2", score:"2"},      {tile:"Rutina F", diffi:"1", score:"5"},      {tile:"Rutina G", diffi:"1", score:"2"},      {tile:"Rutina H", diffi:"2", score:"1"},      {tile:"Rutina I", diffi:"1", score:"4"},      {tile:"Rutina J", diffi:"2", score:"3"},]  }),};</script>
+<template>
+  <v-app>
+    <v-app-bar app color="primary" dark>
+      <div class="d-flex align-center">
+        <v-img
+          alt="Vuetify Logo"
+          class="shrink mr-2"
+          contain
+          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
+          transition="scale-transition"
+          width="40"
+        />
+
+        <h2 class="hidden-sm-and-down">WorkIn</h2>
+      </div>
+
+      <v-spacer></v-spacer>
+
+      <router-link to="/">
+        <v-btn text>
+          <span class="mr-2 ml-2">Inicio</span>
+        </v-btn>
+      </router-link>
+      <router-link to="/perfil/rutinas">
+        <v-btn text>
+          <span class="mr-2 ml-2">Mis rutinas</span>
+        </v-btn>
+      </router-link>
+      <router-link to="/perfil/ejercicios">
+        <v-btn text>
+          <span class="mr-2 ml-2">Mis ejercicios</span>
+        </v-btn>
+      </router-link>
+
+      <v-spacer></v-spacer>
+
+      <router-link to="/perfil">
+        <v-btn text>
+          <span class="mr-2 hidden-sm-and-down">
+            {{ user_name + " " + user_surname }}
+          </span>
+          <v-icon x-large>account_circle</v-icon>
+        </v-btn>
+      </router-link>
+    </v-app-bar>
+
+    <v-main>
+      <v-container>
+        <v-row>
+          <v-col
+            v-for="aux in Routines"
+            :key="aux"
+            xs="4"
+            sm="4"
+            md="4"
+            lg="4"
+            xl="4"
+          >
+            <Routine
+              :title="aux.tile"
+              :difficulty="aux.diffi"
+              :score="aux.score"
+            />
+          </v-col>
+        </v-row>
+      </v-container>
+
+      <!--<router-view />-->
+    </v-main>
+  </v-app>
+</template>
+
+<script>
+import Routine from "./components/Routine.vue";
+
+export default {
+  name: "App",
+  components: {
+    Routine,
+  },
+
+  data: () => ({
+    user_name: "Pepe",
+    user_surname: "Rodriguez",
+
+    Routines: [
+      { tile: "Rutina A", diffi: "1", score: "3" },
+      { tile: "Rutina B", diffi: "1", score: "3" },
+      { tile: "Rutina C", diffi: "3", score: "3" },
+      { tile: "Rutina D", diffi: "2", score: "3" },
+      { tile: "Rutina E", diffi: "2", score: "2" },
+      { tile: "Rutina F", diffi: "1", score: "5" },
+      { tile: "Rutina G", diffi: "1", score: "2" },
+      { tile: "Rutina H", diffi: "2", score: "1" },
+      { tile: "Rutina I", diffi: "1", score: "4" },
+      { tile: "Rutina J", diffi: "2", score: "3" },
+    ],
+  }),
+};
+</script>
