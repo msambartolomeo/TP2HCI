@@ -1,0 +1,6 @@
+*.vue text eol=lf
+*.js text eol=lf
+*.html text eol=lf
+*.json text eol=lf
+*.gitattributes text eol=lf
+*.sass text eol=lf
