@@ -1,15 +1,21 @@
 <template>
   <v-container>
     <v-row>
-      <v-col
-        v-for="aux in Routines"
-        :key="aux"
-        xs="4"
-        sm="4"
-        md="4"
-        lg="4"
-        xl="4"
-      >
+      <v-col cols="6">
+        <v-text-field solo label="Buscar" prepend-inner-icon="search" />
+      </v-col>
+      <v-col cols="2" class="pt-4">
+        <v-btn block color="primary text">Crear nueva rutina</v-btn>
+      </v-col>
+      <v-col cols="2" class="pt-4">
+        <v-btn block color="red">Favoritos</v-btn>
+      </v-col>
+      <v-col cols="2" class="pt-4">
+        <v-btn block color="yellow">Buscar nuevas rutinas</v-btn>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col v-for="aux in Routines" :key="aux" md="4" lg="3" xl="2">
         <Routine :title="aux.tile" :difficulty="aux.diffi" :score="aux.score" />
       </v-col>
     </v-row>
@@ -26,7 +32,7 @@ export default {
   },
   data: () => ({
     Routines: [
-      { tile: "Rutina A", diffi: "1", score: "3" },
+      { tile: "Rutina A", diffi: "1", score: "3.5" },
       { tile: "Rutina B", diffi: "1", score: "3" },
       { tile: "Rutina C", diffi: "3", score: "3" },
       { tile: "Rutina D", diffi: "2", score: "3" },

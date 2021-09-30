@@ -7,10 +7,12 @@
       <v-row>
         <v-col align="center">
           <v-rating
-            color="warning"
+            color="yellow darken-2"
             background-color="grey"
-            :empty-icon="$mdiStarOutline"
-            :full-icon="$mdiStar"
+            empty-icon="star_border"
+            full-icon="star"
+            half-icon="star_half"
+            half-increments
             dense
             length="5"
             readonly
@@ -22,8 +24,8 @@
           <v-rating
             color="red"
             background-color="grey"
-            :empty-icon="$mdiStarOutline"
-            :full-icon="$mdiStar"
+            empty-icon="mdi-fire"
+            full-icon="mdi-fire"
             length="3"
             readonly
             dense
@@ -35,7 +37,7 @@
     </v-card-text>
     <v-card-actions>
       <v-spacer></v-spacer>
-      <v-btn color="teal accent-4" text @click="reserve"> Detalles </v-btn>
+      <v-btn color="teal accent-4" text> Detalles </v-btn>
     </v-card-actions>
   </v-card>
 </template>
