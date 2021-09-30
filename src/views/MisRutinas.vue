@@ -20,7 +20,7 @@
 import Routine from "@/components/Routine";
 
 export default {
-  name: "Inicio",
+  name: "MisRutinas",
   components: {
     Routine,
   },
