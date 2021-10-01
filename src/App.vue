@@ -16,32 +16,24 @@
 
       <v-spacer></v-spacer>
 
-      <router-link to="/">
-        <v-btn text>
-          <span class="mr-2 ml-2">Inicio</span>
-        </v-btn>
-      </router-link>
-      <router-link to="/perfil/rutinas">
-        <v-btn text>
-          <span class="mr-2 ml-2">Mis rutinas</span>
-        </v-btn>
-      </router-link>
-      <router-link to="/perfil/ejercicios">
-        <v-btn text>
-          <span class="mr-2 ml-2">Mis ejercicios</span>
-        </v-btn>
-      </router-link>
+      <v-btn text to="/">
+        <span class="mr-2 ml-2">Inicio</span>
+      </v-btn>
+      <v-btn text to="/rutinas">
+        <span class="mr-2 ml-2">Mis rutinas</span>
+      </v-btn>
+      <v-btn text to="/ejercicios">
+        <span class="mr-2 ml-2">Mis ejercicios</span>
+      </v-btn>
 
       <v-spacer></v-spacer>
 
-      <router-link to="/perfil">
-        <v-btn text>
-          <span class="mr-2 hidden-sm-and-down">
-            {{ user_name + " " + user_surname }}
-          </span>
-          <v-icon x-large>account_circle</v-icon>
-        </v-btn>
-      </router-link>
+      <v-btn text to="/perfil">
+        <span class="mr-2 hidden-sm-and-down">
+          {{ user_name + " " + user_surname }}
+        </span>
+        <v-icon x-large>account_circle</v-icon>
+      </v-btn>
     </v-app-bar>
     <v-main><router-view /></v-main>
   </v-app>
