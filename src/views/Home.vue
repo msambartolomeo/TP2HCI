@@ -1,21 +1,21 @@
 <template>
-  <v-container>
+  <v-container fluid>
     <v-row>
-      <v-col cols="6">
+      <v-col cols="12" md="6">
         <v-text-field solo label="Buscar" prepend-inner-icon="search" />
       </v-col>
-      <v-col cols="2" class="pt-4">
-        <v-btn block color="primary text">Crear nueva rutina</v-btn>
+      <v-col sm="4" md="2" cols="12" class="pt-md-4">
+        <v-btn block color="primary">Crear rutina</v-btn>
       </v-col>
-      <v-col cols="2" class="pt-4">
+      <v-col sm="4" md="2" cols="12" class="pt-md-4">
         <v-btn block color="red">Favoritos</v-btn>
       </v-col>
-      <v-col cols="2" class="pt-4">
-        <v-btn block color="yellow">Buscar nuevas rutinas</v-btn>
+      <v-col sm="4" md="2" cols="12" class="pt-md-4">
+        <v-btn block color="yellow">Buscar rutinas</v-btn>
       </v-col>
     </v-row>
     <v-row>
-      <v-col v-for="aux in Routines" :key="aux" md="4" lg="3" xl="2">
+      <v-col v-for="aux in Routines" :key="aux" md="3" xl="2">
         <Routine :title="aux.tile" :difficulty="aux.diffi" :score="aux.score" />
       </v-col>
     </v-row>
