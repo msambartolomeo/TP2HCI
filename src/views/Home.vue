@@ -24,7 +24,6 @@
 
 <script>
 import Routine from "@/components/Routine";
-
 export default {
   name: "Inicio",
   components: {
