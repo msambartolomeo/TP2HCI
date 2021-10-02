@@ -35,7 +35,9 @@
         <v-icon x-large>account_circle</v-icon>
       </v-btn>
     </v-app-bar>
-    <v-main><router-view /></v-main>
+    <v-main>
+      <router-view />
+    </v-main>
   </v-app>
 </template>
 
