@@ -1,17 +1,11 @@
 <template>
   <v-container fluid>
-    <v-row>
-      <v-col cols="12" md="6">
+    <v-row justify="center" >
+      <v-col cols="5">
         <v-text-field solo label="Buscar" prepend-inner-icon="search" />
       </v-col>
       <v-col sm="4" md="2" cols="12" class="pt-md-4">
-        <v-btn block color="primary">Crear rutina</v-btn>
-      </v-col>
-      <v-col sm="4" md="2" cols="12" class="pt-md-4">
-        <v-btn block color="red">Favoritos</v-btn>
-      </v-col>
-      <v-col sm="4" md="2" cols="12" class="pt-md-4">
-        <v-btn block color="yellow">Buscar rutinas</v-btn>
+        <v-btn block color="primary"  >Ordenar</v-btn>
       </v-col>
     </v-row>
     <v-row>

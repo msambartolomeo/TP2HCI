@@ -44,9 +44,22 @@
 <script>
 export default {
   name: "App",
+
   data: () => ({
     user_name: "Pepe",
     user_surname: "Rodriguez",
   }),
 };
 </script>
+
+<style scoped>
+#nav a {
+  color: #2c3e50;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+#nav a.router-link-exact-active {
+  color: #ab26ab;
+}
+</style>

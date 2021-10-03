@@ -6,9 +6,7 @@
     transition="dialog-bottom-transition"
   >
     <template v-slot:activator="{ on }">
-      <v-btn flat slot="activator" v-on="on" color="primary"
-        >Añadir ejercicio</v-btn
-      >
+      <v-btn flat slot="activator" v-on="on" color="primary">Añadir ejercicio</v-btn>
     </template>
     <v-card>
       <v-card-title class="text-h5">Nuevo Ejercicio</v-card-title>

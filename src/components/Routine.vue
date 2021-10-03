@@ -1,7 +1,7 @@
 <template>
   <v-card elevation="2" max-width="250" min-width="230">
     <v-card-title>{{ title }} </v-card-title>
-    <v-img :src="require('../assets/pesa.jpg')" />
+    <v-img :src="require('../assets/routine picture.jpg')" />
 
     <v-card-text>
       <v-row>
