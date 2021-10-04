@@ -1,7 +1,7 @@
 <template>
-  <v-container>
+  <v-container fluid>
     <v-row justify="center">
-      <v-col cols="12" md="6">
+      <v-col sm="8" cols="12" md="6">
         <v-text-field solo label="Buscar" prepend-inner-icon="search" />
       </v-col>
       <v-col sm="4" md="2" cols="12" class="pt-md-4">
@@ -9,8 +9,8 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col v-for="aux in Exercises" :key="aux" md="3" xl="2">
-        <Exercise :title="aux.tile" />
+      <v-col v-for="exercise in exercises" :key="exercise.title" md="3" xl="2">
+        <Exercise :title="exercise.title" />
       </v-col>
     </v-row>
   </v-container>
@@ -21,23 +21,23 @@ import Exercise from "@/components/Exercise";
 import NuevoEjercicio from "@/components/NuevoEjercicio";
 
 export default {
-  name: "Mis Ejercicios",
+  name: "MisEjercicios",
   components: {
     Exercise,
     NuevoEjercicio,
   },
   data: () => ({
-    Exercises: [
-      { tile: "Ejercicio A" },
-      { tile: "Ejercicio B" },
-      { tile: "Ejercicio C" },
-      { tile: "Ejercicio D" },
-      { tile: "Ejercicio E" },
-      { tile: "Ejercicio F" },
-      { tile: "Ejercicio G" },
-      { tile: "Ejercicio H" },
-      { tile: "Ejercicio I" },
-      { tile: "Ejercicio J" },
+    exercises: [
+      { title: "Ejercicio A" },
+      { title: "Ejercicio B" },
+      { title: "Ejercicio C" },
+      { title: "Ejercicio D" },
+      { title: "Ejercicio E" },
+      { title: "Ejercicio F" },
+      { title: "Ejercicio G" },
+      { title: "Ejercicio H" },
+      { title: "Ejercicio I" },
+      { title: "Ejercicio J" },
     ],
   }),
 };
