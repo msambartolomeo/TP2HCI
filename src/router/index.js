@@ -17,10 +17,16 @@ const routes = [
       import(/* webpackChunkName: "Profile" */ "../views/Profile"),
   },
   {
-    path: "/perfil/ejercicios",
+    path: "/ejercicios",
     name: "MisEjercicios",
     component: () =>
       import(/* webpackChunkName: "Ejercicios" */ "../views/MisEjercicios"),
+  },
+  {
+    path: "/rutinas",
+    name: "MisRutinas",
+    component: () =>
+      import(/* webpackChunkName: "MisRutinas" */ "../views/MisRutinas"),
   },
   {
     path: "/*",

@@ -6,7 +6,7 @@
     transition="dialog-bottom-transition"
   >
     <template v-slot:activator="{ on }">
-      <v-btn flat slot="activator" v-on="on" color="primary"
+      <v-btn block slot="activator" v-on="on" color="primary"
         >Añadir ejercicio</v-btn
       >
     </template>

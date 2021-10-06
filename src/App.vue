@@ -44,6 +44,7 @@
 <script>
 export default {
   name: "App",
+
   data: () => ({
     user_name: "Pepe",
     user_surname: "Rodriguez",
