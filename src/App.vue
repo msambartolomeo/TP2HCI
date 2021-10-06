@@ -20,10 +20,10 @@
         <span class="mr-2 ml-2">Inicio</span>
       </v-btn>
       <v-btn text to="/rutinas">
-        <span class="mr-2 ml-2">Mis rutinas</span>
+        <span class="mr-2 ml-2">Mis Rutinas</span>
       </v-btn>
       <v-btn text to="/ejercicios">
-        <span class="mr-2 ml-2">Mis ejercicios</span>
+        <span class="mr-2 ml-2">Mis Ejercicios</span>
       </v-btn>
 
       <v-spacer></v-spacer>
