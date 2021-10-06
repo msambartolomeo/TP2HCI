@@ -7,7 +7,7 @@
   >
     <template v-slot:activator="{ on }">
       <v-btn block slot="activator" v-on="on" color="primary"
-        >Añadir ejercicio</v-btn
+        >Crear Ejercicio</v-btn
       >
     </template>
     <v-card>
