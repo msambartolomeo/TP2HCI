@@ -6,32 +6,14 @@
     <v-card-text>
       <v-row>
         <v-col align="center">
-          <v-rating
-            color="yellow darken-2"
-            background-color="grey"
-            empty-icon="star_border"
-            full-icon="star"
-            half-icon="star_half"
-            half-increments
-            dense
-            length="5"
-            readonly
-            size="20"
-            :value="score"
-          ></v-rating>
+          <RatingScore :readonly="true" :score="score" :size="20" />
         </v-col>
         <v-col align="center">
-          <v-rating
-            color="red"
-            background-color="grey"
-            empty-icon="mdi-fire"
-            full-icon="mdi-fire"
-            length="3"
-            readonly
-            dense
-            size="20"
-            :value="difficulty"
-          ></v-rating>
+          <RatingDificultad
+            :readonly="true"
+            :difficulty="difficulty"
+            :size="20"
+          />
         </v-col>
       </v-row>
     </v-card-text>
@@ -43,8 +25,11 @@
 </template>
 
 <script>
+import RatingScore from "@/components/RatingScore";
+import RatingDificultad from "@/components/RatingDificultad";
 export default {
   name: "Routine",
+  components: { RatingDificultad, RatingScore },
   props: {
     title: String,
     score: Number,

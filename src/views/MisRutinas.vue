@@ -5,7 +5,7 @@
         <v-text-field solo label="Buscar" prepend-inner-icon="search" />
       </v-col>
       <v-col sm="4" md="2" cols="12" class="pt-md-4">
-        <v-btn block color="primary">Crear Rutina</v-btn>
+        <NuevaRutina />
       </v-col>
     </v-row>
     <v-row>
@@ -22,10 +22,12 @@
 
 <script>
 import Routine from "@/components/Routine";
+import NuevaRutina from "@/components/NuevaRutina";
 
 export default {
   name: "MisRutinas",
   components: {
+    NuevaRutina,
     Routine,
   },
   data: () => ({
