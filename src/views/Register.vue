@@ -11,21 +11,21 @@
                 label="Nombre"
                 outlined
                 v-model="nombre"
-                :rules="[(v) => !!v || 'Este item es obligatorio']"
+                :rules="[rules.required]"
                 required
               />
               <v-text-field
                 label="Apellido"
                 outlined
                 v-model="apellido"
-                :rules="[(v) => !!v || 'Este item es obligatorio']"
+                :rules="[rules.required]"
                 required
               />
               <v-text-field
                 label="Email"
                 outlined
                 v-model="email"
-                :rules="emailRules"
+                :rules="[rules.required, rules.isEmail]"
                 required
               />
               <BirthdatePicker
@@ -49,7 +49,7 @@
                 counter
                 @click:append="showPass = !showPass"
                 outlined
-                :rules="passwordRules"
+                :rules="[rules.required, rules.isValidPassword]"
                 required
               />
               <v-text-field
@@ -60,7 +60,7 @@
                 counter
                 @click:append="showRPass = !showRPass"
                 outlined
-                :rules="rpasswordRules"
+                :rules="[rules.required, rules.passwordEquals]"
               />
             </v-form>
             <v-btn
@@ -92,23 +92,19 @@ export default {
       apellido: null,
       genero: null,
       email: null,
-      emailRules: [
-        (v) => !!v || "Este item es obligatorio",
-        (v) => /.+@.+\..+/.test(v) || "El email ingresado no es valido",
-      ],
       fecha: null,
       password: null,
-      passwordRules: [
-        (v) => !!v || "Este item es obligatorio",
-        (v) =>
+      rpassword: null,
+      rules: {
+        required: (v) => !!v || "Este item es obligatorio",
+        isEmail: (v) =>
+          /.+@.+\..+/.test(v) || "El email ingresado no es valido",
+        isValidPassword: (v) =>
           (v && v.length >= 8) ||
           "La contraseña debe tener al menos 8 caracteres",
-      ],
-      rpassword: null,
-      rpasswordRules: [
-        (v) => !!v || "Este item es obligatorio",
-        (v) => v === this.password || "Las contraseñas no coinciden",
-      ],
+        passwordEquals: (v) =>
+          v === this.password || "Las contraseñas no coinciden",
+      },
     };
   },
   methods: {
