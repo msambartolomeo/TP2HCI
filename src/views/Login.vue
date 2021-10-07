@@ -1,7 +1,7 @@
 <template>
   <v-row justify="center">
     <v-col cols="10" sm="8" md="6" lg="4">
-      <v-card>
+      <v-card elevation="10">
         <v-row justify="center" dense>
           <v-col cols="10" dense>
             <h1 class="mt-10 text-center text-sm-h1 text-h2">WorkLn</h1>
@@ -18,9 +18,12 @@
               @click:append="showPass = !showPass"
               outlined
             ></v-text-field>
-            <v-btn color="primary" @click="login()" block>login</v-btn>
-            <p @click="register()" class="mt-6 text-center link">
-              No tienes una cuenta? Registrate!
+            <v-btn color="primary" @click="login()" block>Login</v-btn>
+            <p
+              @click="register()"
+              class="mt-6 text-center link font-weight-bold color"
+            >
+              ¿No tienes una cuenta? ¡Registrate!
             </p>
           </v-col>
         </v-row>
@@ -55,8 +58,6 @@ export default {
 <style scoped>
 .link {
   color: #2c3e50;
-  text-decoration: none;
-  font-weight: bold;
 }
 .link:hover {
   text-decoration: underline;

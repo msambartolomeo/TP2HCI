@@ -13,11 +13,11 @@
         v-model="ffecha"
         label="Fecha de Nacimiento"
         prepend-inner-icon="event"
-        :readonly="editProfile"
+        :readonly="edit"
         outlined
         v-bind="attrs"
         v-on="on"
-        :disabled="!editProfile"
+        :disabled="!edit"
       ></v-text-field>
     </template>
     <v-date-picker
@@ -48,7 +48,7 @@ export default {
     };
   },
   props: {
-    editProfile: Boolean,
+    edit: Boolean,
     fecha: Date,
   },
   watch: {

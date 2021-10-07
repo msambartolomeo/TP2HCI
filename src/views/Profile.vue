@@ -44,7 +44,7 @@
                 :disabled="!editProfile"
               />
               <BirthdatePicker
-                :edit-profile="editProfile"
+                :edit="editProfile"
                 :fecha="nfecha"
                 @update="updateDate"
               />
@@ -52,8 +52,8 @@
                 v-model="npassword"
                 :append-icon="showPass ? 'visibility' : 'visibility_off'"
                 :type="showPass ? 'text' : 'password'"
-                label="Password"
-                hint="At least 8 characters"
+                label="Contraseña"
+                hint="Por lo menos 8 caracteres"
                 counter
                 @click:append="showPass = !showPass"
                 outlined
@@ -114,8 +114,8 @@ export default {
     };
   },
   methods: {
-    updateDate(event) {
-      this.nfecha = event;
+    updateDate(date) {
+      this.nfecha = date;
     },
     resetProfile() {
       this.nnombre = this.nombre;
