@@ -60,7 +60,11 @@
                 counter
                 @click:append="showRPass = !showRPass"
                 outlined
-                :rules="[rules.required, rules.passwordEquals]"
+                :rules="[
+                  rules.required,
+                  (v) => v === password || 'Las contraseñas no coinciden',
+                ]"
+                required
               />
             </v-form>
             <v-btn
@@ -80,6 +84,7 @@
 
 <script>
 import BirthdatePicker from "../components/BirthdatePicker";
+import rules from "../jsmodules/rules";
 export default {
   name: "Register",
   components: { BirthdatePicker },
@@ -95,16 +100,7 @@ export default {
       fecha: null,
       password: null,
       rpassword: null,
-      rules: {
-        required: (v) => !!v || "Este item es obligatorio",
-        isEmail: (v) =>
-          /.+@.+\..+/.test(v) || "El email ingresado no es valido",
-        isValidPassword: (v) =>
-          (v && v.length >= 8) ||
-          "La contraseña debe tener al menos 8 caracteres",
-        passwordEquals: (v) =>
-          v === this.password || "Las contraseñas no coinciden",
-      },
+      rules: rules.rules,
     };
   },
   methods: {
