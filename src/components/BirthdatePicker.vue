@@ -49,7 +49,7 @@ export default {
   },
   props: {
     edit: Boolean,
-    fecha: Date,
+    fecha: String,
   },
   watch: {
     menu() {

@@ -2,21 +2,30 @@
   <v-form>
     <v-container fluid>
       <v-row>
-        <v-col cols="12" md="7">
-          <v-row justify="center" no-gutters>
-            <v-col cols="3">
-              <h1 class="mt-8 mb-5">Mi perfil</h1>
+        <v-col cols="12" md="6">
+          <v-row justify="center">
+            <v-col cols="8" lg="4">
+              <p
+                class="
+                  mt-8
+                  text-lg-h3 text-md-h2 text-h1 text-center text-lg-start
+                "
+              >
+                Mi perfil
+              </p>
             </v-col>
-            <v-col cols="4" align-self="center">
+            <v-col cols="8" lg="4" align-self="center">
               <v-btn
+                class="mt-lg-8"
                 color="primary"
                 v-show="!editProfile"
                 @click="editProfile = true"
+                block
               >
                 Editar
               </v-btn>
             </v-col>
-            <v-col cols="7">
+            <v-col cols="8">
               <v-text-field
                 label="Nombre"
                 outlined
@@ -62,26 +71,44 @@
             </v-col>
           </v-row>
         </v-col>
-        <v-col cols="12" md="4" align-self="center">
-          <v-img
-            :src="require('../assets/profile_logo.jpg')"
-            contain
-            max-height="640"
-            max-width="480"
-            class="mx-auto"
-          />
+        <v-col cols="12" md="6" align-self="center">
+          <v-row justify="center">
+            <v-col cols="8">
+              <v-card elevation="10">
+                <v-img
+                  :src="require('../assets/profile_logo.jpg')"
+                  contain
+                  max-height="640"
+                  max-width="480"
+                  class="mx-auto"
+                />
+              </v-card>
+            </v-col>
+          </v-row>
         </v-col>
-      </v-row>
-      <v-row class="mt-16" justify="center">
-        <v-col cols="2" align-self="center">
-          <v-btn color="error" v-show="editProfile" @click="resetProfile">
-            Cancelar
-          </v-btn>
-        </v-col>
-        <v-col cols="2" align-self="center">
-          <v-btn color="primary" v-show="editProfile" @click="updateProfile">
-            Guardar
-          </v-btn>
+        <v-col cols="12" md="6">
+          <v-row justify="center">
+            <v-col cols="8" lg="4" align-self="center">
+              <v-btn
+                color="error"
+                v-show="editProfile"
+                block
+                @click="resetProfile"
+              >
+                Cancelar
+              </v-btn>
+            </v-col>
+            <v-col cols="8" lg="4" align-self="center">
+              <v-btn
+                color="primary"
+                v-show="editProfile"
+                block
+                @click="updateProfile"
+              >
+                Guardar
+              </v-btn>
+            </v-col>
+          </v-row>
         </v-col>
       </v-row>
     </v-container>

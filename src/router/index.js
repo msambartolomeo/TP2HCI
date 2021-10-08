@@ -58,7 +58,7 @@ const router = new VueRouter({
   routes,
 });
 
-let hola = false;
+let hola = true;
 
 router.beforeEach((to, from, next) => {
   if (to.matched.some((record) => record.meta.requiresAuth)) {
