@@ -1,5 +1,5 @@
 <template>
-  <v-form>
+  <v-form ref="form" v-model="valid" lazy-validation>
     <v-container fluid>
       <v-row>
         <v-col cols="12" md="6">
@@ -31,12 +31,14 @@
                 outlined
                 v-model="nnombre"
                 :disabled="!editProfile"
+                :rules="[rules.required]"
               />
               <v-text-field
                 label="Apellido"
                 outlined
                 v-model="napellido"
                 :disabled="!editProfile"
+                :rules="[rules.required]"
               />
               <v-select
                 :items="['M', 'F']"
@@ -51,6 +53,7 @@
                 outlined
                 v-model="nemail"
                 :disabled="!editProfile"
+                :rules="[rules.required, rules.isEmail]"
               />
               <BirthdatePicker
                 :edit="editProfile"
@@ -67,6 +70,7 @@
                 @click:append="showPass = !showPass"
                 outlined
                 :disabled="!editProfile"
+                :rules="[rules.required, rules.isValidPassword]"
               />
             </v-col>
           </v-row>
@@ -104,6 +108,7 @@
                 v-show="editProfile"
                 block
                 @click="updateProfile"
+                :disabled="!valid"
               >
                 Guardar
               </v-btn>
@@ -117,6 +122,7 @@
 
 <script>
 import BirthdatePicker from "../components/BirthdatePicker";
+import rules from "../jsmodules/rules";
 export default {
   name: "Profile",
   components: {
@@ -138,6 +144,8 @@ export default {
       npassword: null,
       editProfile: false,
       showPass: false,
+      rules: rules.rules,
+      valid: true,
     };
   },
   methods: {
@@ -155,14 +163,16 @@ export default {
       this.showPass = false;
     },
     updateProfile() {
-      this.nombre = this.nnombre;
-      this.fecha = this.nfecha;
-      this.genero = this.ngenero;
-      this.apellido = this.napellido;
-      this.email = this.nemail;
-      this.password = this.npassword;
-      this.editProfile = false;
-      this.showPass = false;
+      if (this.$refs.form.validate()) {
+        this.nombre = this.nnombre;
+        this.fecha = this.nfecha;
+        this.genero = this.ngenero;
+        this.apellido = this.napellido;
+        this.email = this.nemail;
+        this.password = this.npassword;
+        this.editProfile = false;
+        this.showPass = false;
+      }
     },
   },
   beforeMount() {
