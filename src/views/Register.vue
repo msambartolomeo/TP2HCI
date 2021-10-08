@@ -69,7 +69,7 @@
             </v-form>
             <v-btn
               color="primary"
-              class="mb-5"
+              class="mb-7"
               @click="register()"
               block
               :disabled="!valid"
@@ -109,8 +109,7 @@ export default {
     },
     register() {
       if (this.$refs.form.validate()) {
-        const redirectPath = this.$route.query.redirect || "/";
-        this.$router.push(redirectPath);
+        this.$router.push("/email_verification");
       }
     },
   },

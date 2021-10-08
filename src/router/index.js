@@ -45,6 +45,14 @@ const routes = [
       import(/* webpackChunkName: "register" */ "../views/Register.vue"),
   },
   {
+    path: "/email_verification",
+    name: "EmailVerification",
+    component: () =>
+      import(
+        /* webpackChunkName: "EmailVerification" */ "../views/EmailVerification.vue"
+      ),
+  },
+  {
     path: "/NotFound",
     alias: "*",
     name: "NotFound",
