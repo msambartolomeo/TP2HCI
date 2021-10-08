@@ -112,6 +112,19 @@
               >
                 Guardar
               </v-btn>
+              <v-snackbar v-model="snackbar" timeout="2500">
+                ¡Los cambios se han guardado con exito!
+                <template v-slot:action="{ attrs }">
+                  <v-btn
+                    color="blue"
+                    text
+                    v-bind="attrs"
+                    @click="snackbar = false"
+                  >
+                    Cerrar
+                  </v-btn>
+                </template>
+              </v-snackbar>
             </v-col>
           </v-row>
         </v-col>
@@ -146,6 +159,7 @@ export default {
       showPass: false,
       rules: rules.rules,
       valid: true,
+      snackbar: false,
     };
   },
   methods: {
@@ -164,6 +178,7 @@ export default {
     },
     updateProfile() {
       if (this.$refs.form.validate()) {
+        this.snackbar = true;
         this.nombre = this.nnombre;
         this.fecha = this.nfecha;
         this.genero = this.ngenero;
