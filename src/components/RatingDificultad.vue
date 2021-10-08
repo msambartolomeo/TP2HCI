@@ -1,16 +1,21 @@
 <template>
-  <v-rating
-    color="red"
-    background-color="grey"
-    empty-icon="mdi-fire"
-    full-icon="mdi-fire"
-    length="3"
-    hover
-    :readonly="readonly"
-    dense
-    :size="size"
-    :value="difficulty"
-  ></v-rating>
+  <div>
+    <v-rating
+      color="red"
+      background-color="grey"
+      empty-icon="mdi-fire"
+      full-icon="mdi-fire"
+      length="3"
+      hover
+      :readonly="readonly"
+      dense
+      :size="size"
+      :value="difficulty"
+    ></v-rating>
+    <v-input hidden />
+  </div>
+
+
 </template>
 
 <script>

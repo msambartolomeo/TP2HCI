@@ -43,24 +43,51 @@
                     :rules="[rules.required]"
                   ></v-textarea>
                 </v-col>
-                <v-col>
-                  <div class="align-center">
-                    <h5 class="text--black text-h5">Dificultad:</h5>
+                <v-col cols="6">
+                  <h5 class="text--black text-h5">Dificultad</h5>
+                </v-col>
+                <v-col cols="6">
                     <v-input :rules="[rules.required]" :value="dificultad">
                       <RatingDificultad
                         :readonly="false"
                         :size="40"
                         v-model="dificultad"
-                        :rules="[rules.required]"
                       />
                     </v-input>
-                  </div>
+                </v-col>
+                <v-col cols="6">
+                  <h5 class="text--black text-h5">Categoría</h5>
+                </v-col>
+                <v-col cols="6">
+                  <v-menu offset-y>
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-btn
+                        color="primary"
+                        dark
+                        v-bind="attrs"
+                        v-on="on"
+                      >
+                        Seleccionar
+                      </v-btn>
+                    </template>
+                    <v-list>
+                      <v-list-item
+                        v-for="(item) in items"
+                        :key="item.title"
+                      >
+                        <v-list-item-title>{{item.title}}</v-list-item-title>
+                      </v-list-item>
+                    </v-list>
+                  </v-menu>
                 </v-col>
               </v-row>
             </v-form>
           </v-col>
           <v-col cols="6">
-            <v-img :src="require('../assets/logo.svg')" contain></v-img>
+            <v-img :src="require('../assets/logo.svg')" contain max-width="400" max-height="400"></v-img>
+          </v-col>
+          <v-col>
+            <TimelineDef />
           </v-col>
         </v-row>
       </v-card-text>
@@ -71,15 +98,20 @@
 <script>
 import RatingDificultad from "@/components/RatingDificultad";
 import SalidaConfirmada from "@/components/SalidaConfirmada";
+import TimelineDef from "@/components/TimelineDef";
 export default {
   name: "NuevaRutina",
-  components: { SalidaConfirmada, RatingDificultad },
+  components: { TimelineDef, SalidaConfirmada, RatingDificultad },
   data: () => ({
     dialog: false,
     nombre: null,
     descripcion: null,
     dificultad: null,
     valid: true,
+    items: [
+      { title: 'Categoria 1' },
+      { title: 'Categoria 2' },
+    ],
     rules: {
       required: (value) => !!value || "Este item es obligatorio",
     },
