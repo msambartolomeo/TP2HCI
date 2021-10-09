@@ -11,28 +11,25 @@
           width="40"
         />
 
-        <h2 class="hidden-sm-and-down">WorkIn</h2>
+        <h2 class="ml-2 hidden-sm-and-down">WorkIn</h2>
       </div>
 
       <v-spacer></v-spacer>
 
-      <v-btn text to="/">
-        <span class="mr-2 ml-2">Inicio</span>
-      </v-btn>
-      <v-btn text to="/rutinas">
-        <span class="mr-2 ml-2">Mis Rutinas</span>
-      </v-btn>
-      <v-btn text to="/ejercicios">
-        <span class="mr-2 ml-2">Mis Ejercicios</span>
-      </v-btn>
+      <v-btn text to="/"> Inicio </v-btn>
+      <v-btn text to="/rutinas" class="ml-2"> Mis Rutinas </v-btn>
+      <v-btn text to="/ejercicios" class="ml-2"> Mis Ejercicios </v-btn>
 
       <v-spacer></v-spacer>
 
-      <v-btn text to="/perfil">
-        <span class="mr-2 hidden-sm-and-down">
+      <v-btn text to="/perfil" class="mr-2">
+        <span class="hidden-sm-and-down mr-2">
           {{ user_name + " " + user_surname }}
         </span>
-        <v-icon x-large>account_circle</v-icon>
+        <v-icon large>account_circle</v-icon>
+      </v-btn>
+      <v-btn text @click="logout">
+        <v-icon>logout</v-icon>
       </v-btn>
     </v-app-bar>
     <v-main>
@@ -49,5 +46,10 @@ export default {
     user_name: "Pepe",
     user_surname: "Rodriguez",
   }),
+  methods: {
+    logout() {
+      this.$router.push("/login");
+    },
+  },
 };
 </script>

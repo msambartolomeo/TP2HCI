@@ -1,128 +1,132 @@
 <template>
-  <v-form>
+  <v-form ref="form" v-model="valid" lazy-validation>
     <v-container fluid>
       <v-row>
-        <v-col cols="12" md="7">
-          <v-row justify="center" no-gutters>
-            <v-col cols="3">
-              <h1 class="mt-8 mb-5">Mi perfil</h1>
+        <v-col cols="12" md="6">
+          <v-row justify="center">
+            <v-col cols="8" lg="4">
+              <p
+                class="
+                  mt-8
+                  text-lg-h3 text-md-h2 text-h1 text-center text-lg-start
+                "
+              >
+                Mi perfil
+              </p>
             </v-col>
-            <v-col cols="4" align-self="center">
+            <v-col cols="8" lg="4" align-self="center">
               <v-btn
+                class="mt-lg-8"
                 color="primary"
                 v-show="!editProfile"
                 @click="editProfile = true"
+                block
               >
                 Editar
               </v-btn>
             </v-col>
-            <v-col cols="7"
-              ><v-text-field
+            <v-col cols="8">
+              <v-text-field
                 label="Nombre"
                 outlined
                 v-model="nnombre"
                 :disabled="!editProfile"
-            /></v-col>
-            <v-col cols="7"
-              ><v-text-field
+                :rules="[rules.required]"
+              />
+              <v-text-field
                 label="Apellido"
                 outlined
                 v-model="napellido"
                 :disabled="!editProfile"
-            /></v-col>
-            <v-col cols="7"
-              ><v-select
+                :rules="[rules.required]"
+              />
+              <v-select
                 :items="['M', 'F']"
                 label="Genero"
                 outlined
                 append-icon="expand_more"
                 v-model="ngenero"
                 :disabled="!editProfile"
-            /></v-col>
-            <v-col cols="7"
-              ><v-text-field
+              />
+              <v-text-field
                 label="Email"
                 outlined
                 v-model="nemail"
                 :disabled="!editProfile"
-              ></v-text-field>
-            </v-col>
-            <v-col cols="7"
-              ><v-menu
-                ref="menu"
-                v-model="menu"
-                :close-on-content-click="false"
-                transition="scale-transition"
-                offset-y
-                min-width="auto"
-              >
-                <template v-slot:activator="{ on, attrs }">
-                  <v-text-field
-                    v-model="fnfecha"
-                    label="Fecha de Nacimiento"
-                    prepend-inner-icon="event"
-                    readonly
-                    outlined
-                    v-bind="attrs"
-                    v-on="on"
-                    :disabled="!editProfile"
-                  ></v-text-field>
-                </template>
-                <v-date-picker
-                  v-model="nfecha"
-                  :active-picker.sync="activePicker"
-                  show-adjacent-months
-                  :max="
-                    new Date(
-                      Date.now() - new Date().getTimezoneOffset() * 60000
-                    )
-                      .toISOString()
-                      .substr(0, 10)
-                  "
-                  min="1900-01-01"
-                  @change="save"
-                ></v-date-picker>
-              </v-menu>
-            </v-col>
-            <v-col cols="7">
+                :rules="[rules.required, rules.isEmail]"
+              />
+              <BirthdatePicker
+                :edit="editProfile"
+                :fecha="nfecha"
+                @update="updateDate"
+              />
               <v-text-field
                 v-model="npassword"
                 :append-icon="showPass ? 'visibility' : 'visibility_off'"
                 :type="showPass ? 'text' : 'password'"
-                label="Password"
-                hint="At least 8 characters"
+                label="Contraseña"
+                hint="Por lo menos 8 caracteres"
                 counter
                 @click:append="showPass = !showPass"
                 outlined
                 :disabled="!editProfile"
-              ></v-text-field>
-            </v-col>
-          </v-row>
-        </v-col>
-        <v-col cols="12" md="4" align-self="center">
-          <v-row justify="center" no-gutters>
-            <v-col>
-              <v-img
-                src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Black_from_a_camera.jpg/1200px-Black_from_a_camera.jpg"
-                contain
-                max-height="640"
-                max-width="480"
-                class="mx-auto"
+                :rules="[rules.required, rules.isValidPassword]"
               />
             </v-col>
           </v-row>
         </v-col>
-      </v-row>
-      <v-row class="mt-16" justify="center">
-        <v-col cols="2" align-self="center">
-          <v-btn color="error" v-show="editProfile" @click="resetProfile">
-            Cancelar
-          </v-btn>
+        <v-col cols="12" md="6" align-self="center">
+          <v-row justify="center">
+            <v-col cols="8">
+              <v-card elevation="10">
+                <v-img
+                  :src="require('../assets/profile_logo.jpg')"
+                  contain
+                  max-height="640"
+                  max-width="480"
+                  class="mx-auto"
+                />
+              </v-card>
+            </v-col>
+          </v-row>
         </v-col>
-        <v-col cols="2" align-self="center">
-          <v-btn color="primary" v-show="editProfile" @click="updateProfile">
-            Guardar
-          </v-btn>
+        <v-col cols="12" md="6">
+          <v-row justify="center">
+            <v-col cols="8" lg="4" align-self="center">
+              <v-btn
+                color="error"
+                v-show="editProfile"
+                block
+                @click="resetProfile"
+              >
+                Cancelar
+              </v-btn>
+            </v-col>
+            <v-col cols="8" lg="4" align-self="center">
+              <v-btn
+                color="primary"
+                v-show="editProfile"
+                block
+                @click="updateProfile"
+                :disabled="!valid"
+              >
+                Guardar
+              </v-btn>
+              <v-snackbar v-model="snackbar" timeout="2500">
+                ¡Los cambios se han guardado con exito!
+                <template v-slot:action="{ attrs }">
+                  <v-btn
+                    color="blue"
+                    text
+                    v-bind="attrs"
+                    @click="snackbar = false"
+                  >
+                    Cerrar
+                  </v-btn>
+                </template>
+              </v-snackbar>
+            </v-col>
+          </v-row>
         </v-col>
       </v-row>
     </v-container>
@@ -130,45 +134,37 @@
 </template>
 
 <script>
+import BirthdatePicker from "../components/BirthdatePicker";
+import rules from "../jsmodules/rules";
 export default {
-  name: "Profile.vue",
-  data: () => ({
-    nombre: "Pepe",
-    apellido: "Rodriguez",
-    genero: "M",
-    email: "prodriguez@itba.edu.ar",
-    fecha: "2000-01-01",
-    password: "12345678",
-    nnombre: null,
-    napellido: null,
-    ngenero: null,
-    nemail: null,
-    nfecha: null,
-    npassword: null,
-    activePicker: null,
-    menu: false,
-    editProfile: false,
-    showPass: false,
-  }),
-  watch: {
-    menu() {
-      setTimeout(() => (this.activePicker = "YEAR"));
-    },
+  name: "Profile",
+  components: {
+    BirthdatePicker,
   },
-  computed: {
-    fnfecha() {
-      return this.formatDate(this.nfecha);
-    },
+  data() {
+    return {
+      nombre: "Pepe",
+      apellido: "Rodriguez",
+      genero: "M",
+      email: "prodriguez@itba.edu.ar",
+      fecha: "2000-01-01",
+      password: "12345678",
+      nnombre: null,
+      napellido: null,
+      ngenero: null,
+      nemail: null,
+      nfecha: null,
+      npassword: null,
+      editProfile: false,
+      showPass: false,
+      rules: rules.rules,
+      valid: true,
+      snackbar: false,
+    };
   },
   methods: {
-    save(date) {
-      this.$refs.menu.save(date);
-    },
-    formatDate(date) {
-      if (!date) return null;
-
-      const [year, month, day] = date.split("-");
-      return `${day}/${month}/${year}`;
+    updateDate(date) {
+      this.nfecha = date;
     },
     resetProfile() {
       this.nnombre = this.nombre;
@@ -181,14 +177,17 @@ export default {
       this.showPass = false;
     },
     updateProfile() {
-      this.nombre = this.nnombre;
-      this.fecha = this.nfecha;
-      this.genero = this.ngenero;
-      this.apellido = this.napellido;
-      this.email = this.nemail;
-      this.password = this.npassword;
-      this.editProfile = false;
-      this.showPass = false;
+      if (this.$refs.form.validate()) {
+        this.snackbar = true;
+        this.nombre = this.nnombre;
+        this.fecha = this.nfecha;
+        this.genero = this.ngenero;
+        this.apellido = this.napellido;
+        this.email = this.nemail;
+        this.password = this.npassword;
+        this.editProfile = false;
+        this.showPass = false;
+      }
     },
   },
   beforeMount() {
