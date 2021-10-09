@@ -33,6 +33,8 @@
 </template>
 
 <script>
+import { mapActions, mapState } from "vuex";
+import { Credentials } from "../../api/user";
 export default {
   name: "Login",
   data() {
@@ -42,11 +44,20 @@ export default {
       showPass: false,
     };
   },
+  computed: {
+    ...mapState("user", {
+      $user: (state) => state.user,
+    }),
+  },
   methods: {
-    login() {
-      // authenticate
+    ...mapActions("user", {
+      $login: "login",
+    }),
+    async login() {
+      const credentials = new Credentials("johndoe", "1234567890");
+      await this.$login({ credentials });
       const redirectPath = this.$route.query.redirect || "/";
-      this.$router.push(redirectPath);
+      await this.$router.push(redirectPath);
     },
     register() {
       this.$router.push("/register");

@@ -1,6 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
+import { Api } from "../../api/api";
 
 Vue.use(VueRouter);
 
@@ -66,11 +67,9 @@ const router = new VueRouter({
   routes,
 });
 
-let hola = true;
-
 router.beforeEach((to, from, next) => {
   if (to.matched.some((record) => record.meta.requiresAuth)) {
-    if (hola) {
+    if (Api.token) {
       // Provisional hasta tener store y api
       next();
       return;
