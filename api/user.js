@@ -1,14 +1,10 @@
 import { Api } from "./api.js";
 
-export { UserApi, Credentials };
+export { UserApi, Credentials, Verification, NewUser, EditUser };
 
 class UserApi {
   static getUrl(slug) {
     return `${Api.baseUrl}/users${slug ? `/${slug}` : ""}`;
-  }
-
-  static getUrlCurrent(slug) {
-    return `${UserApi.getUrl("current")}${slug ? `/${slug}` : ""}`;
   }
 
   static async login(credentials, controller) {
@@ -21,17 +17,79 @@ class UserApi {
   }
 
   static async logout(controller) {
-    await Api.post(UserApi.getUrl("logout"), true, controller);
+    await Api.post(UserApi.getUrl("logout"), true, null, controller);
+  }
+
+  static async verify(verification, controller) {
+    await Api.post(
+      UserApi.getUrl("verify_email"),
+      false,
+      verification,
+      controller
+    );
+  }
+
+  static async resend_verify(email, controller) {
+    await Api.post(UserApi.getUrl(), false, { email: email }, controller);
+  }
+
+  static async add(newUser, controller) {
+    await Api.post(UserApi.getUrl(), false, newUser, controller);
+  }
+
+  static getUrlCurrent(slug) {
+    return `${UserApi.getUrl("current")}${slug ? `/${slug}` : ""}`;
+  }
+
+  static async delete(controller) {
+    await Api.delete(UserApi.getUrlCurrent(), true, controller);
   }
 
   static async get(controller) {
-    return await Api.get(UserApi.getUrlCurrent(), true, controller);
+    return await Api.get(UserApi.getUrlCurrent(), true, null, controller);
+  }
+
+  static async edit(editUser, controller) {
+    await Api.put(UserApi.getUrlCurrent(), true, editUser, controller);
+  }
+
+  static async routines(controller) {
+    await Api.get(UserApi.getUrlCurrent("routines"), true, controller);
   }
 }
 
 class Credentials {
-  constructor(username, password) {
-    this.username = username;
+  constructor(email, password) {
+    this.username = email;
     this.password = password;
+  }
+}
+
+class Verification {
+  constructor(email, code) {
+    this.email = email;
+    this.code = code;
+  }
+}
+
+class NewUser {
+  constructor(email, password, firstName, lastName, gender, birthdate) {
+    if (firstName) this.firstName = firstName;
+    if (lastName) this.lastName = lastName;
+    this.username = email;
+    this.email = email;
+    if (birthdate) this.birthdate = birthdate;
+    if (gender) this.gender = gender;
+    this.password = password;
+  }
+}
+
+class EditUser {
+  constructor(firstName, lastName, gender, birthdate, avatarUrl) {
+    if (firstName) this.firstName = firstName;
+    if (lastName) this.lastName = lastName;
+    if (birthdate) this.birthdate = birthdate;
+    if (gender) this.gender = gender;
+    if (avatarUrl) this.avatarUrl = avatarUrl;
   }
 }
