@@ -15,7 +15,6 @@
     ></v-rating>
     <v-input hidden />
   </div>
-
 </template>
 
 <script>
@@ -33,4 +32,3 @@ export default {
   },
 };
 </script>
-

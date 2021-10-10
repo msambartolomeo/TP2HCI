@@ -43,6 +43,16 @@
                     :rules="[rules.required]"
                   ></v-textarea>
                 </v-col>
+                <v-col cols="12">
+                  <v-select
+                    :items="categorias"
+                    label="Categoría"
+                    outlined
+                    append-icon="expand_more"
+                    v-model="categoria"
+                    :rules="[rules.required]"
+                  />
+                </v-col>
                 <v-col cols="6">
                   <h5 class="text--black text-h5">Dificultad</h5>
                 </v-col>
@@ -56,31 +66,6 @@
                     />
                   </v-input>
                 </v-col>
-                <v-col cols="6">
-                  <h5 class="text--black text-h5">Categoría</h5>
-                </v-col>
-                <v-col cols="6">
-                  <v-menu offset-y>
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-btn
-                        color="primary"
-                        dark
-                        v-bind="attrs"
-                        v-on="on"
-                      >
-                        Seleccionar
-                      </v-btn>
-                    </template>
-                    <v-list>
-                      <v-list-item
-                        v-for="(item) in items"
-                        :key="item.title"
-                      >
-                        <v-list-item-title>{{item.title}}</v-list-item-title>
-                      </v-list-item>
-                    </v-list>
-                  </v-menu>
-                </v-col>
               </v-row>
             </v-form>
           </v-col>
@@ -93,16 +78,8 @@
       </v-card-text>
       <v-card-title class="text-h4">Ciclos y ejercicios</v-card-title>
       <v-card-text>
-        <v-row>
-          <v-col cols="4">
-            <h1 class="text-h5">Entrada en Calor</h1>
-          </v-col>
-          <v-spacer />
-          <v-col cols="3">
-            <v-text-field outlined label="Numero de Repeticiones"></v-text-field>
-          </v-col>
-        </v-row>
-        <v-divider />
+        <CicloEnRutina />
+        <CicloEnRutina />
       </v-card-text>
     </v-card>
   </v-dialog>
@@ -111,19 +88,21 @@
 <script>
 import RatingDificultad from "@/components/RatingDificultad";
 import SalidaConfirmada from "@/components/SalidaConfirmada";
+import CicloEnRutina from "./CicloEnRutina";
 
 export default {
   name: "NuevaRutina",
-  components: { SalidaConfirmada, RatingDificultad },
+  components: { CicloEnRutina, SalidaConfirmada, RatingDificultad },
   data: () => ({
     dialog: false,
     nombre: null,
     descripcion: null,
     dificultad: null,
     valid: true,
-    items: [
-      { title: 'Categoria 1' },
-      { title: 'Categoria 2' },
+    categoria: null,
+    categorias: [
+      "Categoria 1",
+      "Categoria 2",
     ],
     rules: {
       required: (value) => !!value || "Este item es obligatorio",
@@ -137,6 +116,7 @@ export default {
       this.$refs.form.resetValidation();
       this.nombre = null;
       this.descripcion = null;
+      this.categoria = null;
       this.dificultad = null;
       this.dialog = false;
     },
