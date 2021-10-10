@@ -20,7 +20,7 @@
           <v-btn dark text @click="verifyData"> Guardar </v-btn>
         </v-toolbar-items>
       </v-toolbar>
-      <v-card-title class="text-h5">Información de la rutina</v-card-title>
+      <v-card-title class="text-h4">Información de la rutina</v-card-title>
       <v-card-text>
         <v-row>
           <v-col cols="6">
@@ -47,13 +47,14 @@
                   <h5 class="text--black text-h5">Dificultad</h5>
                 </v-col>
                 <v-col cols="6">
-                    <v-input :rules="[rules.required]" :value="dificultad">
-                      <RatingDificultad
-                        :readonly="false"
-                        :size="40"
-                        v-model="dificultad"
-                      />
-                    </v-input>
+                  <v-input v-model="dificultad" :rules="[rules.required]">
+                    <RatingDificultad
+                      :readonly="false"
+                      :size="40"
+                      :difficulty="dificultad"
+                      @notifyRating="updateRating"
+                    />
+                  </v-input>
                 </v-col>
                 <v-col cols="6">
                   <h5 class="text--black text-h5">Categoría</h5>
@@ -84,12 +85,24 @@
             </v-form>
           </v-col>
           <v-col cols="6">
-            <v-img :src="require('../assets/logo.svg')" contain max-width="400" max-height="400"></v-img>
-          </v-col>
-          <v-col>
-            <TimelineDef />
+            <v-row justify="center">
+              <v-img :src="require('../assets/logo.svg')" contain max-width="400" max-height="400"></v-img>
+            </v-row>
           </v-col>
         </v-row>
+      </v-card-text>
+      <v-card-title class="text-h4">Ciclos y ejercicios</v-card-title>
+      <v-card-text>
+        <v-row>
+          <v-col cols="4">
+            <h1 class="text-h5">Entrada en Calor</h1>
+          </v-col>
+          <v-spacer />
+          <v-col cols="3">
+            <v-text-field outlined label="Numero de Repeticiones"></v-text-field>
+          </v-col>
+        </v-row>
+        <v-divider />
       </v-card-text>
     </v-card>
   </v-dialog>
@@ -98,10 +111,10 @@
 <script>
 import RatingDificultad from "@/components/RatingDificultad";
 import SalidaConfirmada from "@/components/SalidaConfirmada";
-import TimelineDef from "@/components/TimelineDef";
+
 export default {
   name: "NuevaRutina",
-  components: { TimelineDef, SalidaConfirmada, RatingDificultad },
+  components: { SalidaConfirmada, RatingDificultad },
   data: () => ({
     dialog: false,
     nombre: null,
@@ -127,6 +140,9 @@ export default {
       this.dificultad = null;
       this.dialog = false;
     },
+    updateRating(rating) {
+      this.dificultad = rating;
+    }
   },
 };
 </script>

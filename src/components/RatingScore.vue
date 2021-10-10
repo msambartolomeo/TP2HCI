@@ -11,7 +11,7 @@
     :readonly="readonly"
     length="5"
     :size="size"
-    :value="score"
+    v-model="score"
   ></v-rating>
 </template>
 
@@ -19,10 +19,7 @@
 export default {
   name: "RatingScore",
   props: {
-    score: {
-      type: Number,
-      default: 0,
-    },
+    score: Number,
     readonly: Boolean,
     size: Number,
   },

@@ -10,11 +10,11 @@
       :readonly="readonly"
       dense
       :size="size"
-      :value="difficulty"
+      v-model="difficulty"
+      @input="notifyRating"
     ></v-rating>
     <v-input hidden />
   </div>
-
 
 </template>
 
@@ -22,14 +22,15 @@
 export default {
   name: "RatingDificultad",
   props: {
-    difficulty: {
-      type: Number,
-      default: 0,
-    },
+    difficulty: Number,
     readonly: Boolean,
     size: Number,
+  },
+  methods: {
+    notifyRating() {
+      this.$emit("notifyRating", this.difficulty);
+    },
   },
 };
 </script>
 
-<style scoped></style>
