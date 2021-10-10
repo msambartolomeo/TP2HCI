@@ -1,7 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
-import { Api } from "../../api/api";
 
 Vue.use(VueRouter);
 
@@ -68,9 +67,9 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
+  const cachedToken = localStorage.getItem("USER");
   if (to.matched.some((record) => record.meta.requiresAuth)) {
-    if (Api.token) {
-      // Provisional hasta tener store y api
+    if (cachedToken) {
       next();
       return;
     }

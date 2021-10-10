@@ -7,8 +7,11 @@ import store from "./store";
 Vue.config.productionTip = false;
 
 new Vue({
+  store,
+  async beforeCreate() {
+    await this.$store.dispatch("user/initialize");
+  },
   vuetify,
   router,
-  store,
   render: (h) => h(App),
 }).$mount("#app");

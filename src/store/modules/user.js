@@ -16,7 +16,15 @@ export default {
     },
   },
   actions: {
+    initialize({ commit }) {
+      const token = localStorage.getItem("USER");
+      if (token) {
+        commit("setToken", token);
+        Api.token = token;
+      }
+    },
     updateToken({ commit }, { token }) {
+      localStorage.setItem("USER", token);
       commit("setToken", token);
       Api.token = token;
     },
