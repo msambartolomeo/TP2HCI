@@ -1,6 +1,6 @@
 import { Api } from "./api.js";
 
-export { UserApi, Credentials, Verification, NewUser, EditUser };
+export { UserApi, Credentials, NewUser, EditUser };
 
 class UserApi {
   static getUrl(slug) {
@@ -20,11 +20,11 @@ class UserApi {
     await Api.post(UserApi.getUrl("logout"), true, null, controller);
   }
 
-  static async verify(verification, controller) {
+  static async verify(email, code, controller) {
     await Api.post(
       UserApi.getUrl("verify_email"),
       false,
-      verification,
+      { email: email, code: code },
       controller
     );
   }
@@ -34,7 +34,7 @@ class UserApi {
   }
 
   static async add(newUser, controller) {
-    await Api.post(UserApi.getUrl(), false, newUser, controller);
+    return await Api.post(UserApi.getUrl(), false, newUser, controller);
   }
 
   static getUrlCurrent(slug) {
@@ -50,11 +50,11 @@ class UserApi {
   }
 
   static async edit(editUser, controller) {
-    await Api.put(UserApi.getUrlCurrent(), true, editUser, controller);
+    return await Api.put(UserApi.getUrlCurrent(), true, editUser, controller);
   }
 
   static async routines(controller) {
-    await Api.get(UserApi.getUrlCurrent("routines"), true, controller);
+    return await Api.get(UserApi.getUrlCurrent("routines"), true, controller);
   }
 }
 
@@ -62,13 +62,6 @@ class Credentials {
   constructor(email, password) {
     this.username = email;
     this.password = password;
-  }
-}
-
-class Verification {
-  constructor(email, code) {
-    this.email = email;
-    this.code = code;
   }
 }
 
