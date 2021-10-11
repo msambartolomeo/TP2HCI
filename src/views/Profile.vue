@@ -26,58 +26,40 @@
               </v-btn>
             </v-col>
             <v-col cols="8">
+              <v-text-field label="Email" outlined v-model="email" disabled />
               <v-text-field
                 label="Nombre"
                 outlined
-                v-model="nnombre"
+                v-model="firstName"
                 :disabled="!editProfile"
                 :rules="[rules.required]"
               />
               <v-text-field
                 label="Apellido"
                 outlined
-                v-model="napellido"
+                v-model="lastName"
                 :disabled="!editProfile"
                 :rules="[rules.required]"
               />
               <v-select
-                :items="['M', 'F']"
+                :items="['Masculino', 'Femenino', 'Otro']"
                 label="Genero"
                 outlined
                 append-icon="expand_more"
-                v-model="ngenero"
+                v-model="gender"
                 :disabled="!editProfile"
-              />
-              <v-text-field
-                label="Email"
-                outlined
-                v-model="nemail"
-                :disabled="!editProfile"
-                :rules="[rules.required, rules.isEmail]"
               />
               <BirthdatePicker
                 :edit="editProfile"
-                :fecha="nfecha"
+                :fecha="birthdate"
                 @update="updateDate"
-              />
-              <v-text-field
-                v-model="npassword"
-                :append-icon="showPass ? 'visibility' : 'visibility_off'"
-                :type="showPass ? 'text' : 'password'"
-                label="Contraseña"
-                hint="Por lo menos 8 caracteres"
-                counter
-                @click:append="showPass = !showPass"
-                outlined
-                :disabled="!editProfile"
-                :rules="[rules.required, rules.isValidPassword]"
               />
             </v-col>
           </v-row>
         </v-col>
         <v-col cols="12" md="6" align-self="center">
           <v-row justify="center">
-            <v-col cols="8">
+            <v-col cols="8" class="mt-16">
               <v-card elevation="10">
                 <v-img
                   :src="require('../assets/profile_logo.jpg')"
@@ -98,6 +80,7 @@
                 v-show="editProfile"
                 block
                 @click="resetProfile"
+                :disabled="savingChanges"
               >
                 Cancelar
               </v-btn>
@@ -108,12 +91,16 @@
                 v-show="editProfile"
                 block
                 @click="updateProfile"
-                :disabled="!valid"
+                :disabled="!valid || savingChanges"
               >
                 Guardar
               </v-btn>
               <v-snackbar v-model="snackbar" timeout="2500">
-                ¡Los cambios se han guardado con exito!
+                {{
+                  error
+                    ? "Se ha producido un error, intente nuevamente"
+                    : "¡Los cambios se han guardado con exito!"
+                }}
                 <template v-slot:action="{ attrs }">
                   <v-btn
                     color="blue"
@@ -134,8 +121,10 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 import BirthdatePicker from "../components/BirthdatePicker";
 import rules from "../jsmodules/rules";
+import { EditUser } from "../../api/user";
 export default {
   name: "Profile",
   components: {
@@ -143,50 +132,85 @@ export default {
   },
   data() {
     return {
-      nombre: "Pepe",
-      apellido: "Rodriguez",
-      genero: "M",
-      email: "prodriguez@itba.edu.ar",
-      fecha: "2000-01-01",
-      password: "12345678",
-      nnombre: null,
-      napellido: null,
-      ngenero: null,
-      nemail: null,
-      nfecha: null,
-      npassword: null,
+      firstName: null,
+      lastName: null,
+      gender: null,
+      email: null,
+      birthdate: null,
+      avatarUrl: null,
       editProfile: false,
-      showPass: false,
+      savingChanges: false,
       rules: rules.rules,
       valid: true,
       snackbar: false,
+      error: false,
     };
   },
   methods: {
+    ...mapActions("user", {
+      $editCurrentUser: "editCurrentUser",
+      $getCurrentUser: "getCurrentUser",
+    }),
     updateDate(date) {
-      this.nfecha = date;
+      this.birthdate = date;
     },
-    resetProfile() {
-      this.nnombre = this.nombre;
-      this.nfecha = this.fecha;
-      this.ngenero = this.genero;
-      this.napellido = this.apellido;
-      this.nemail = this.email;
-      this.npassword = this.password;
-      this.editProfile = false;
+    async resetProfile() {
       this.showPass = false;
+      const user = await this.$getCurrentUser();
+      this.firstName = user.firstName;
+      this.lastName = user.lastName;
+      if (user.gender) {
+        switch (user.gender) {
+          case "male":
+            this.gender = "Masculino";
+            break;
+          case "female":
+            this.gender = "Femenino";
+            break;
+          case "other":
+            this.gender = "Otro";
+            break;
+        }
+      }
+      this.email = user.email;
+      if (user.birthdate) {
+        let date = new Date(user.birthdate);
+        let day = date.getUTCDate();
+        let month = date.getUTCMonth() + 1;
+        const year = date.getFullYear();
+        if (day < 10) {
+          day = `0${day}`;
+        }
+        if (month < 10) {
+          month = `0${month}`;
+        }
+        this.birthdate = `${year}-${month}-${day}`;
+      }
+      this.avatarUrl = user.avatarUrl;
+      this.editProfile = false;
+      this.savingChanges = false;
     },
-    updateProfile() {
+    async updateProfile() {
+      this.savingChanges = true;
+      this.showPass = false;
       if (this.$refs.form.validate()) {
-        this.snackbar = true;
-        this.nombre = this.nnombre;
-        this.fecha = this.nfecha;
-        this.genero = this.ngenero;
-        this.apellido = this.napellido;
-        this.email = this.nemail;
-        this.password = this.npassword;
-        this.editProfile = false;
-        this.showPass = false;
+        const editUser = new EditUser(
+          this.firstName,
+          this.lastName,
+          this.gender,
+          this.birthdate,
+          this.avatarUrl
+        );
+        try {
+          await this.$editCurrentUser({ editUser });
+          this.error = false;
+        } catch (e) {
+          this.error = true;
+        } finally {
+          this.editProfile = false;
+          this.snackbar = true;
+          this.savingChanges = false;
+        }
       }
     },
   },

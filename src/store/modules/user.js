@@ -62,6 +62,8 @@ export default {
     async login({ dispatch }, { credentials }) {
       const result = await UserApi.login(credentials);
       dispatch("updateToken", { token: result.token });
+      // actualizo el usuario guardado
+      dispatch("removeUser");
       await dispatch("getCurrentUser");
     },
 
@@ -72,7 +74,8 @@ export default {
     },
 
     async getCurrentUser({ state, dispatch }) {
-      if (state.user) return state.user;
+      if (state.user && !(JSON.stringify(state.user) === "{}"))
+        return state.user;
       const result = await UserApi.get();
       dispatch("updateUser", result);
     },
@@ -96,9 +99,11 @@ export default {
       dispatch("removeUser");
     },
 
-    async editCurrentUser({ dispatch }, { user }) {
-      const result = UserApi.edit(user);
-      dispatch("updateUser", result);
+    async editCurrentUser({ dispatch }, { editUser }) {
+      await UserApi.edit(editUser);
+      // actualizo el usuario guardado
+      dispatch("removeUser");
+      await dispatch("getCurrentUser");
     },
 
     async getCurrentRoutines({ commit }) {
