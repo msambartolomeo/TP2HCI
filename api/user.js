@@ -30,7 +30,12 @@ class UserApi {
   }
 
   static async resend_verify(email, controller) {
-    await Api.post(UserApi.getUrl(), false, { email: email }, controller);
+    await Api.post(
+      UserApi.getUrl("resend_verification"),
+      false,
+      { email: email },
+      controller
+    );
   }
 
   static async add(newUser, controller) {

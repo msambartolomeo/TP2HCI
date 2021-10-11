@@ -77,8 +77,8 @@ export default {
       dispatch("updateUser", result);
     },
 
-    async addUser({ dispatch }, { user }) {
-      const result = await UserApi.add(user);
+    async addUser({ dispatch }, { newUser }) {
+      const result = await UserApi.add(newUser);
       dispatch("updateUser", result);
     },
 

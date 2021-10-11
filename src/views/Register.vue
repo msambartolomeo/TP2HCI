@@ -10,14 +10,14 @@
               <v-text-field
                 label="Nombre"
                 outlined
-                v-model="nombre"
+                v-model="firstName"
                 :rules="[rules.required]"
                 required
               />
               <v-text-field
                 label="Apellido"
                 outlined
-                v-model="apellido"
+                v-model="lastName"
                 :rules="[rules.required]"
                 required
               />
@@ -29,7 +29,7 @@
                 required
               />
               <BirthdatePicker
-                :fecha="fecha"
+                :fecha="birthdate"
                 :edit="true"
                 @update="updateDate"
               />
@@ -38,7 +38,7 @@
                 label="Genero"
                 outlined
                 append-icon="expand_more"
-                v-model="genero"
+                v-model="gender"
               />
               <v-text-field
                 v-model="password"
@@ -53,7 +53,6 @@
                 required
               />
               <v-text-field
-                v-model="rpassword"
                 :append-icon="showRPass ? 'visibility' : 'visibility_off'"
                 :type="showRPass ? 'text' : 'password'"
                 label="Repita la contraseña"
@@ -83,8 +82,10 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 import BirthdatePicker from "../components/BirthdatePicker";
 import rules from "../jsmodules/rules";
+import { NewUser } from "../../api/user";
 export default {
   name: "Register",
   components: { BirthdatePicker },
@@ -93,23 +94,34 @@ export default {
       showPass: false,
       showRPass: false,
       valid: true,
-      nombre: null,
-      apellido: null,
-      genero: null,
+      firstName: null,
+      lastName: null,
+      gender: null,
       email: null,
-      fecha: null,
+      birthdate: null,
       password: null,
-      rpassword: null,
       rules: rules.rules,
     };
   },
   methods: {
+    ...mapActions("user", {
+      $addUser: "addUser",
+    }),
     updateDate(date) {
-      this.fecha = date;
+      this.birthdate = date;
     },
-    register() {
+    async register() {
       if (this.$refs.form.validate()) {
-        this.$router.push("/email_verification");
+        const newUser = new NewUser(
+          this.email,
+          this.password,
+          this.firstName,
+          this.lastName,
+          this.gender,
+          this.birthdate
+        );
+        await this.$addUser({ newUser });
+        await this.$router.push("/email_verification");
       }
     },
   },
