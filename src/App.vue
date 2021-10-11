@@ -64,14 +64,21 @@ export default {
     },
   },
   watch: {
-    $route: async function () {
-      if (this.$isLoggedIn) {
-        let user = await this.$getCurrentUser();
-        if (user) {
-          this.firstName = user.firstName;
-          this.lastName = user.lastName;
+    "$route.params.search": {
+      handler: async function () {
+        if (this.$isLoggedIn) {
+          let user = await this.$getCurrentUser();
+          if (user) {
+            this.firstName = user.firstName;
+            this.lastName = user.lastName;
+          }
+        } else {
+          this.firstName = "";
+          this.lastName = "";
         }
-      }
+      },
+      deep: true,
+      immediate: true,
     },
   },
 };

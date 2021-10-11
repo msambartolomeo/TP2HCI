@@ -49,7 +49,7 @@ export default {
       $login: "login",
     }),
     async login() {
-      const credentials = new Credentials("johndoe", "1234567890");
+      const credentials = new Credentials(this.email, this.password);
       await this.$login({ credentials });
       const redirectPath = this.$route.query.redirect || "/";
       await this.$router.push(redirectPath);
