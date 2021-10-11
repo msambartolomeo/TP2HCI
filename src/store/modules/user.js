@@ -26,45 +26,60 @@ export default {
   },
   actions: {
     initialize({ commit }) {
-      const token = localStorage.getItem("USER");
+      const token = localStorage.getItem("TOKEN");
       if (token) {
         commit("setToken", token);
         Api.token = token;
       }
+      const user = JSON.parse(localStorage.getItem("USER"));
+      if (user) {
+        commit("setUser", user);
+      }
     },
 
     updateToken({ commit }, { token }) {
-      localStorage.setItem("USER", token);
+      localStorage.setItem("TOKEN", token);
       commit("setToken", token);
       Api.token = token;
     },
 
+    updateUser({ commit }, user) {
+      localStorage.setItem("USER", JSON.stringify(user));
+      commit("setUser", user);
+    },
+
     removeToken({ commit }) {
-      localStorage.removeItem("USER");
+      localStorage.removeItem("TOKEN");
       commit("setToken", null);
       Api.token = null;
+    },
+
+    removeUser({ commit }) {
+      localStorage.removeItem("USER");
+      commit("setUser", null);
     },
 
     async login({ dispatch }, { credentials }) {
       const result = await UserApi.login(credentials);
       dispatch("updateToken", { token: result.token });
+      await dispatch("getCurrentUser");
     },
 
-    async logout({ dispatch, commit }) {
+    async logout({ dispatch }) {
       await UserApi.logout();
       dispatch("removeToken");
-      commit("setUser", null);
+      dispatch("removeUser");
     },
 
-    async getCurrentUser({ state, commit }) {
+    async getCurrentUser({ state, dispatch }) {
       if (state.user) return state.user;
       const result = await UserApi.get();
-      commit("setUser", result);
+      dispatch("updateUser", result);
     },
 
-    async addUser({ commit }, { user }) {
+    async addUser({ dispatch }, { user }) {
       const result = await UserApi.add(user);
-      commit("setUser", result);
+      dispatch("updateUser", result);
     },
 
     async verifyEmail({ state }, { code }) {
@@ -75,15 +90,15 @@ export default {
       await UserApi.resend_verify(state.user.email);
     },
 
-    async deleteCurrentUser({ dispatch, commit }) {
+    async deleteCurrentUser({ dispatch }) {
       await UserApi.delete();
       dispatch("removeToken");
-      commit("setUser", null);
+      dispatch("removeUser");
     },
 
-    async editCurrentUser({ commit }, { user }) {
+    async editCurrentUser({ dispatch }, { user }) {
       const result = UserApi.edit(user);
-      commit("setUser", result);
+      dispatch("updateUser", result);
     },
 
     async getCurrentRoutines({ commit }) {

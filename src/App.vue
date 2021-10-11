@@ -23,12 +23,12 @@
       <v-spacer></v-spacer>
 
       <v-btn text to="/perfil" class="mr-2">
-        <span class="hidden-sm-and-down mr-2">
-          {{ user_name + " " + user_surname }}
+        <span v-show="$isLoggedIn" class="hidden-sm-and-down mr-2">
+          {{ firstName + " " + lastName }}
         </span>
         <v-icon large>account_circle</v-icon>
       </v-btn>
-      <v-btn text @click="logout">
+      <v-btn v-show="$isLoggedIn" text @click="logout">
         <v-icon>logout</v-icon>
       </v-btn>
     </v-app-bar>
@@ -39,16 +39,39 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from "vuex";
 export default {
   name: "App",
-
-  data: () => ({
-    user_name: "Pepe",
-    user_surname: "Rodriguez",
-  }),
+  data() {
+    return {
+      firstName: "",
+      lastName: "",
+    };
+  },
+  computed: {
+    ...mapGetters("user", {
+      $isLoggedIn: "isLoggedIn",
+    }),
+  },
   methods: {
-    logout() {
-      this.$router.push("/login");
+    ...mapActions("user", {
+      $logout: "logout",
+      $getCurrentUser: "getCurrentUser",
+    }),
+    async logout() {
+      await this.$logout();
+      await this.$router.push("/login");
+    },
+  },
+  watch: {
+    $route: async function () {
+      if (this.$isLoggedIn) {
+        let user = await this.$getCurrentUser();
+        if (user) {
+          this.firstName = user.firstName;
+          this.lastName = user.lastName;
+        }
+      }
     },
   },
 };

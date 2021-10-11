@@ -1,6 +1,5 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Home from "../views/Home.vue";
 
 Vue.use(VueRouter);
 
@@ -8,7 +7,8 @@ const routes = [
   {
     path: "/",
     name: "Inicio",
-    component: Home,
+    component: () =>
+      import(/* webpackChunkName: "Inicio" */ "../views/Home.vue"),
     meta: { requiresAuth: true },
   },
   {
@@ -67,7 +67,7 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  const cachedToken = localStorage.getItem("USER");
+  const cachedToken = localStorage.getItem("TOKEN");
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     if (cachedToken) {
       next();
