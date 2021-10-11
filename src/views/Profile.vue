@@ -54,6 +54,14 @@
                 :fecha="birthdate"
                 @update="updateDate"
               />
+              <v-text-field
+                label="Link para foto de perfil"
+                outlined
+                v-model="avatarUrl"
+                :disabled="!editProfile"
+                hint="Puede utilizar una pagina como igmur para subir sus fotos"
+                @input="resetImg"
+              />
             </v-col>
           </v-row>
         </v-col>
@@ -62,10 +70,17 @@
             <v-col cols="8" class="mt-16">
               <v-card elevation="10">
                 <v-img
-                  :src="require('../assets/profile_logo.jpg')"
+                  alt="profile_logo"
+                  :lazy-src="require('../assets/profile_logo.jpg')"
+                  :src="
+                    this.imgError
+                      ? require('../assets/profile_logo.jpg')
+                      : this.avatarUrl
+                  "
+                  v-on:error="imgError = true"
                   contain
-                  max-height="640"
-                  max-width="480"
+                  height="500"
+                  width="400"
                   class="mx-auto"
                 />
               </v-card>
@@ -103,7 +118,7 @@
                 }}
                 <template v-slot:action="{ attrs }">
                   <v-btn
-                    color="blue"
+                    :color="error ? 'error' : 'primary'"
                     text
                     v-bind="attrs"
                     @click="snackbar = false"
@@ -144,6 +159,7 @@ export default {
       valid: true,
       snackbar: false,
       error: false,
+      imgError: false,
     };
   },
   methods: {
@@ -151,6 +167,9 @@ export default {
       $editCurrentUser: "editCurrentUser",
       $getCurrentUser: "getCurrentUser",
     }),
+    resetImg() {
+      this.imgError = false;
+    },
     updateDate(date) {
       this.birthdate = date;
     },
