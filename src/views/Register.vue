@@ -34,7 +34,7 @@
                 @update="updateDate"
               />
               <v-select
-                :items="['M', 'F']"
+                :items="['Masculino', 'Femenino', 'Otro']"
                 label="Genero"
                 outlined
                 append-icon="expand_more"

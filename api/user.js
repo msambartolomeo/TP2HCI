@@ -76,8 +76,20 @@ class NewUser {
     if (lastName) this.lastName = lastName;
     this.username = email;
     this.email = email;
-    if (birthdate) this.birthdate = birthdate;
-    if (gender) this.gender = gender;
+    if (birthdate) this.birthdate = new Date(birthdate).getTime();
+    if (gender) {
+      switch (gender) {
+        case "Masculino":
+          this.gender = "male";
+          break;
+        case "Femenino":
+          this.gender = "female";
+          break;
+        case "Otro":
+          this.gender = "other";
+          break;
+      }
+    }
     this.password = password;
   }
 }
@@ -86,8 +98,20 @@ class EditUser {
   constructor(firstName, lastName, gender, birthdate, avatarUrl) {
     if (firstName) this.firstName = firstName;
     if (lastName) this.lastName = lastName;
-    if (birthdate) this.birthdate = birthdate;
-    if (gender) this.gender = gender;
+    if (birthdate) this.birthdate = new Date(birthdate).getTime();
+    if (gender) {
+      switch (gender) {
+        case "Masculino":
+          this.gender = "male";
+          break;
+        case "Femenino":
+          this.gender = "female";
+          break;
+        case "Otro":
+          this.gender = "other";
+          break;
+      }
+    }
     if (avatarUrl) this.avatarUrl = avatarUrl;
   }
 }
