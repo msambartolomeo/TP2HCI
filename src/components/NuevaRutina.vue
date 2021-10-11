@@ -71,7 +71,11 @@
           </v-col>
           <v-col cols="6">
             <v-row justify="center">
-              <v-img :src="require('../assets/logo.svg')" contain max-width="400" max-height="400"></v-img>
+              <v-img
+                :src="require('../assets/logo.svg')"
+                contain
+                max-width="400"
+                max-height="400"></v-img>
             </v-row>
           </v-col>
         </v-row>
@@ -89,6 +93,7 @@
 import RatingDificultad from "@/components/RatingDificultad";
 import SalidaConfirmada from "@/components/SalidaConfirmada";
 import CicloEnRutina from "./CicloEnRutina";
+// import { Routine } from "../../api/routines"
 
 export default {
   name: "NuevaRutina",
@@ -122,7 +127,10 @@ export default {
     },
     updateRating(rating) {
       this.dificultad = rating;
-    }
+    },
+    // async createRoutine() {
+    //   const routine = new Routine(null, this.nombre, this.descripcion, false, this.dificultad, this.categoria)
+    // }
   },
 };
 </script>
