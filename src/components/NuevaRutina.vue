@@ -75,7 +75,8 @@
                 :src="require('../assets/logo.svg')"
                 contain
                 max-width="400"
-                max-height="400"></v-img>
+                max-height="400"
+              ></v-img>
             </v-row>
           </v-col>
         </v-row>
@@ -93,27 +94,32 @@
 import RatingDificultad from "@/components/RatingDificultad";
 import SalidaConfirmada from "@/components/SalidaConfirmada";
 import CicloEnRutina from "./CicloEnRutina";
-// import { Routine } from "../../api/routines"
+import { Routine } from "../../api/routines";
+import { mapActions } from 'vuex';
 
 export default {
   name: "NuevaRutina",
   components: { CicloEnRutina, SalidaConfirmada, RatingDificultad },
   data: () => ({
     dialog: false,
+    routine: null,
     nombre: null,
     descripcion: null,
     dificultad: null,
     valid: true,
     categoria: null,
-    categorias: [
-      "Categoria 1",
-      "Categoria 2",
-    ],
+    categorias: ["Categoria 1", "Categoria 2"],
     rules: {
       required: (value) => !!value || "Este item es obligatorio",
     },
   }),
   methods: {
+    ...mapActions("routines", {
+      $createRoutine: "create",
+      $modifyRoutine: "modify",
+      $get:"get",
+      $getRoutines:"getRoutines"
+    }),
     verifyData() {
       this.$refs.form.validate();
     },
@@ -128,9 +134,18 @@ export default {
     updateRating(rating) {
       this.dificultad = rating;
     },
-    // async createRoutine() {
-    //   const routine = new Routine(null, this.nombre, this.descripcion, false, this.dificultad, this.categoria)
-    // }
+    async createRoutine() {
+      const routine = new Routine(null, this.nombre, this.descripcion, false, this.dificultad, this.categoria)
+      try {
+        this.routine = await this.$createRoutine(routine)
+      }
+      catch (e) {
+        this.reportError()
+      }
+    },
+    reportError() {
+
+    }
   },
 };
 </script>

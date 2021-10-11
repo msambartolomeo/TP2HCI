@@ -26,14 +26,15 @@ class RoutineApi {
   static async delete(id, controller) {
     return await Api.delete(RoutineApi.getUrl(id), true, controller);
   }
+}
 
-  // export class Routine {
-  //   constructor(id, name, detail, isPublic, difficulty, category) {
-  //     if (id) this.id = id;
-  //     this.name = name;
-  //     this.detail = detail;
-  //     this.isPublic = isPublic;
-  //     this.difficulty = difficulty;
-  //     this.category = category;
-  //   }
+export class Routine {
+  constructor(id, name, detail, isPublic, difficulty, category) {
+    if (id) this.id = id;
+    this.name = name;
+    this.detail = detail;
+    this.isPublic = isPublic;
+    this.difficulty = difficulty;
+    this.category = category;
+  }
 }
