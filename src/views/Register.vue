@@ -28,11 +28,7 @@
                 :rules="[rules.required, rules.isEmail]"
                 required
               />
-              <BirthdatePicker
-                :fecha="birthdate"
-                :edit="true"
-                @update="updateDate"
-              />
+              <BirthdatePicker v-model="birthdate" />
               <v-select
                 :items="['Masculino', 'Femenino', 'Otro']"
                 label="Genero"
@@ -69,7 +65,7 @@
             <v-btn
               color="primary"
               class="mb-7"
-              @click="register()"
+              @click="register"
               block
               :disabled="!valid"
               >Crear cuenta</v-btn
@@ -107,9 +103,6 @@ export default {
     ...mapActions("user", {
       $addUser: "addUser",
     }),
-    updateDate(date) {
-      this.birthdate = date;
-    },
     async register() {
       if (this.$refs.form.validate()) {
         const newUser = new NewUser(

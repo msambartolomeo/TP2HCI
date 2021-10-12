@@ -49,11 +49,7 @@
                 v-model="gender"
                 :disabled="!editProfile"
               />
-              <BirthdatePicker
-                :edit="editProfile"
-                :fecha="birthdate"
-                @update="updateDate"
-              />
+              <BirthdatePicker :edit="editProfile" v-model="birthdate" />
               <v-text-field
                 label="Link para foto de perfil"
                 outlined
@@ -89,10 +85,9 @@
         </v-col>
         <v-col cols="12" md="6">
           <v-row justify="center">
-            <v-col cols="8" lg="4" align-self="center">
+            <v-col cols="8" lg="4" align-self="center" v-show="editProfile">
               <v-btn
                 color="error"
-                v-show="editProfile"
                 block
                 @click="resetProfile"
                 :disabled="savingChanges"
@@ -100,37 +95,77 @@
                 Cancelar
               </v-btn>
             </v-col>
-            <v-col cols="8" lg="4" align-self="center">
+            <v-col cols="8" lg="4" align-self="center" v-show="editProfile">
               <v-btn
                 color="primary"
-                v-show="editProfile"
                 block
                 @click="updateProfile"
                 :disabled="!valid || savingChanges"
               >
                 Guardar
               </v-btn>
-              <v-snackbar v-model="snackbar" timeout="2500">
-                {{
-                  error
-                    ? "Se ha producido un error, intente nuevamente"
-                    : "¡Los cambios se han guardado con exito!"
-                }}
-                <template v-slot:action="{ attrs }">
-                  <v-btn
-                    :color="error ? 'error' : 'primary'"
-                    text
-                    v-bind="attrs"
-                    @click="snackbar = false"
-                  >
-                    Cerrar
-                  </v-btn>
-                </template>
-              </v-snackbar>
+            </v-col>
+            <v-col cols="8" align-self="center" v-show="!editProfile">
+              <v-btn color="error" block @click="dialog = true">
+                Borrar Cuenta
+              </v-btn>
+              <template>
+                <v-dialog v-model="dialog" persistent max-width="400">
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn dark v-bind="attrs" v-on="on" icon>
+                      <v-icon>close</v-icon>
+                    </v-btn>
+                  </template>
+                  <v-card>
+                    <v-card-title class="text-h5">
+                      ¿Está seguro que quiere eliminar la cuenta?
+                    </v-card-title>
+                    <v-card-text>
+                      Esta es una acción que no se puede deshacer
+                    </v-card-text>
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn
+                        color="error"
+                        text
+                        @click="deleteAccount"
+                        :disabled="savingChanges"
+                      >
+                        Borrar
+                      </v-btn>
+                      <v-btn
+                        color="primary"
+                        text
+                        @click="dialog = false"
+                        :disabled="savingChanges"
+                      >
+                        Cancelar
+                      </v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
+              </template>
             </v-col>
           </v-row>
         </v-col>
       </v-row>
+      <v-snackbar v-model="snackbar" timeout="2500">
+        {{
+          error
+            ? "Se ha producido un error, intente nuevamente"
+            : "¡Los cambios se han guardado con exito!"
+        }}
+        <template v-slot:action="{ attrs }">
+          <v-btn
+            :color="error ? 'error' : 'primary'"
+            text
+            v-bind="attrs"
+            @click="snackbar = false"
+          >
+            Cerrar
+          </v-btn>
+        </template>
+      </v-snackbar>
     </v-container>
   </v-form>
 </template>
@@ -158,6 +193,7 @@ export default {
       rules: rules.rules,
       valid: true,
       snackbar: false,
+      dialog: false,
       error: false,
       imgError: false,
     };
@@ -166,12 +202,10 @@ export default {
     ...mapActions("user", {
       $editCurrentUser: "editCurrentUser",
       $getCurrentUser: "getCurrentUser",
+      $deleteCurrentUser: "deleteCurrentUser",
     }),
     resetImg() {
       this.imgError = false;
-    },
-    updateDate(date) {
-      this.birthdate = date;
     },
     async resetProfile() {
       this.showPass = false;
@@ -230,6 +264,20 @@ export default {
           this.snackbar = true;
           this.savingChanges = false;
         }
+      }
+    },
+    async deleteAccount() {
+      this.savingChanges = true;
+      this.showPass = false;
+      try {
+        await this.$deleteCurrentUser();
+        await this.$router.push("/login");
+      } catch (e) {
+        this.error = true;
+      } finally {
+        this.editProfile = false;
+        this.snackbar = true;
+        this.savingChanges = false;
       }
     },
   },
