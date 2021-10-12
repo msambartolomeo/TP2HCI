@@ -37,7 +37,7 @@
     </v-card-text>
     <v-card-actions>
       <v-spacer></v-spacer>
-      <v-btn color="teal accent-4" text @click="changeDrawerState">
+      <v-btn color="teal accent-4" text @click="$emit('click')">
         Detalles
       </v-btn>
     </v-card-actions>
@@ -45,8 +45,6 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
-
 export default {
   name: "Routine",
   props: {
@@ -54,10 +52,6 @@ export default {
     score: Number,
     difficulty: Number,
     img: String,
-  },
-
-  methods: {
-    ...mapActions("RoutineDrawer", ["changeDrawerState"]),
   },
 };
 </script>

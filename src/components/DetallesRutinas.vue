@@ -10,7 +10,7 @@
           fab
           small
           color="primary"
-          @click="drawerClose()"
+          @click="$emit('click')"
         >
           <v-icon dark> mdi-close </v-icon>
         </v-btn>
@@ -18,14 +18,16 @@
       <v-row justify="center" class="mt-2" dense>
         <h2>Detalle del Ejercicio</h2>
       </v-row>
+
       <v-row><v-divider></v-divider></v-row>
+
       <v-row justify="center" class="mb-4">
-        <v-col cols="5" class="mt-4">
+        <v-col class="mt-4" cols="5">
           <v-row align="center" justify="star">
-            <div>Creador: juancito</div>
+            <h5>Creador: juancito</h5>
           </v-row>
-          <v-row align="center">
-            <div>Dificultad:</div>
+          <v-row align="center" justify="star">
+            <h5>Dificultad:</h5>
             <v-rating
               color="red"
               background-color="grey"
@@ -38,8 +40,8 @@
               value="2"
             ></v-rating>
           </v-row>
-          <v-row>
-            <div>Puntuacion:</div>
+          <v-row align="center" justify="star">
+            <h5>Puntuacion:</h5>
             <v-rating
               color="yellow darken-2"
               background-color="grey"
@@ -47,27 +49,40 @@
               full-icon="star"
               half-icon="star_half"
               half-increments
-              dense
               length="5"
               readonly
-              size="18"
+              dense
+              size="15"
               value="4"
             ></v-rating>
           </v-row>
         </v-col>
-        <v-col cols="5" align-self="end">
-          <v-row justify="end">
-            <div>Fecha de creacion: 1/9/21</div>
+        <v-col class="mt-4 mb-2" cols="5">
+          <v-row align="center" justify="end">
+            <h5>Fecha de creacion: 1/9/21</h5>
           </v-row>
-          <v-row justify="end">
-            <div>Duracion estimada: 30min</div>
+          <v-row align="center" justify="end">
+            <h5>Duracion estimada: 30min</h5>
           </v-row>
-          <v-row justify="end">
-            <div>Equipamiento: NO</div>
+          <v-row align="center" justify="end">
+            <h5>Equipamiento: NO</h5>
           </v-row>
         </v-col>
       </v-row>
-      <v-row class="m-4"><v-divider></v-divider></v-row>
+
+      <v-row><v-divider></v-divider></v-row>
+
+      <v-row>
+        <v-col>
+          <v-btn block color="primary" text elevation="1"> Editar</v-btn>
+        </v-col>
+        <v-col>
+          <v-btn block color="error" text elevation="1"> Eliminar </v-btn>
+        </v-col>
+      </v-row>
+
+      <v-row><v-divider></v-divider></v-row>
+
       <v-row justify="center">
         <v-col cols="10">
           <h4>Descripcion</h4>
@@ -84,14 +99,8 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
-
 export default {
   name: "DetallesRutinas",
-
-  methods: {
-    ...mapActions("RoutineDrawer", ["drawerClose"]),
-  },
 };
 </script>
 
