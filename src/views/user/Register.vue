@@ -52,13 +52,13 @@
 
 <script>
 import { mapActions } from "vuex";
-import BirthdatePicker from "../components/user/BirthdatePicker";
-import rules from "../jsmodules/rules";
-import { NewUser } from "../../api/user";
-import PasswordField from "../components/user/PasswordField";
-import GenderSelect from "../components/user/GenderSelect";
-import InputField from "../components/user/InputField";
-import TextLink from "../components/user/TextLink";
+import BirthdatePicker from "../../components/user/BirthdatePicker";
+import rules from "../../jsmodules/rules";
+import { NewUser } from "../../../api/user";
+import PasswordField from "../../components/user/PasswordField";
+import GenderSelect from "../../components/user/GenderSelect";
+import InputField from "../../components/user/InputField";
+import TextLink from "../../components/user/TextLink";
 export default {
   name: "Register",
   components: {

@@ -8,7 +8,8 @@
               <h1 class="mt-10 text-center text-sm-h1 text-h2">WorkLn</h1>
               <v-img
                 alt="profile_logo"
-                :src="require('../assets/profile_logo.jpg')"
+                :lazy-src="require('../../assets/profile_logo.jpg')"
+                :src="require('../../assets/profile_logo.jpg')"
               />
               <h1 class="text-center text-sm-h5 text-h6">
                 Por favor inserte el codigo de verificacion que fue enviado a su
@@ -38,9 +39,9 @@
 
 <script>
 import { mapActions } from "vuex";
-import rules from "../jsmodules/rules";
-import InputField from "../components/user/InputField";
-import TextLink from "../components/user/TextLink";
+import rules from "../../jsmodules/rules";
+import InputField from "../../components/user/InputField";
+import TextLink from "../../components/user/TextLink";
 export default {
   name: "EmailVerification",
   components: { TextLink, InputField },

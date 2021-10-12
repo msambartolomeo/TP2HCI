@@ -7,7 +7,8 @@
             <h1 class="mt-10 text-center text-sm-h1 text-h2">WorkLn</h1>
             <v-img
               alt="profile_logo"
-              :src="require('../assets/profile_logo.jpg')"
+              :lazy-src="require('../../assets/profile_logo.jpg')"
+              :src="require('../../assets/profile_logo.jpg')"
             />
             <InputField label="Email" v-model="email" />
             <PasswordField v-model="password" />
@@ -24,10 +25,10 @@
 
 <script>
 import { mapActions } from "vuex";
-import { Credentials } from "../../api/user";
-import InputField from "../components/user/InputField";
-import PasswordField from "../components/user/PasswordField";
-import TextLink from "../components/user/TextLink";
+import { Credentials } from "../../../api/user";
+import InputField from "../../components/user/InputField";
+import PasswordField from "../../components/user/PasswordField";
+import TextLink from "../../components/user/TextLink";
 export default {
   name: "Login",
   components: { TextLink, PasswordField, InputField },

@@ -15,7 +15,7 @@ const routes = [
     path: "/perfil",
     name: "Perfil",
     component: () =>
-      import(/* webpackChunkName: "Profile" */ "../views/Profile"),
+      import(/* webpackChunkName: "Profile" */ "../views/user/Profile"),
     meta: { requiresAuth: true },
   },
   {
@@ -36,14 +36,14 @@ const routes = [
     path: "/login",
     name: "Login",
     component: () =>
-      import(/* webpackChunkName: "login" */ "../views/Login.vue"),
+      import(/* webpackChunkName: "login" */ "../views/user/Login.vue"),
     meta: { forVisitors: true },
   },
   {
     path: "/register",
     name: "Register",
     component: () =>
-      import(/* webpackChunkName: "register" */ "../views/Register.vue"),
+      import(/* webpackChunkName: "register" */ "../views/user/Register.vue"),
     meta: { forVisitors: true },
   },
   {
@@ -51,7 +51,7 @@ const routes = [
     name: "EmailVerification",
     component: () =>
       import(
-        /* webpackChunkName: "EmailVerification" */ "../views/EmailVerification.vue"
+        /* webpackChunkName: "EmailVerification" */ "../views/user/EmailVerification.vue"
       ),
     meta: { forVisitors: true },
   },

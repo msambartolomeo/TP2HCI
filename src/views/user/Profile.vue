@@ -57,10 +57,10 @@
               <v-card elevation="10">
                 <v-img
                   alt="profile_logo"
-                  :lazy-src="require('../assets/profile_logo.jpg')"
+                  :lazy-src="require('../../assets/profile_logo.jpg')"
                   :src="
                     this.imgError
-                      ? require('../assets/profile_logo.jpg')
+                      ? require('../../assets/profile_logo.jpg')
                       : this.avatarUrl
                   "
                   v-on:error="imgError = true"
@@ -157,11 +157,11 @@
 
 <script>
 import { mapActions } from "vuex";
-import BirthdatePicker from "../components/user/BirthdatePicker";
-import rules from "../jsmodules/rules";
-import { EditUser } from "../../api/user";
-import GenderSelect from "../components/user/GenderSelect";
-import InputField from "../components/user/InputField";
+import BirthdatePicker from "../../components/user/BirthdatePicker";
+import rules from "../../jsmodules/rules";
+import { EditUser } from "../../../api/user";
+import GenderSelect from "../../components/user/GenderSelect";
+import InputField from "../../components/user/InputField";
 export default {
   name: "Profile",
   components: {
