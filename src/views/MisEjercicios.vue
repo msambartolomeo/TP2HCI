@@ -24,8 +24,8 @@
 <script>
 import Exercise from "@/components/Exercise";
 import NuevoEjercicio from "@/components/NuevoEjercicio";
-import { mapActions } from "vuex";
-import exercises from "../store/modules/exercise";
+import { mapActions, mapState } from "vuex";
+//import exercises from "../store/modules/exercise";
 
 export default {
   name: "MisEjercicios",
@@ -35,23 +35,18 @@ export default {
     NuevoEjercicio,
   },
 
-  data: () => ({
-    exercises,
-  }),
-
   methods: {
     ...mapActions("exercise", ["getExercises"]),
+  },
 
-    updateExercises() {
-      this.getExercises();
-      this.exercises = this.$store.state["exercise/exercises"];
-    },
+  computed: {
+    ...mapState("exercise", {
+      exercises: (state) => state.exercises,
+    }),
   },
 
   beforeUpdate() {
-    this.updateExercises();
+    this.getExercises();
   },
-
-
 };
 </script>

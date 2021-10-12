@@ -3,7 +3,7 @@ import { ExerciseApi } from "../../../api/exercise";
 export default {
   namespaced: true,
   state: {
-    exercises: [],
+    exercises: undefined,
   },
 
   getters: {

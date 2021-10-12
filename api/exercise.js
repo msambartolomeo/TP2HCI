@@ -8,7 +8,7 @@ class ExerciseApi {
   }
 
   static async getExercises(controller) {
-    return await Api.get(`${ExerciseApi.url}?page=0&size=10&orderBy=id&direction=asc`, true, controller);
+    return await Api.get(`${ExerciseApi.url}?size=30`, true, controller);
   }
 
   static async getExerciseById(id, controller) {
