@@ -25,7 +25,12 @@
         <v-text-field outlined label="Series" v-model="ej.series" />
       </v-col>
       <v-col cols="2">
-        <v-text-field outlined label="Tiempo" suffix="segundos" v-model="ej.tiempo" />
+        <v-text-field
+          outlined
+          label="Tiempo"
+          suffix="segundos"
+          v-model="ej.tiempo"
+        />
       </v-col>
       <v-col>
         <v-btn icon color="red" class="mt-3" @click="removeEj(ej)">
@@ -46,16 +51,16 @@
 export default {
   name: "CicloEnRutina",
   data: () => ({
-    id: 0,
-    agregados: [],
-    ejerciciosDisponibles: [
-      "Sentadilla",
-      "Abdominales",
-  ],
+    id: 1,
+    agregados: [{ id: 1, ejercicio: null, series: null, tiempo: null }],
+    ejerciciosDisponibles: ["Sentadilla","Abdominales"],
   }),
+  props: {
+    isMiddle: Boolean,
+  },
   methods: {
     agregaEjercicio() {
-      this.agregados.push({id: this.id, series:null, tiempo:null });
+      this.agregados.push({ id: this.id, ejercicio: null, series:null, tiempo:null });
       this.id++;
     },
     removeEj(ej) {

@@ -54,7 +54,7 @@
                   />
                 </v-col>
                 <v-col cols="6">
-                  <h5 class="text--black text-h5">Dificultad</h5>
+                  <h5 class="text-h5 mt-2">Dificultad</h5>
                 </v-col>
                 <v-col cols="6">
                   <v-input v-model="dificultad" :rules="[rules.required]">
@@ -65,6 +65,12 @@
                       @notifyRating="updateRating"
                     />
                   </v-input>
+                </v-col>
+                <v-col cols="6">
+                  <h5 class="text-h5 mt-3">Compartir rutina</h5>
+                </v-col>
+                <v-col cols="6">
+                  <v-switch v-model="isPublic" />
                 </v-col>
               </v-row>
             </v-form>
@@ -93,9 +99,10 @@
 <script>
 import RatingDificultad from "@/components/RatingDificultad";
 import SalidaConfirmada from "@/components/SalidaConfirmada";
+import rules from "../jsmodules/rules";
 import CicloEnRutina from "./CicloEnRutina";
 import { Routine } from "../../api/routines";
-import { mapActions } from 'vuex';
+import { mapActions } from "vuex";
 
 export default {
   name: "NuevaRutina",
@@ -107,18 +114,17 @@ export default {
     descripcion: null,
     dificultad: null,
     valid: true,
+    rules: rules.rules,
     categoria: null,
     categorias: ["Categoria 1", "Categoria 2"],
-    rules: {
-      required: (value) => !!value || "Este item es obligatorio",
-    },
+    isPublic: false,
   }),
   methods: {
     ...mapActions("routines", {
       $createRoutine: "create",
       $modifyRoutine: "modify",
-      $get:"get",
-      $getRoutines:"getRoutines"
+      $get: "get",
+      $getRoutines: "getRoutines",
     }),
     verifyData() {
       this.$refs.form.validate();
@@ -135,12 +141,18 @@ export default {
       this.dificultad = rating;
     },
     async createRoutine() {
-      const routine = new Routine(null, this.nombre, this.descripcion, false, this.dificultad, this.categoria)
+      const routine = new Routine(
+        null,
+        this.nombre,
+        this.descripcion,
+        false,
+        this.dificultad,
+        this.categoria
+      );
       try {
-        this.routine = await this.$createRoutine(routine)
-      }
-      catch (e) {
-        this.reportError()
+        this.routine = await this.$createRoutine(routine);
+      } catch (e) {
+        this.reportError();
       }
     },
     reportError() {

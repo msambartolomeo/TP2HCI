@@ -34,7 +34,17 @@ export class Routine {
     this.name = name;
     this.detail = detail;
     this.isPublic = isPublic;
-    this.difficulty = difficulty;
+    switch (difficulty) {
+      case 1:
+        this.difficulty = "rookie";
+        break;
+      case 2:
+        this.difficulty = "intermediate";
+        break;
+      case 3:
+        this.difficulty = "expert";
+        break;
+    }
     this.category = category;
   }
 }
