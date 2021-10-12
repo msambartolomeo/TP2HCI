@@ -37,8 +37,8 @@
     </v-card-text>
     <v-card-actions>
       <v-spacer></v-spacer>
-      <v-btn color="teal accent-4" text @click="changeDrawerState()">
-        > Detalles
+      <v-btn color="teal accent-4" text @click="changeDrawerState">
+        Detalles
       </v-btn>
     </v-card-actions>
   </v-card>

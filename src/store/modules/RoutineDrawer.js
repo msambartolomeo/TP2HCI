@@ -14,17 +14,24 @@ export default {
       state.var1 = 12;
       state.var2 = 0;
     },
+    changerDrawerState(state) {
+      state.drawerState = !state.drawerState;
+    },
   },
   actions: {
     changeDrawerState({ state, commit }) {
       if (state.drawerState) {
-        commit("open");
-      } else {
         commit("close");
+      } else {
+        commit("open");
       }
+      commit("changerDrawerState");
     },
-    drawerClose({ commit }) {
-      commit("close");
+    drawerClose({ state, commit }) {
+      if (state.drawerState) {
+        commit("close");
+        commit("changerDrawerState");
+      }
     },
   },
 };

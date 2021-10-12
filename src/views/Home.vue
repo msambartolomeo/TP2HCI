@@ -1,7 +1,7 @@
 <template>
   <v-container fluid>
     <v-row>
-      <v-col :cols="this.$state.store.var1">
+      <v-col :cols="$col1">
         <v-row justify="center">
           <v-col sm="8" cols="12" md="6">
             <v-text-field solo label="Buscar" prepend-inner-icon="search" />
@@ -20,7 +20,7 @@
           </v-col>
         </v-row>
       </v-col>
-      <v-col :cols="this.$state.store.var2">
+      <v-col :cols="$col2" v-show="$drawerState">
         <v-card>
           <DetallesRutinas />
         </v-card>
@@ -31,13 +31,14 @@
 
 <script>
 import Routine from "@/components/Routine";
-import DetallesRutinas from "@/components/DetallesRutinas";
+import { mapState } from "vuex";
+import DetallesRutinas from "../components/DetallesRutinas";
 
 export default {
   name: "Inicio",
   components: {
-    Routine,
     DetallesRutinas,
+    Routine,
   },
   data: () => ({
     routines: [
@@ -52,6 +53,11 @@ export default {
       { tile: "Rutina I", diffi: 1, score: 4 },
       { tile: "Rutina J", diffi: 2, score: 3 },
     ],
+  }),
+  computed: mapState("RoutineDrawer", {
+    $col1: "var1",
+    $col2: "var2",
+    $drawerState: "drawerState",
   }),
 };
 </script>
