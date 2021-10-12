@@ -1,7 +1,7 @@
 <template>
   <v-dialog
     max-width="800px"
-    v-model="dialog"
+    v-model="dialogState"
     persistent
     transition="dialog-bottom-transition"
   >
@@ -21,7 +21,6 @@
                   outlined
                   label="Nombre"
                   v-model="nombre"
-                  :rules="[rules.required]"
                 ></v-text-field>
               </v-col>
               <v-col cols="12">
@@ -30,7 +29,6 @@
                   outlined
                   label="Descripción"
                   v-model="descripcion"
-                  rules="[rules.required]"
                 ></v-textarea>
               </v-col>
             </v-row>
@@ -41,8 +39,8 @@
         </v-row>
       </v-card-text>
       <v-card-actions>
-        <v-btn color="red darken-1" text @click="dialog = false">Close</v-btn>
-        <v-btn color="blue darken-1" text @click="dialog = false">Save</v-btn>
+        <v-btn color="red darken-1" text @click="closeDialog">Close</v-btn>
+        <v-btn color="blue darken-1" text @click="createExercise">Save</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -50,41 +48,49 @@
 
 <script>
 import { mapActions } from "vuex";
-import { exercises } from "../../api/exercise";
+import { Exercise } from "../../api/exercise";
 
 export default {
   name: "NuevoEjercicio",
+
   data: () => ({
-    dialog: false,
+    dialogState: false,
     nombre: null,
     descripcion: null,
-    exercise: null,
+    exerciseType: "exercise",
   }),
 
   methods: {
-    ...mapActions("exercise", {
-      $createExercise: "create",
-      $modifyExercise: "modify",
-      $get: "get",
-      $getExercise: "getRoutines",
-    }),
-  },
+    ...mapActions("exercise", ["create"]),
 
-  reset() {
-    this.nombre = null;
-    this.descripcion = null;
-    this.dialog = false;
-  },
+    async createExercise() {
+      if (this.nombre.isEmpty) {
+        //mostrar error
+        return;
+      }
+      if (this.descripcion.isEmpty) {
+        //mostrar error
+        return;
+      }
+      const newExercise = new Exercise(
+        null,
+        this.nombre,
+        this.descripcion,
+        this.exerciseType
+      );
+      try {
+        await this.create(newExercise);
+      } catch (e) {
+        //mostrar error
+      }
+      this.closeDialog();
+    },
 
-  async createExercise() {
-    const exercise = new exercises(null, this.nombre, this.descripcion);
-    try {
-      this.exercise = await this.$createExercise(exercise);
-    } catch (e) {
-      this.reportError();
-    }
+    closeDialog() {
+      this.nombre = null;
+      this.descripcion = null;
+      this.dialogState = false;
+    },
   },
-
-  reportError() {},
 };
 </script>

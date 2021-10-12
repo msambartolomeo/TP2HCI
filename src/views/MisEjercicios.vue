@@ -9,8 +9,13 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col v-for="exercise in exercises" :key="exercise.title" md="3" xl="2">
-        <Exercise :title="exercise.title" />
+      <v-col v-for="exercise in exercises" :key="exercise.id" md="3" xl="2">
+        <Exercise
+          :id="exercise.id"
+          :title="exercise.name"
+          :description="exercise.detail"
+          :type="exercise.type"
+        />
       </v-col>
     </v-row>
   </v-container>
@@ -19,26 +24,34 @@
 <script>
 import Exercise from "@/components/Exercise";
 import NuevoEjercicio from "@/components/NuevoEjercicio";
+import { mapActions } from "vuex";
+import exercises from "../store/modules/exercise";
 
 export default {
   name: "MisEjercicios",
+
   components: {
     Exercise,
     NuevoEjercicio,
   },
+
   data: () => ({
-    exercises: [
-      { title: "Ejercicio A" },
-      { title: "Ejercicio B" },
-      { title: "Ejercicio C" },
-      { title: "Ejercicio D" },
-      { title: "Ejercicio E" },
-      { title: "Ejercicio F" },
-      { title: "Ejercicio G" },
-      { title: "Ejercicio H" },
-      { title: "Ejercicio I" },
-      { title: "Ejercicio J" },
-    ],
+    exercises,
   }),
+
+  methods: {
+    ...mapActions("exercise", ["getExercises"]),
+
+    updateExercises() {
+      this.getExercises();
+      this.exercises = this.$store.state["exercise/exercises"];
+    },
+  },
+
+  beforeUpdate() {
+    this.updateExercises();
+  },
+
+
 };
 </script>

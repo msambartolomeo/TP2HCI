@@ -18,7 +18,7 @@ export default {
     id: Number,
     title: String,
     description: String,
-    img: String,
+    type: String,
   },
 };
 </script>
