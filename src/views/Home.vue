@@ -1,20 +1,29 @@
 <template>
   <v-container fluid>
-    <v-row justify="center">
-      <v-col sm="8" cols="12" md="6">
-        <v-text-field solo label="Buscar" prepend-inner-icon="search" />
-      </v-col>
-      <v-col sm="4" md="2" cols="12" class="pt-md-4">
-        <v-btn block color="primary">Ordenar</v-btn>
-      </v-col>
-    </v-row>
     <v-row>
-      <v-col v-for="routine in routines" :key="routine.title" md="3" xl="2">
-        <Routine
-          :title="routine.title"
-          :difficulty="routine.diffi"
-          :score="routine.score"
-        />
+      <v-col :cols="this.$state.store.var1">
+        <v-row justify="center">
+          <v-col sm="8" cols="12" md="6">
+            <v-text-field solo label="Buscar" prepend-inner-icon="search" />
+          </v-col>
+          <v-col sm="4" md="2" cols="12" class="pt-md-4">
+            <v-btn block color="primary"> Orden </v-btn>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col v-for="routine in routines" :key="routine.title" md="3" xl="2">
+            <Routine
+              :title="routine.title"
+              :difficulty="routine.diffi"
+              :score="routine.score"
+            />
+          </v-col>
+        </v-row>
+      </v-col>
+      <v-col :cols="this.$state.store.var2">
+        <v-card>
+          <DetallesRutinas />
+        </v-card>
       </v-col>
     </v-row>
   </v-container>
@@ -22,14 +31,17 @@
 
 <script>
 import Routine from "@/components/Routine";
+import DetallesRutinas from "@/components/DetallesRutinas";
+
 export default {
   name: "Inicio",
   components: {
     Routine,
+    DetallesRutinas,
   },
   data: () => ({
     routines: [
-      { tile: "Rutina A", diffi: 1, score: 3.5 },
+      { tile: "Rutina A", diffi: 1, score: 3 },
       { tile: "Rutina B", diffi: 1, score: 3 },
       { tile: "Rutina C", diffi: 3, score: 3 },
       { tile: "Rutina D", diffi: 2, score: 3 },
