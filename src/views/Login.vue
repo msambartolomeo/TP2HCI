@@ -8,23 +8,13 @@
             <v-img
               alt="profile_logo"
               :src="require('../assets/profile_logo.jpg')"
-            ></v-img>
-            <v-text-field label="Email" outlined v-model="email"></v-text-field>
-            <v-text-field
-              v-model="password"
-              :append-icon="showPass ? 'visibility' : 'visibility_off'"
-              :type="showPass ? 'text' : 'password'"
-              label="Password"
-              @click:append="showPass = !showPass"
-              outlined
-            ></v-text-field>
+            />
+            <InputField label="Email" v-model="email" />
+            <PasswordField v-model="password" />
             <v-btn color="primary" @click="login()" block>Login</v-btn>
-            <p
-              @click="register()"
-              class="mt-6 text-center link font-weight-bold color"
-            >
+            <TextLink @click="register">
               ¿No tienes una cuenta? ¡Registrate!
-            </p>
+            </TextLink>
           </v-col>
         </v-row>
       </v-card>
@@ -35,8 +25,12 @@
 <script>
 import { mapActions } from "vuex";
 import { Credentials } from "../../api/user";
+import InputField from "../components/user/InputField";
+import PasswordField from "../components/user/PasswordField";
+import TextLink from "../components/user/TextLink";
 export default {
   name: "Login",
+  components: { TextLink, PasswordField, InputField },
   data() {
     return {
       email: null,
@@ -60,13 +54,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.link {
-  color: #2c3e50;
-}
-.link:hover {
-  text-decoration: underline;
-  cursor: pointer;
-}
-</style>

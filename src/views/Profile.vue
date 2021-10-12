@@ -26,33 +26,23 @@
               </v-btn>
             </v-col>
             <v-col cols="8">
-              <v-text-field label="Email" outlined v-model="email" disabled />
-              <v-text-field
+              <InputField label="Email" v-model="email" disabled />
+              <InputField
                 label="Nombre"
-                outlined
                 v-model="firstName"
                 :disabled="!editProfile"
                 :rules="[rules.required]"
               />
-              <v-text-field
+              <InputField
                 label="Apellido"
-                outlined
                 v-model="lastName"
                 :disabled="!editProfile"
                 :rules="[rules.required]"
               />
-              <v-select
-                :items="['Masculino', 'Femenino', 'Otro']"
-                label="Genero"
-                outlined
-                append-icon="expand_more"
-                v-model="gender"
-                :disabled="!editProfile"
-              />
+              <GenderSelect v-model="gender" :disabled="!editProfile" />
               <BirthdatePicker :edit="editProfile" v-model="birthdate" />
-              <v-text-field
+              <InputField
                 label="Link para foto de perfil"
-                outlined
                 v-model="avatarUrl"
                 :disabled="!editProfile"
                 hint="Puede utilizar una pagina como igmur para subir sus fotos"
@@ -111,11 +101,6 @@
               </v-btn>
               <template>
                 <v-dialog v-model="dialog" persistent max-width="400">
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-btn dark v-bind="attrs" v-on="on" icon>
-                      <v-icon>close</v-icon>
-                    </v-btn>
-                  </template>
                   <v-card>
                     <v-card-title class="text-h5">
                       ¿Está seguro que quiere eliminar la cuenta?
@@ -172,12 +157,16 @@
 
 <script>
 import { mapActions } from "vuex";
-import BirthdatePicker from "../components/BirthdatePicker";
+import BirthdatePicker from "../components/user/BirthdatePicker";
 import rules from "../jsmodules/rules";
 import { EditUser } from "../../api/user";
+import GenderSelect from "../components/user/GenderSelect";
+import InputField from "../components/user/InputField";
 export default {
   name: "Profile",
   components: {
+    InputField,
+    GenderSelect,
     BirthdatePicker,
   },
   data() {
@@ -242,6 +231,7 @@ export default {
       this.avatarUrl = user.avatarUrl;
       this.editProfile = false;
       this.savingChanges = false;
+      this.imgError = false;
     },
     async updateProfile() {
       this.savingChanges = true;

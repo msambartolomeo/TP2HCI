@@ -112,6 +112,6 @@ class EditUser {
           break;
       }
     }
-    if (avatarUrl) this.avatarUrl = avatarUrl;
+    this.avatarUrl = avatarUrl;
   }
 }

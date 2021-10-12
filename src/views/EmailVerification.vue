@@ -14,9 +14,8 @@
                 Por favor inserte el codigo de verificacion que fue enviado a su
                 correo
               </h1>
-              <v-text-field
+              <InputField
                 label="Código"
-                outlined
                 v-model="code"
                 :rules="[
                   rules.required,
@@ -26,12 +25,9 @@
               <v-btn color="primary" @click="verify" block :disabled="!valid">
                 Verificar
               </v-btn>
-              <p
-                @click="resendVerification"
-                class="mt-6 text-center link font-weight-bold color"
-              >
+              <TextLink @click="resendVerification">
                 ¿No recibió el codigo? Haga click aqui para enviarlo nuevamente
-              </p>
+              </TextLink>
             </v-form>
           </v-col>
         </v-row>
@@ -43,8 +39,11 @@
 <script>
 import { mapActions } from "vuex";
 import rules from "../jsmodules/rules";
+import InputField from "../components/user/InputField";
+import TextLink from "../components/user/TextLink";
 export default {
   name: "EmailVerification",
+  components: { TextLink, InputField },
   data() {
     return {
       code: null,

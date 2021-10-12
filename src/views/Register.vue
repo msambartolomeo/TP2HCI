@@ -7,69 +7,42 @@
             <h1 class="mt-10 text-center text-sm-h1 text-h2">WorkLn</h1>
             <h1 class="ma-10 text-center text-sm-h4 text-h5">Crear cuenta</h1>
             <v-form ref="form" v-model="valid" lazy-validation>
-              <v-text-field
+              <InputField
                 label="Nombre"
-                outlined
                 v-model="firstName"
                 :rules="[rules.required]"
-                required
               />
-              <v-text-field
+              <InputField
                 label="Apellido"
-                outlined
                 v-model="lastName"
                 :rules="[rules.required]"
-                required
               />
-              <v-text-field
+              <InputField
                 label="Email"
-                outlined
                 v-model="email"
                 :rules="[rules.required, rules.isEmail]"
-                required
               />
               <BirthdatePicker v-model="birthdate" />
-              <v-select
-                :items="['Masculino', 'Femenino', 'Otro']"
-                label="Genero"
-                outlined
-                append-icon="expand_more"
-                v-model="gender"
-              />
-              <v-text-field
+              <GenderSelect v-model="gender" />
+              <PasswordField
                 v-model="password"
-                :append-icon="showPass ? 'visibility' : 'visibility_off'"
-                :type="showPass ? 'text' : 'password'"
-                label="Contraseña"
                 hint="Por lo menos 8 caracteres"
-                counter
-                @click:append="showPass = !showPass"
-                outlined
                 :rules="[rules.required, rules.isValidPassword]"
-                required
               />
-              <v-text-field
-                :append-icon="showRPass ? 'visibility' : 'visibility_off'"
-                :type="showRPass ? 'text' : 'password'"
+              <PasswordField
                 label="Repita la contraseña"
-                counter
-                @click:append="showRPass = !showRPass"
-                outlined
                 :rules="[
                   rules.required,
                   (v) => v === password || 'Las contraseñas no coinciden',
                 ]"
-                required
               />
             </v-form>
-            <v-btn
-              color="primary"
-              class="mb-7"
-              @click="register"
-              block
-              :disabled="!valid"
-              >Crear cuenta</v-btn
-            >
+            <v-btn color="primary" @click="register" block :disabled="!valid">
+              Crear cuenta
+            </v-btn>
+            <TextLink @click="login">
+              ¿Ya tiene una cuenta? Haga click aqui iniciar sesión
+            </TextLink>
           </v-col>
         </v-row>
       </v-card>
@@ -79,12 +52,22 @@
 
 <script>
 import { mapActions } from "vuex";
-import BirthdatePicker from "../components/BirthdatePicker";
+import BirthdatePicker from "../components/user/BirthdatePicker";
 import rules from "../jsmodules/rules";
 import { NewUser } from "../../api/user";
+import PasswordField from "../components/user/PasswordField";
+import GenderSelect from "../components/user/GenderSelect";
+import InputField from "../components/user/InputField";
+import TextLink from "../components/user/TextLink";
 export default {
   name: "Register",
-  components: { BirthdatePicker },
+  components: {
+    TextLink,
+    InputField,
+    GenderSelect,
+    PasswordField,
+    BirthdatePicker,
+  },
   data() {
     return {
       showPass: false,
@@ -116,6 +99,9 @@ export default {
         await this.$addUser({ newUser });
         await this.$router.push("/email_verification");
       }
+    },
+    login() {
+      this.$router.push("/login");
     },
   },
 };
