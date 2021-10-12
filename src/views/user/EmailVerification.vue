@@ -8,7 +8,6 @@
               <h1 class="mt-10 text-center text-sm-h1 text-h2">WorkLn</h1>
               <v-img
                 alt="profile_logo"
-                :lazy-src="require('../../assets/profile_logo.jpg')"
                 :src="require('../../assets/profile_logo.jpg')"
               />
               <h1 class="text-center text-sm-h5 text-h6">
@@ -23,9 +22,9 @@
                   (v) => !apiError || 'El codigo ingresado es incorrecto',
                 ]"
               />
-              <v-btn color="primary" @click="verify" block :disabled="!valid">
+              <MainButton @click="verify" :disabled="!valid">
                 Verificar
-              </v-btn>
+              </MainButton>
               <TextLink @click="resendVerification">
                 ¿No recibió el codigo? Haga click aqui para enviarlo nuevamente
               </TextLink>
@@ -42,9 +41,10 @@ import { mapActions } from "vuex";
 import rules from "../../jsmodules/rules";
 import InputField from "../../components/user/InputField";
 import TextLink from "../../components/user/TextLink";
+import MainButton from "../../components/MainButton";
 export default {
   name: "EmailVerification",
-  components: { TextLink, InputField },
+  components: { MainButton, TextLink, InputField },
   data() {
     return {
       code: null,

@@ -37,9 +37,9 @@
                 ]"
               />
             </v-form>
-            <v-btn color="primary" @click="register" block :disabled="!valid">
+            <MainButton @click="register" :disabled="!valid">
               Crear cuenta
-            </v-btn>
+            </MainButton>
             <TextLink @click="login">
               ¿Ya tiene una cuenta? Haga click aqui iniciar sesión
             </TextLink>
@@ -59,9 +59,11 @@ import PasswordField from "../../components/user/PasswordField";
 import GenderSelect from "../../components/user/GenderSelect";
 import InputField from "../../components/user/InputField";
 import TextLink from "../../components/user/TextLink";
+import MainButton from "../../components/MainButton";
 export default {
   name: "Register",
   components: {
+    MainButton,
     TextLink,
     InputField,
     GenderSelect,

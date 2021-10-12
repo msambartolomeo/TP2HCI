@@ -15,15 +15,13 @@
               </p>
             </v-col>
             <v-col cols="8" lg="4" align-self="center">
-              <v-btn
+              <MainButton
                 class="mt-lg-8"
-                color="primary"
-                v-show="!editProfile"
+                :show="!editProfile"
                 @click="editProfile = true"
-                block
               >
                 Editar
-              </v-btn>
+              </MainButton>
             </v-col>
             <v-col cols="8">
               <InputField label="Email" v-model="email" disabled />
@@ -46,7 +44,7 @@
                 v-model="avatarUrl"
                 :disabled="!editProfile"
                 hint="Puede utilizar una pagina como igmur para subir sus fotos"
-                @input="resetImg"
+                @input="imgError = false"
               />
             </v-col>
           </v-row>
@@ -59,11 +57,11 @@
                   alt="profile_logo"
                   :lazy-src="require('../../assets/profile_logo.jpg')"
                   :src="
-                    this.imgError
+                    imgError
                       ? require('../../assets/profile_logo.jpg')
-                      : this.avatarUrl
+                      : avatarUrl
                   "
-                  v-on:error="imgError = true"
+                  @error="imgError = true"
                   contain
                   height="500"
                   width="400"
@@ -75,82 +73,46 @@
         </v-col>
         <v-col cols="12" md="6">
           <v-row justify="center">
-            <v-col cols="8" lg="4" align-self="center" v-show="editProfile">
-              <v-btn
+            <v-col cols="8" lg="4" v-show="editProfile">
+              <MainButton
                 color="error"
-                block
                 @click="resetProfile"
                 :disabled="savingChanges"
               >
                 Cancelar
-              </v-btn>
+              </MainButton>
             </v-col>
-            <v-col cols="8" lg="4" align-self="center" v-show="editProfile">
-              <v-btn
-                color="primary"
-                block
+            <v-col cols="8" lg="4" v-show="editProfile">
+              <MainButton
                 @click="updateProfile"
                 :disabled="!valid || savingChanges"
               >
                 Guardar
-              </v-btn>
+              </MainButton>
             </v-col>
-            <v-col cols="8" align-self="center" v-show="!editProfile">
-              <v-btn color="error" block @click="dialog = true">
+            <v-col cols="8" v-show="!editProfile">
+              <MainButton color="error" @click="dialog = true">
                 Borrar Cuenta
-              </v-btn>
-              <template>
-                <v-dialog v-model="dialog" persistent max-width="400">
-                  <v-card>
-                    <v-card-title class="text-h5">
-                      ¿Está seguro que quiere eliminar la cuenta?
-                    </v-card-title>
-                    <v-card-text>
-                      Esta es una acción que no se puede deshacer
-                    </v-card-text>
-                    <v-card-actions>
-                      <v-spacer></v-spacer>
-                      <v-btn
-                        color="error"
-                        text
-                        @click="deleteAccount"
-                        :disabled="savingChanges"
-                      >
-                        Borrar
-                      </v-btn>
-                      <v-btn
-                        color="primary"
-                        text
-                        @click="dialog = false"
-                        :disabled="savingChanges"
-                      >
-                        Cancelar
-                      </v-btn>
-                    </v-card-actions>
-                  </v-card>
-                </v-dialog>
-              </template>
+              </MainButton>
+              <ConfirmedExit
+                v-model="dialog"
+                text="Esta es una acción que no se puede deshacer"
+                title="¿Está seguro que quiere eliminar la cuenta?"
+                btn-text="Borrar"
+                :disabled="savingChanges"
+                @confirm="deleteAccount"
+              />
             </v-col>
           </v-row>
         </v-col>
       </v-row>
-      <v-snackbar v-model="snackbar" timeout="2500">
+      <SnackBar v-model="snackbar" :error="error">
         {{
           error
             ? "Se ha producido un error, intente nuevamente"
             : "¡Los cambios se han guardado con exito!"
         }}
-        <template v-slot:action="{ attrs }">
-          <v-btn
-            :color="error ? 'error' : 'primary'"
-            text
-            v-bind="attrs"
-            @click="snackbar = false"
-          >
-            Cerrar
-          </v-btn>
-        </template>
-      </v-snackbar>
+      </SnackBar>
     </v-container>
   </v-form>
 </template>
@@ -162,9 +124,15 @@ import rules from "../../jsmodules/rules";
 import { EditUser } from "../../../api/user";
 import GenderSelect from "../../components/user/GenderSelect";
 import InputField from "../../components/user/InputField";
+import MainButton from "../../components/MainButton";
+import ConfirmedExit from "../../components/ConfirmedExit";
+import SnackBar from "../../components/SnackBar";
 export default {
   name: "Profile",
   components: {
+    SnackBar,
+    ConfirmedExit,
+    MainButton,
     InputField,
     GenderSelect,
     BirthdatePicker,
@@ -193,9 +161,6 @@ export default {
       $getCurrentUser: "getCurrentUser",
       $deleteCurrentUser: "deleteCurrentUser",
     }),
-    resetImg() {
-      this.imgError = false;
-    },
     async resetProfile() {
       this.showPass = false;
       const user = await this.$getCurrentUser();
