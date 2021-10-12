@@ -15,6 +15,7 @@
 export default {
   name: "Exercise",
   props: {
+    id: Number,
     title: String,
     description: String,
     img: String,

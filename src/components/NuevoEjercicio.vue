@@ -17,10 +17,21 @@
           <v-col cols="6">
             <v-row>
               <v-col cols="12">
-                <v-text-field outlined label="Nombre"></v-text-field>
+                <v-text-field
+                  outlined
+                  label="Nombre"
+                  v-model="nombre"
+                  :rules="[rules.required]"
+                ></v-text-field>
               </v-col>
               <v-col cols="12">
-                <v-textarea auto-grow outlined label="Descripción"></v-textarea>
+                <v-textarea
+                  auto-grow
+                  outlined
+                  label="Descripción"
+                  v-model="descripcion"
+                  rules="[rules.required]"
+                ></v-textarea>
               </v-col>
             </v-row>
           </v-col>
@@ -38,10 +49,42 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
+import { exercises } from "../../api/exercise";
+
 export default {
   name: "NuevoEjercicio",
   data: () => ({
     dialog: false,
+    nombre: null,
+    descripcion: null,
+    exercise: null,
   }),
+
+  methods: {
+    ...mapActions("exercise", {
+      $createExercise: "create",
+      $modifyExercise: "modify",
+      $get: "get",
+      $getExercise: "getRoutines",
+    }),
+  },
+
+  reset() {
+    this.nombre = null;
+    this.descripcion = null;
+    this.dialog = false;
+  },
+
+  async createExercise() {
+    const exercise = new exercises(null, this.nombre, this.descripcion);
+    try {
+      this.exercise = await this.$createExercise(exercise);
+    } catch (e) {
+      this.reportError();
+    }
+  },
+
+  reportError() {},
 };
 </script>
