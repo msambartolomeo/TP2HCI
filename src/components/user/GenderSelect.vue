@@ -2,7 +2,7 @@
   <v-select
     @input="$emit('input', $event)"
     :items="['Masculino', 'Femenino', 'Otro']"
-    label="Genero"
+    label="Género"
     outlined
     append-icon="expand_more"
     v-model="selected"

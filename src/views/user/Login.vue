@@ -4,7 +4,7 @@
       <v-card elevation="10">
         <v-row justify="center" dense>
           <v-col cols="10" dense>
-            <h1 class="mt-10 text-center text-sm-h1 text-h2">WorkLn</h1>
+            <h1 class="mt-10 text-center text-sm-h1 text-h2">WorkIn</h1>
             <v-img
               alt="profile_logo"
               :src="require('../../assets/profile_logo.jpg')"

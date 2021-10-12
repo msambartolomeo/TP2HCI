@@ -5,14 +5,14 @@
         <v-row justify="center" dense>
           <v-col cols="10" dense>
             <v-form ref="form" v-model="valid" lazy-validation @submit.prevent>
-              <h1 class="mt-10 text-center text-sm-h1 text-h2">WorkLn</h1>
+              <h1 class="mt-10 text-center text-sm-h1 text-h2">WorkIn</h1>
               <v-img
                 alt="profile_logo"
                 :src="require('../../assets/profile_logo.jpg')"
               />
               <h1 class="text-center text-sm-h5 text-h6">
-                Por favor inserte el codigo de verificacion que fue enviado a su
-                correo
+                Por favor inserte el código de verificación que fue enviado a su
+                correo electrónico
               </h1>
               <InputField
                 label="Código"
@@ -26,7 +26,7 @@
                 Verificar
               </MainButton>
               <TextLink @click="resendVerification">
-                ¿No recibió el codigo? Haga click aqui para enviarlo nuevamente
+                ¿No recibió el código? Haga click aquí para enviarlo nuevamente
               </TextLink>
             </v-form>
           </v-col>

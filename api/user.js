@@ -112,6 +112,8 @@ class EditUser {
           break;
       }
     }
-    this.avatarUrl = avatarUrl;
+    if (!avatarUrl) {
+      this.avatarUrl = "";
+    } else this.avatarUrl = avatarUrl;
   }
 }

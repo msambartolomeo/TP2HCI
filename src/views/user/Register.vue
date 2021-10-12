@@ -4,7 +4,7 @@
       <v-card elevation="10">
         <v-row justify="center" dense>
           <v-col cols="10" dense>
-            <h1 class="mt-10 text-center text-sm-h1 text-h2">WorkLn</h1>
+            <h1 class="mt-10 text-center text-sm-h1 text-h2">WorkIn</h1>
             <h1 class="ma-10 text-center text-sm-h4 text-h5">Crear cuenta</h1>
             <v-form ref="form" v-model="valid" lazy-validation>
               <InputField
@@ -41,7 +41,7 @@
               Crear cuenta
             </MainButton>
             <TextLink @click="login">
-              ¿Ya tiene una cuenta? Haga click aqui iniciar sesión
+              ¿Ya tiene una cuenta? Haga click aquí para iniciar sesión
             </TextLink>
           </v-col>
         </v-row>
