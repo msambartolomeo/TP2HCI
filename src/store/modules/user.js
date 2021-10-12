@@ -31,10 +31,6 @@ export default {
         commit("setToken", token);
         Api.token = token;
       }
-      const user = JSON.parse(localStorage.getItem("USER"));
-      if (user) {
-        commit("setUser", user);
-      }
     },
 
     updateToken({ commit }, { token }) {
@@ -43,46 +39,35 @@ export default {
       Api.token = token;
     },
 
-    updateUser({ commit }, user) {
-      localStorage.setItem("USER", JSON.stringify(user));
-      commit("setUser", user);
-    },
-
     removeToken({ commit }) {
       localStorage.removeItem("TOKEN");
       commit("setToken", null);
       Api.token = null;
     },
 
-    removeUser({ commit }) {
-      localStorage.removeItem("USER");
-      commit("setUser", null);
-    },
-
-    async login({ dispatch }, { credentials }) {
+    async login({ dispatch, commit }, { credentials }) {
       const result = await UserApi.login(credentials);
       dispatch("updateToken", { token: result.token });
-      // actualizo el usuario guardado
-      dispatch("removeUser");
+      // actualizo el usuario guardado para evitar problemas si alguien estaba creando una cuenta
+      commit("setUser", null);
       await dispatch("getCurrentUser");
     },
 
-    async logout({ dispatch }) {
+    async logout({ dispatch, commit }) {
       await UserApi.logout();
       dispatch("removeToken");
-      dispatch("removeUser");
+      commit("setUser", null);
     },
 
-    async getCurrentUser({ state, dispatch }) {
-      if (state.user && !(JSON.stringify(state.user) === "{}"))
-        return state.user;
+    async getCurrentUser({ state, commit }) {
+      if (state.user) return state.user;
       const result = await UserApi.get();
-      dispatch("updateUser", result);
+      commit("setUser", result);
     },
 
-    async addUser({ dispatch }, { newUser }) {
+    async addUser({ commit }, { newUser }) {
       const result = await UserApi.add(newUser);
-      dispatch("updateUser", result);
+      commit("setUser", result);
     },
 
     async verifyEmail({ state }, { code }) {
@@ -93,17 +78,16 @@ export default {
       await UserApi.resend_verify(state.user.email);
     },
 
-    async deleteCurrentUser({ dispatch }) {
+    async deleteCurrentUser({ dispatch, commit }) {
       await UserApi.delete();
       dispatch("removeToken");
-      dispatch("removeUser");
+      commit("setUser", null);
     },
 
-    async editCurrentUser({ dispatch }, { editUser }) {
+    async editCurrentUser({ commit }, { editUser }) {
       await UserApi.edit(editUser);
-      // actualizo el usuario guardado
-      dispatch("removeUser");
-      await dispatch("getCurrentUser");
+      // borro el usuario desactualizado
+      commit("setUser", null);
     },
 
     async getCurrentRoutines({ commit }) {
