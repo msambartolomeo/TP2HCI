@@ -37,12 +37,14 @@ const routes = [
     name: "Login",
     component: () =>
       import(/* webpackChunkName: "login" */ "../views/Login.vue"),
+    meta: { forVisitors: true },
   },
   {
     path: "/register",
     name: "Register",
     component: () =>
       import(/* webpackChunkName: "register" */ "../views/Register.vue"),
+    meta: { forVisitors: true },
   },
   {
     path: "/email_verification",
@@ -51,6 +53,7 @@ const routes = [
       import(
         /* webpackChunkName: "EmailVerification" */ "../views/EmailVerification.vue"
       ),
+    meta: { forVisitors: true },
   },
   {
     path: "/NotFound",
@@ -73,10 +76,14 @@ router.beforeEach((to, from, next) => {
       next();
       return;
     }
-    next("/login");
-  } else {
+    next({ name: "Login", query: { redirect: to.path } });
+  } else if (to.matched.some((record) => record.meta.forVisitors)) {
+    if (cachedToken) {
+      next("/");
+      return;
+    }
     next();
-  }
+  } else next();
 });
 
 export default router;
