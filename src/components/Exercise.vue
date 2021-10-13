@@ -6,7 +6,9 @@
     </v-card-text>
     <v-card-actions>
       <v-spacer></v-spacer>
-      <v-btn color="teal accent-4" text> Detalles </v-btn>
+      <v-btn color="teal accent-4" text @click="handleClick()">
+        Detalles
+      </v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -14,11 +16,17 @@
 <script>
 export default {
   name: "Exercise",
+
   props: {
     id: Number,
     title: String,
     description: String,
     type: String,
+  },
+  methods: {
+    handleClick() {
+      this.$emit("click", this.id);
+    },
   },
 };
 </script>

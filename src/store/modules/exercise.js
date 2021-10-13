@@ -3,23 +3,23 @@ import { ExerciseApi } from "../../../api/exercise";
 export default {
   namespaced: true,
   state: {
-    exercises: undefined,
+    exercises: null,
   },
 
   getters: {
-    // findIndex(state) {
-    //   return (exercise) => {
-    //     return state.exercises.findIndex((item) => (item.id = exercise.id));
-    //   };
-    // },
+    findIndex(state) {
+      return (exercise) => {
+        return state.routines.findIndex((item) => (item.id = exercise.id));
+      };
+    },
   },
 
   mutations: {
-    push(state, routine) {
-      state.exercises.push(routine);
+    push(state, exercise) {
+      state.exercises.push(exercise);
     },
-    replace(state, index, routine) {
-      state.exercises[index] = routine;
+    replace(state, index, exercise) {
+      state.exercises[index] = exercise;
     },
     splice(state, index) {
       state.exercises.splice(index, 1);
@@ -46,8 +46,8 @@ export default {
 
     async get({ state, getters, commit }, exercise) {
       const index = getters.findIndex(exercise);
-      if (index >= 0) return state.exercises[index];
-      const result = await ExerciseApi.getExercise();
+      if (index !== undefined) return state.exercises[index];
+      const result = await ExerciseApi.getExerciseById(exercise.id);
       commit("push", result);
       return result;
     },
@@ -57,5 +57,7 @@ export default {
       commit("replaceAll", result);
       return result;
     },
+
+    async 
   },
 };
