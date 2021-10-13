@@ -58,8 +58,12 @@ class UserApi {
     return await Api.put(UserApi.getUrlCurrent(), true, editUser, controller);
   }
 
-  static async routines(controller) {
-    return await Api.get(UserApi.getUrlCurrent("routines"), true, controller);
+  static async routines(page, size, controller) {
+    return await Api.get(
+      UserApi.getUrlCurrent(`routines?page=${page}&size=${size}`),
+      true,
+      controller
+    );
   }
 }
 

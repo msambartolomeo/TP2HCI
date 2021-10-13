@@ -9,20 +9,17 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col v-for="routine in $getRoutines" :key="routine.name" md="3" xl="2">
+      <v-col v-for="routine in $getRoutines" :key="routine.id" md="3" xl="2">
         <Routine
           :title="routine.name"
-          :difficulty="switchDifficulty(routine.difficulty)"
+          :difficulty="routine.difficulty"
           :score="routine.score"
         />
       </v-col>
     </v-row>
     <v-row justify="center" align="end">
       <v-col cols="8">
-        <v-pagination
-          v-model="pagination"
-          :length="$getMaxPage"
-        ></v-pagination>
+        <v-pagination v-model="pagination" :length="$getMaxPage"></v-pagination>
       </v-col>
     </v-row>
   </v-container>
@@ -31,7 +28,7 @@
 <script>
 import Routine from "../components/Routine";
 import NuevaRutina from "../components/NuevaRutina";
-import { mapActions, mapGetters, mapState } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 const DEFAULT_PAGE_SIZE = 12;
 export default {
@@ -41,7 +38,7 @@ export default {
     Routine,
   },
   data: () => ({
-    pagination: null,
+    pagination: 1,
   }),
   computed: {
     ...mapGetters("routines", {
@@ -49,30 +46,17 @@ export default {
       $getRoutines: "getRoutines",
     }),
   },
-  ...mapState("routines", {
-    $routines: (state) => state.routines,
-    $totalCount: (state) => state.totalCount,
-    $page: (state) => state.page,
-    $size: (state) => state.size,
-  }),
   methods: {
     ...mapActions("routines", {
       $getRoutines: "getRoutines",
-      $getRoutinesPage: "getRoutinesPage",
+      $getRoutinesPage: "getRoutinesUser",
     }),
-    switchDifficulty(diff) {
-      switch (diff) {
-        case "rookie":
-          return 1;
-        case "intermediate":
-          return 2;
-        case "expert":
-          return 3;
-      }
+    async updateRoutines() {
+      await this.$getRoutinesPage({ page: this.pagination - 1, size: DEFAULT_PAGE_SIZE })
     },
   },
   async beforeMount() {
-    await this.$getRoutinesPage({page: 0, size: DEFAULT_PAGE_SIZE});
+    await this.$getRoutinesPage({ page: 0, size: DEFAULT_PAGE_SIZE });
   },
 };
 </script>

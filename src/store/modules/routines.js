@@ -1,4 +1,5 @@
 import { RoutineApi } from "../../../api/routines";
+import { UserApi } from "../../../api/user";
 
 export default {
   namespaced: true,
@@ -71,6 +72,13 @@ export default {
     },
     async getRoutinesPage({ commit }, { page, size, controller }) {
       const result = await RoutineApi.getRoutinesPage(page, size, controller);
+      commit("replaceAll", result.content);
+      commit("setPage", page);
+      commit("setTotalCount", result.totalCount);
+      commit("setSize", size);
+    },
+    async getRoutinesUser({ commit }, { page, size, controller }) {
+      const result = await UserApi.routines(page, size, controller);
       commit("replaceAll", result.content);
       commit("setPage", page);
       commit("setTotalCount", result.totalCount);
