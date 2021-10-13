@@ -60,6 +60,7 @@ export default {
 
     closeDrawer() {
       this.drawerState = false;
+      this.$router.push("/ejercicios");
     },
 
     deleteButton(id) {

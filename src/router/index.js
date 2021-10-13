@@ -26,7 +26,7 @@ const routes = [
     meta: { requiresAuth: true },
     children: [
       {
-        path: ":ejerciciosSlug",
+        path: ":slug",
         name: "DetallesEjercicios",
         props: true,
         component: () =>

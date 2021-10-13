@@ -11,8 +11,7 @@
         text
         :to="{
           name: 'DetallesEjercicios',
-          params: { exercise: this.exercise },
-          hash: '#experience',
+          params: { exercise: exercise, slug: exercise.name },
         }"
         @click="$emit('click')"
       >
