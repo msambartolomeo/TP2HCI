@@ -48,3 +48,13 @@ export class Routine {
     this.category = category;
   }
 }
+
+export class RoutineCycle {
+  constructor(name, type, order, repetitions) {
+    this.name = name;
+    this.detail = name;
+    this.type = type;
+    this.order = order;
+    this.repetitions = repetitions;
+  }
+}

@@ -21,8 +21,8 @@
 </template>
 
 <script>
-import Routine from "@/components/Routine";
-import NuevaRutina from "@/components/NuevaRutina";
+import Routine from "../components/Routine";
+import NuevaRutina from "../components/NuevaRutina";
 
 export default {
   name: "MisRutinas",
