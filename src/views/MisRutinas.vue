@@ -29,8 +29,8 @@
 </template>
 
 <script>
-import Routine from "@/components/Routine";
-import NuevaRutina from "@/components/NuevaRutina";
+import Routine from "../components/Routine";
+import NuevaRutina from "../components/NuevaRutina";
 import { mapActions, mapGetters, mapState } from "vuex";
 
 const DEFAULT_PAGE_SIZE = 12;

@@ -12,7 +12,7 @@
       :size="size"
       v-model="difficulty"
       @input="notifyRating"
-    ></v-rating>
+    />
     <v-input hidden />
   </div>
 </template>
