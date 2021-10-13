@@ -9,7 +9,12 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col v-for="routine in $getRoutines" :key="routine.id" md="3" xl="2">
+      <v-col
+        v-for="routine in this.$getRoutines"
+        :key="routine.id"
+        md="3"
+        xl="2"
+      >
         <Routine
           :title="routine.name"
           :difficulty="routine.difficulty"
@@ -48,11 +53,13 @@ export default {
   },
   methods: {
     ...mapActions("routines", {
-      $getRoutines: "getRoutines",
       $getRoutinesPage: "getRoutinesUser",
     }),
     async updateRoutines() {
-      await this.$getRoutinesPage({ page: this.pagination - 1, size: DEFAULT_PAGE_SIZE })
+      await this.$getRoutinesPage({
+        page: this.pagination - 1,
+        size: DEFAULT_PAGE_SIZE,
+      });
     },
   },
   async beforeMount() {

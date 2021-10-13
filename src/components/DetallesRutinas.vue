@@ -16,7 +16,7 @@
         </v-btn>
       </v-row>
       <v-row justify="center" class="mt-2" dense>
-        <h2>Detalle del Ejercicio</h2>
+        <h2>Detalle de Rutina</h2>
       </v-row>
 
       <v-row><v-divider></v-divider></v-row>
@@ -28,33 +28,11 @@
           </v-row>
           <v-row align="center" justify="star">
             <h5>Dificultad:</h5>
-            <v-rating
-              color="red"
-              background-color="grey"
-              empty-icon="mdi-fire"
-              full-icon="mdi-fire"
-              length="3"
-              readonly
-              dense
-              size="18"
-              value="2"
-            ></v-rating>
+            <RatingDificultad :size="25" :difficulty="2" readonly />
           </v-row>
           <v-row align="center" justify="star">
             <h5>Puntuacion:</h5>
-            <v-rating
-              color="yellow darken-2"
-              background-color="grey"
-              empty-icon="star_border"
-              full-icon="star"
-              half-icon="star_half"
-              half-increments
-              length="5"
-              readonly
-              dense
-              size="15"
-              value="4"
-            ></v-rating>
+            <RatingScore readonly :score="4" :size="15" />
           </v-row>
         </v-col>
         <v-col class="mt-4 mb-2" cols="5">
@@ -99,8 +77,11 @@
 </template>
 
 <script>
+import RatingScore from "./RatingScore";
+import RatingDificultad from "./RatingDificultad";
 export default {
   name: "DetallesRutinas",
+  components: { RatingDificultad, RatingScore },
 };
 </script>
 

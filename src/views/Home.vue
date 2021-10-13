@@ -14,7 +14,7 @@
           <v-row>
             <v-col
               v-for="routine in $getRoutines"
-              :key="routine.name"
+              :key="routine.id"
               md="3"
               xl="2"
             >
@@ -56,7 +56,6 @@ export default {
     DetallesRutinas,
     Routine,
   },
-
   data: () => ({
     pagination: 1,
     drawer: false,
@@ -69,14 +68,17 @@ export default {
   },
   methods: {
     ...mapActions("routines", {
-      $getRoutinesPage: "getRoutinesPage"
+      $getRoutinesPage: "getRoutinesPage",
     }),
     async updateRoutines() {
-      await this.$getRoutinesPage({ page: this.pagination - 1, size: DEFAULT_PAGE_SIZE })
+      await this.$getRoutinesPage({
+        page: this.pagination - 1,
+        size: DEFAULT_PAGE_SIZE,
+      });
     },
   },
   async beforeMount() {
-    await this.$getRoutinesPage({ page: 0, size: DEFAULT_PAGE_SIZE})
-  }
+    await this.$getRoutinesPage({ page: 0, size: DEFAULT_PAGE_SIZE });
+  },
 };
 </script>
