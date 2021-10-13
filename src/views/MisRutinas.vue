@@ -5,35 +5,74 @@
         <v-text-field solo label="Buscar" prepend-inner-icon="search" />
       </v-col>
       <v-col sm="4" md="2" cols="12" class="pt-md-4">
-        <v-btn block color="primary">Crear Rutina</v-btn>
+        <NuevaRutina />
       </v-col>
     </v-row>
     <v-row>
-      <v-col v-for="routine in routines" :key="routine.title" md="3" xl="2">
+      <v-col v-for="routine in $getRoutines" :key="routine.name" md="3" xl="2">
         <Routine
-          :title="routine.title"
-          :difficulty="routine.diffi"
+          :title="routine.name"
+          :difficulty="switchDifficulty(routine.difficulty)"
           :score="routine.score"
         />
+      </v-col>
+    </v-row>
+    <v-row justify="center" align="end">
+      <v-col cols="8">
+        <v-pagination
+          v-model="pagination"
+          :length="$getMaxPage"
+        ></v-pagination>
       </v-col>
     </v-row>
   </v-container>
 </template>
 
 <script>
-import Routine from "@/components/Routine";
+import Routine from "../components/Routine";
+import NuevaRutina from "../components/NuevaRutina";
+import { mapActions, mapGetters, mapState } from "vuex";
 
+const DEFAULT_PAGE_SIZE = 12;
 export default {
   name: "MisRutinas",
   components: {
+    NuevaRutina,
     Routine,
   },
   data: () => ({
-    routines: [
-      { title: "Rutina A", diffi: 1, score: 3 },
-      { title: "Rutina B", diffi: 1, score: 3 },
-      { title: "Rutina C", diffi: 3, score: 3 },
-    ],
+    pagination: null,
   }),
+  computed: {
+    ...mapGetters("routines", {
+      $getMaxPage: "getMaxPage",
+      $getRoutines: "getRoutines",
+    }),
+  },
+  ...mapState("routines", {
+    $routines: (state) => state.routines,
+    $totalCount: (state) => state.totalCount,
+    $page: (state) => state.page,
+    $size: (state) => state.size,
+  }),
+  methods: {
+    ...mapActions("routines", {
+      $getRoutines: "getRoutines",
+      $getRoutinesPage: "getRoutinesPage",
+    }),
+    switchDifficulty(diff) {
+      switch (diff) {
+        case "rookie":
+          return 1;
+        case "intermediate":
+          return 2;
+        case "expert":
+          return 3;
+      }
+    },
+  },
+  async beforeMount() {
+    await this.$getRoutinesPage({page: 0, size: DEFAULT_PAGE_SIZE});
+  },
 };
 </script>
