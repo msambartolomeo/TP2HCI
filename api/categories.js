@@ -11,3 +11,9 @@ class CategoryApi {
     return Api.get(CategoryApi.getUrl(), true, controller);
   }
 }
+
+export class Category {
+  constructor(categoryID) {
+    this.id = categoryID;
+  }
+}

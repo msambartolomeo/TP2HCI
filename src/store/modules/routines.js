@@ -4,12 +4,21 @@ export default {
   namespaced: true,
   state: {
     routines: [],
+    totalCount: null,
+    page: null,
+    size: null,
   },
   getters: {
     findIndex(state) {
       return (routine) => {
         return state.routines.findIndex((item) => (item.id = routine.id));
       };
+    },
+    getMaxPage(state) {
+      return Math.ceil(state.totalCount / state.size);
+    },
+    getRoutines(state) {
+      return state.routines;
     },
   },
   mutations: {
@@ -24,6 +33,15 @@ export default {
     },
     replaceAll(state, routine) {
       state.routines = routine;
+    },
+    setSize(state, size) {
+      state.size = size;
+    },
+    setPage(state, page) {
+      state.page = page;
+    },
+    setTotalCount(state, totalCount) {
+      state.totalCount = totalCount;
     },
   },
   actions: {
@@ -47,8 +65,16 @@ export default {
     },
     async getRoutines({ commit }, controller) {
       const result = await RoutineApi.getRoutines(controller);
-      commit("replaceAll", result);
+      commit("replaceAll", result.content);
+      commit("setTotalCount", result.totalCount);
       return result;
+    },
+    async getRoutinesPage({ commit }, { page, size, controller }) {
+      const result = await RoutineApi.getRoutinesPage(page, size, controller);
+      commit("replaceAll", result.content);
+      commit("setPage", page);
+      commit("setTotalCount", result.totalCount);
+      commit("setSize", size);
     },
   },
 };
