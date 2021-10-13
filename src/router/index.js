@@ -1,6 +1,5 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Home from "../views/Home.vue";
 
 Vue.use(VueRouter);
 
@@ -8,14 +7,15 @@ const routes = [
   {
     path: "/",
     name: "Inicio",
-    component: Home,
+    component: () =>
+      import(/* webpackChunkName: "Inicio" */ "../views/Home.vue"),
     meta: { requiresAuth: true },
   },
   {
     path: "/perfil",
     name: "Perfil",
     component: () =>
-      import(/* webpackChunkName: "Profile" */ "../views/Profile"),
+      import(/* webpackChunkName: "Profile" */ "../views/user/Profile"),
     meta: { requiresAuth: true },
   },
   {
@@ -36,21 +36,24 @@ const routes = [
     path: "/login",
     name: "Login",
     component: () =>
-      import(/* webpackChunkName: "login" */ "../views/Login.vue"),
+      import(/* webpackChunkName: "login" */ "../views/user/Login.vue"),
+    meta: { forVisitors: true },
   },
   {
     path: "/register",
     name: "Register",
     component: () =>
-      import(/* webpackChunkName: "register" */ "../views/Register.vue"),
+      import(/* webpackChunkName: "register" */ "../views/user/Register.vue"),
+    meta: { forVisitors: true },
   },
   {
     path: "/email_verification",
     name: "EmailVerification",
     component: () =>
       import(
-        /* webpackChunkName: "EmailVerification" */ "../views/EmailVerification.vue"
+        /* webpackChunkName: "EmailVerification" */ "../views/user/EmailVerification.vue"
       ),
+    meta: { forVisitors: true },
   },
   {
     path: "/NotFound",
@@ -67,16 +70,20 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  const cachedToken = localStorage.getItem("USER");
+  const cachedToken = localStorage.getItem("TOKEN");
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     if (cachedToken) {
       next();
       return;
     }
-    next("/login");
-  } else {
+    next({ name: "Login", query: { redirect: to.path } });
+  } else if (to.matched.some((record) => record.meta.forVisitors)) {
+    if (cachedToken) {
+      next("/");
+      return;
+    }
     next();
-  }
+  } else next();
 });
 
 export default router;
