@@ -56,7 +56,6 @@
 
 <script>
 import { mapActions } from "vuex";
-import { Exercise } from "../../api/exercise";
 
 export default {
   name: "DetallesEjercicios",
@@ -81,7 +80,7 @@ export default {
     },
 
     upData() {
-      this.exercise = this.get(new Exercise(this.id, null, null, null));
+      this.exercise = this.get(this.id);
     },
   },
 

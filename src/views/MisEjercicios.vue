@@ -25,7 +25,7 @@
       <DetallesEjercicios
         :id="idCurrentExercise"
         @click="drawer = false"
-        @DeleteClick="deleteExercise"
+        @DeleteClick="deleteButton"
         @ModifyClick="modifyExercise"
       />
     </v-navigation-drawer>
@@ -55,17 +55,19 @@ export default {
   }),
 
   methods: {
-    ...mapActions("exercise", ["getExercises", ""]),
+    ...mapActions("exercise", ["getExercises", "deleteExercise"]),
 
     openDrawer(id) {
       this.idCurrentExercise = id;
       this.drawer = true;
     },
 
-    deleteExercise(id) {
+    deleteButton(id) {
       this.idCurrentExercise = id;
-      alert(`borrar`);
-
+      //preguntar si esta seguro
+      this.deleteExercise(this.idCurrentExercise);
+      this.drawer = false;
+      this.beforeMount();
     },
 
     modifyExercise(id) {

@@ -8,8 +8,8 @@ export default {
 
   getters: {
     findIndex(state) {
-      return (exercise) => {
-        return state.routines.findIndex((item) => (item.id = exercise.id));
+      return (exerciseId) => {
+        return state.routines.findIndex((item) => (item.id = exerciseId));
       };
     },
   },
@@ -44,10 +44,10 @@ export default {
       return result;
     },
 
-    async get({ state, getters, commit }, exercise) {
-      const index = getters.findIndex(exercise);
+    async get({ state, getters, commit }, exerciseId) {
+      const index = getters.findIndex(exerciseId);
       if (index !== undefined) return state.exercises[index];
-      const result = await ExerciseApi.getExerciseById(exercise.id);
+      const result = await ExerciseApi.getExerciseById(exerciseId);
       commit("push", result);
       return result;
     },
@@ -58,6 +58,12 @@ export default {
       return result;
     },
 
-    async 
+    async deleteExercise({ getters, commit }, exerciseId, controller) {
+      const result = await ExerciseApi.deleteExercise(exerciseId, controller);
+      const index = getters.findIndex(exerciseId);
+      if (index === undefined) return;
+      commit("splice", index);
+      return result;
+    },
   },
 };
