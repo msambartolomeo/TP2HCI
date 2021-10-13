@@ -15,6 +15,14 @@ class RoutineApi {
     return await Api.get(RoutineApi.getUrl(), true, controller);
   }
 
+  static async getRoutinesPage(page, size, controller) {
+    return await Api.get(
+      RoutineApi.getUrl(`?page=${page}&size=${size}`),
+      true,
+      controller
+    );
+  }
+
   static async getRoutine(id, controller) {
     return await Api.get(RoutineApi.getUrl(id), true, controller);
   }
