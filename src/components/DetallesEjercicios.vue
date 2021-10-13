@@ -21,24 +21,12 @@
       <v-row><v-divider></v-divider></v-row>
       <v-row>
         <v-col>
-          <v-btn
-            block
-            color="primary"
-            text
-            elevation="1"
-            @click="handleModify"
-          >
+          <v-btn block color="primary" text elevation="1" @click="handleModify">
             Editar</v-btn
           >
         </v-col>
         <v-col>
-          <v-btn
-            block
-            color="error"
-            text
-            elevation="1"
-            @click="handleDelete"
-          >
+          <v-btn block color="error" text elevation="1" @click="handleDelete">
             Eliminar
           </v-btn>
         </v-col>
@@ -55,37 +43,27 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
-
 export default {
   name: "DetallesEjercicios",
 
   props: {
-    id: Number,
+    exercise: {
+      id: Number,
+      name: String,
+      detail: String,
+      type: String,
+    },
   },
 
-  data: () => ({
-    exercise: undefined,
-  }),
 
   methods: {
-    ...mapActions("exercise", ["get"]),
-
     handleDelete() {
-      this.$emit("DeleteClick", this.id);
+      this.$emit("DeleteClick", this.exercise.id);
     },
 
     handleModify() {
-      this.$emit("ModifyClick", this.id);
+      this.$emit("ModifyClick", this.exercise.id);
     },
-
-    upData() {
-      this.exercise = this.get(this.id);
-    },
-  },
-
-  beforeMount() {
-    this.upData();
   },
 };
 </script>

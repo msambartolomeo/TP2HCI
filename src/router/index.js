@@ -24,6 +24,25 @@ const routes = [
     component: () =>
       import(/* webpackChunkName: "Ejercicios" */ "../views/MisEjercicios"),
     meta: { requiresAuth: true },
+    children: [
+      {
+        path: ":ejerciciosSlug",
+        name: "DetallesEjercicios",
+        props: true,
+        component: () =>
+          import(
+            /* webpackChunkName: "experience" */ "../components/DetallesEjercicios"
+          ),
+        // beforeEnter: (to, from, next) => {
+        //   const exists = this.$store.getters["exercise/findIndex"](to.params.slug);
+        //   if (exists) {
+        //     next();
+        //   } else {
+        //     next({ name: "NotFound" });
+        //   }
+        // },
+      },
+    ],
   },
   {
     path: "/rutinas",

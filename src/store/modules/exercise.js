@@ -9,7 +9,7 @@ export default {
   getters: {
     findIndex(state) {
       return (exerciseId) => {
-        return state.routines.findIndex((item) => (item.id = exerciseId));
+        return state.exercises.findIndex((element) => element.id === exerciseId);
       };
     },
   },
@@ -44,9 +44,10 @@ export default {
       return result;
     },
 
-    async get({ state, getters, commit }, exerciseId) {
+    async getExercise({ state, getters, commit }, exerciseId) {
+      //return state.exercises.find((element) => element.id === exerciseId);
       const index = getters.findIndex(exerciseId);
-      if (index !== undefined) return state.exercises[index];
+      if (index >= 0) return state.exercises[index];
       const result = await ExerciseApi.getExerciseById(exerciseId);
       commit("push", result);
       return result;

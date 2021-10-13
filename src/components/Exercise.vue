@@ -1,12 +1,21 @@
 <template>
   <v-card elevation="2" class="exercise">
-    <v-card-title>{{ title }} </v-card-title>
+    <v-card-title>{{ exercise.name }} </v-card-title>
     <v-card-text>
       <v-img :src="require('../assets/exercise picture.jpg')" />
     </v-card-text>
     <v-card-actions>
       <v-spacer></v-spacer>
-      <v-btn color="teal accent-4" text @click="handleClick()">
+      <v-btn
+        color="teal accent-4"
+        text
+        :to="{
+          name: 'DetallesEjercicios',
+          params: { exercise: this.exercise },
+          hash: '#experience',
+        }"
+        @click="$emit('click')"
+      >
         Detalles
       </v-btn>
     </v-card-actions>
@@ -18,14 +27,11 @@ export default {
   name: "Exercise",
 
   props: {
-    id: Number,
-    title: String,
-    description: String,
-    type: String,
-  },
-  methods: {
-    handleClick() {
-      this.$emit("click", this.id);
+    exercise: {
+      id: Number,
+      name: String,
+      detail: String,
+      type: String,
     },
   },
 };
