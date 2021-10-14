@@ -5,7 +5,10 @@
         <v-text-field solo label="Buscar" prepend-inner-icon="search" />
       </v-col>
       <v-col sm="4" md="2" cols="12" class="pt-md-4">
-        <NuevaRutina />
+        <MainButton @click="modifyRoutine = true">
+          Crear nueva rutina
+        </MainButton>
+        <ModifyRoutine v-model="modifyRoutine" :id="0" v-if="modifyRoutine" />
       </v-col>
     </v-row>
     <v-row>
@@ -19,10 +22,7 @@
     </v-row>
     <v-row justify="center" align="end">
       <v-col cols="8">
-        <v-pagination
-          v-model="pagination"
-          :length="$getMaxPage"
-        ></v-pagination>
+        <v-pagination v-model="pagination" :length="$getMaxPage"></v-pagination>
       </v-col>
     </v-row>
   </v-container>
@@ -30,18 +30,22 @@
 
 <script>
 import Routine from "../components/Routine";
-import NuevaRutina from "../components/NuevaRutina";
+import ModifyRoutine from "../components/ModifyRoutine";
 import { mapActions, mapGetters, mapState } from "vuex";
+import MainButton from "../components/MainButton";
 
 const DEFAULT_PAGE_SIZE = 12;
 export default {
   name: "MisRutinas",
   components: {
-    NuevaRutina,
+    MainButton,
+    ModifyRoutine,
     Routine,
   },
   data: () => ({
     pagination: null,
+    modifyRoutine: false,
+    routineId: null,
   }),
   computed: {
     ...mapGetters("routines", {
@@ -56,6 +60,10 @@ export default {
     $size: (state) => state.size,
   }),
   methods: {
+    launchNewRoutine() {
+      this.id = 0;
+      this.modifyRoutine = true;
+    },
     ...mapActions("routines", {
       $getRoutines: "getRoutines",
       $getRoutinesPage: "getRoutinesPage",
@@ -72,7 +80,7 @@ export default {
     },
   },
   async beforeMount() {
-    await this.$getRoutinesPage({page: 0, size: DEFAULT_PAGE_SIZE});
+    await this.$getRoutinesPage({ page: 0, size: DEFAULT_PAGE_SIZE });
   },
 };
 </script>

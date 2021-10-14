@@ -7,7 +7,7 @@
       <v-card-text> {{ text }} </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <MainButton @click="$emit('input', $event)" :disabled="disabled">
+        <MainButton @click="$emit('input', false)" :disabled="disabled">
           Cancelar
         </MainButton>
         <MainButton

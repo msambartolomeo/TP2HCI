@@ -6,15 +6,20 @@
     hide-overlay
     transition="dialog-bottom-transition"
   >
-    <template v-slot:activator="{ on }">
-      <v-btn block slot="activator" v-on="on" color="primary"
-        >Crear nueva rutina</v-btn
-      >
-    </template>
     <v-card>
       <v-toolbar dark color="primary">
-        <SalidaConfirmada @reset="reset" />
-        <v-toolbar-title>Crear nueva rutina</v-toolbar-title>
+        <v-btn dark icon @click="confirmedExit = true">
+          <v-icon>close</v-icon>
+        </v-btn>
+        <ConfirmedExit
+          title="¿Está seguro que quiere salir?"
+          text="Si continua perderá la información agregada de la rutina."
+          v-model="confirmedExit"
+          @confirm="$emit('input', false)"
+        />
+        <v-toolbar-title>
+          {{ id ? "Modificar Rutina" : "Crear Nueva Rutina" }}
+        </v-toolbar-title>
         <v-spacer></v-spacer>
         <v-toolbar-items>
           <v-btn dark text @click="verifyData"> Guardar </v-btn>
@@ -67,12 +72,7 @@
                   v-model="dificultad"
                   :rules="[rules.required]"
                 >
-                  <RatingDificultad
-                    :readonly="false"
-                    :size="40"
-                    :difficulty="dificultad"
-                    @notifyRating="updateRating"
-                  />
+                  <RatingDificultad :size="40" v-model="dificultad" />
                 </v-input>
               </v-row>
               <v-row no-gutters>
@@ -83,13 +83,32 @@
           </v-col>
           <v-col cols="12" md="6">
             <v-row justify="center">
-              <v-img
-                alt="routine_img"
-                :src="require('../assets/logo.svg')"
-                contain
-                max-width="400"
-                max-height="400"
-              ></v-img>
+              <v-col cols="8">
+                <v-card elevation="10">
+                  <v-img
+                    alt="routine_logo"
+                    :lazy-src="require('../assets/routine picture.jpg')"
+                    :src="
+                      imgError
+                        ? require('../assets/routine picture.jpg')
+                        : routineUrl
+                    "
+                    @error="imgError = true"
+                    contain
+                    height="350"
+                    width="350"
+                    class="mx-auto"
+                  />
+                </v-card>
+              </v-col>
+              <v-col cols="8">
+                <InputField
+                  label="Link para foto de rutina"
+                  v-model="routineUrl"
+                  hint="Puede utilizar una pagina como igmur para subir sus fotos"
+                  @input="imgError = false"
+                />
+              </v-col>
             </v-row>
           </v-col>
         </v-row>
@@ -100,15 +119,10 @@
             <v-col cols="12" md="10">
               <v-card-title class="text-h4 ml-1">
                 Ciclos y ejercicios
-                <v-btn
-                  color="primary"
-                  class="ml-5"
-                  text
-                  @click="newDialog = true"
-                >
+                <TextButton class="ml-5" @click="newDialog = true">
                   <v-icon>add</v-icon>
                   Agregar Ciclo
-                </v-btn>
+                </TextButton>
                 <NewCycle v-model="newDialog" @confirm="addCycle"></NewCycle>
               </v-card-title>
             </v-col>
@@ -116,9 +130,9 @@
               <template v-for="(cycle, index) in cycles">
                 <v-timeline dense :key="index">
                   <v-timeline-item>
-                    <v-btn text color="primary" @click="selected = index + 1">
+                    <TextButton @click="selected = index + 1">
                       {{ cycle.name }}
-                    </v-btn>
+                    </TextButton>
                   </v-timeline-item>
                 </v-timeline>
               </template>
@@ -167,18 +181,33 @@
 
 <script>
 import RatingDificultad from "./RatingDificultad";
-import SalidaConfirmada from "./SalidaConfirmada";
 import rules from "../jsmodules/rules";
 import CicloEnRutina from "./CicloEnRutina";
 import { Routine, RoutineCycle } from "../../api/routines";
 import { mapActions } from "vuex";
 import NewCycle from "./NewCycle";
+import ConfirmedExit from "./ConfirmedExit";
+import InputField from "./user/InputField";
+import TextButton from "./TextButton";
 
 export default {
-  name: "NuevaRutina",
-  components: { NewCycle, CicloEnRutina, SalidaConfirmada, RatingDificultad },
+  name: "ModifyRoutine",
+  components: {
+    TextButton,
+    InputField,
+    ConfirmedExit,
+    NewCycle,
+    CicloEnRutina,
+    RatingDificultad,
+  },
+  props: {
+    value: Boolean,
+    id: {
+      type: Number,
+      default: null,
+    },
+  },
   data: () => ({
-    dialog: false,
     routine: null,
     newDialog: false,
     nombre: null,
@@ -191,7 +220,20 @@ export default {
     isPublic: false,
     cycles: [],
     selected: 1,
+    confirmedExit: false,
+    imgError: false,
+    routineUrl: null,
   }),
+  computed: {
+    dialog: {
+      get() {
+        return this.value;
+      },
+      set(value) {
+        this.$emit("input", value);
+      },
+    },
+  },
   methods: {
     ...mapActions("routines", {
       $createRoutine: "create",
@@ -201,17 +243,6 @@ export default {
     }),
     verifyData() {
       this.$refs.form.validate();
-    },
-    reset() {
-      this.$refs.form.resetValidation();
-      this.nombre = null;
-      this.descripcion = null;
-      this.categoria = null;
-      this.dificultad = null;
-      this.dialog = false;
-    },
-    updateRating(rating) {
-      this.dificultad = rating;
     },
     async createRoutine() {
       const routine = new Routine(
@@ -240,12 +271,14 @@ export default {
     },
   },
   async beforeMount() {
-    // if rutina no es nueva buscar desde store etc
-    // else es nueva entonces cargo las cosas base
-    const start = new RoutineCycle("Entrada en calor", "warmup", 1, 2);
-    const end = new RoutineCycle("Enfriamiento", "cooldown", 2, 2);
-    this.cycles.push(start);
-    this.cycles.push(end);
+    if (this.id == null) {
+      const start = new RoutineCycle("Entrada en calor", "warmup", 1, 2);
+      const end = new RoutineCycle("Enfriamiento", "cooldown", 2, 2);
+      this.cycles.push(start);
+      this.cycles.push(end);
+    } else {
+      // store get input id routine etc y guardarlo en cycles
+    }
   },
 };
 </script>
