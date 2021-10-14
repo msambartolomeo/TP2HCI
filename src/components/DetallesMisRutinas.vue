@@ -66,12 +66,12 @@
       <v-row><v-divider></v-divider></v-row>
       <v-row>
         <v-col>
-          <v-btn block color="primary" text elevation="1" @click="EditClick">
+          <v-btn block color="primary"  elevation="1" @click="EditClick">
             Editar</v-btn
           >
         </v-col>
         <v-col>
-          <v-btn block color="error" text elevation="1" @click="DeleteClick">
+          <v-btn block color="error"  elevation="1" @click="DeleteClick">
             Eliminar
           </v-btn>
         </v-col>
