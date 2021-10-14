@@ -7,9 +7,6 @@
             <v-col sm="8" cols="12" md="6">
               <v-text-field solo label="Buscar" prepend-inner-icon="search" />
             </v-col>
-            <v-col sm="4" md="2" cols="12" class="pt-md-4">
-              <v-btn block color="primary"> Orden </v-btn>
-            </v-col>
           </v-row>
           <v-row>
             <v-col
