@@ -12,7 +12,7 @@ export default {
   getters: {
     findIndex(state) {
       return (routineId) => {
-        return state.routines.findIndex((item) => (item.id = routineId));
+        return state.routines.findIndex((item) => item.id === routineId);
       };
     },
     getMaxPage(state) {
@@ -66,6 +66,16 @@ export default {
       commit("push", result);
       return result;
     },
+
+    async deleteRoutines({ getters, commit }, routinesId) {
+      await RoutineApi.deleteRoutine(routinesId);
+      alert(routinesId);
+      const index = getters.findIndex(routinesId);
+      alert(index);
+      if (index === undefined) return;
+      commit("splice", index);
+    },
+
     async getRoutines({ commit }, controller) {
       const result = await RoutineApi.getRoutines(controller);
       commit("replaceAll", result.content);

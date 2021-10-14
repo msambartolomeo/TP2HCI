@@ -61,7 +61,13 @@ export default {
   methods: {
     ...mapActions("routines", {
       $getRoutinesPage: "getRoutinesUser",
+      $deleteRoutines: "deleteRoutines",
     }),
+
+    deleteButton(id) {
+      //preguntar si esta seguro
+      this.$deleteRoutines(id);
+    },
 
     async updateRoutines() {
       await this.$getRoutinesPage({
@@ -70,10 +76,6 @@ export default {
       });
     },
 
-    deleteButton(id) {
-      //preguntar si esta seguro
-      this.borrar = id;
-    },
   },
 
   async beforeMount() {

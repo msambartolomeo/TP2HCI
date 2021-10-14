@@ -46,9 +46,9 @@
             />
           </v-row>
           <v-row align="center" justify="start">
-            <h5>{{ routine.isPublic ? "Privada" : "No es privada" }}</h5>
+            <h5>{{ routine.isPublic ? "Publica" : "Privada" }}</h5>
             <v-icon small class="ml-2">
-              {{ routine.isPublic ? "https" : "lock_open" }}
+              {{ routine.isPublic ? "lock_open" : "https" }}
             </v-icon>
           </v-row>
         </v-col>
@@ -66,12 +66,14 @@
       <v-row><v-divider></v-divider></v-row>
       <v-row>
         <v-col>
-          <v-btn block color="primary" text elevation="1" @click="DeleteClick">
+          <v-btn block color="primary" text elevation="1" @click="EditClick">
             Editar</v-btn
           >
         </v-col>
         <v-col>
-          <v-btn block color="error" text elevation="1"> Eliminar </v-btn>
+          <v-btn block color="error" text elevation="1" @click="DeleteClick">
+            Eliminar
+          </v-btn>
         </v-col>
       </v-row>
       <v-row><v-divider></v-divider></v-row>
@@ -119,9 +121,11 @@ export default {
 
   methods: {
     DeleteClick() {
-      this.$emit("DeleteClick");
+      this.$emit("DeleteClick", this.routine.id);
       this.state = false;
     },
+
+    EditClick() {},
 
     getDate(dateUTC) {
       if (dateUTC) {
