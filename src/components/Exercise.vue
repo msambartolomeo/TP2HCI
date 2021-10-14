@@ -10,7 +10,7 @@
         "
         @error="imgError = true"
         contain
-        height="200"
+        height="150"
         width="200"
         class="mx-auto"
       />
@@ -49,5 +49,6 @@ export default {
 .exercise {
   max-width: 250px;
   min-width: 230px;
+  max-height: 300px;
 }
 </style>
