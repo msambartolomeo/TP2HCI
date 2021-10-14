@@ -29,16 +29,19 @@ class ExerciseApi {
   }
 
   static async deleteExercise(exerciseId, controller) {
-    return await Api.delete(`${ExerciseApi.url}/${exerciseId}`, true, controller);
+    return await Api.delete(
+      `${ExerciseApi.url}/${exerciseId}`,
+      true,
+      controller
+    );
   }
 }
 
 class Exercise {
-  constructor(id, name, detail) {
-    if (id) this.id = id;
+  constructor(name, detail, imgUrl) {
     this.name = name;
     this.detail = detail;
     this.type = "exercise";
-    this.metadata = null;
+    this.metadata = { imgUrl: imgUrl ? imgUrl : "" };
   }
 }

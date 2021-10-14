@@ -2,7 +2,18 @@
   <v-card elevation="2" class="exercise">
     <v-card-title>{{ exercise.name }} </v-card-title>
     <v-card-text>
-      <v-img :src="require('../assets/exercise picture.jpg')" />
+      <v-img
+        alt="exercice_logo"
+        lazy-src="../assets/exercise picture.jpg"
+        :src="
+          imgError ? '../assets/exercise picture.jpg' : exercise.metadata.imgUrl
+        "
+        @error="imgError = true"
+        contain
+        height="200"
+        width="200"
+        class="mx-auto"
+      />
     </v-card-text>
     <v-card-actions>
       <v-spacer></v-spacer>
@@ -13,7 +24,6 @@
           name: 'DetallesEjercicios',
           params: { exercise: exercise, slug: exercise.name },
         }"
-        @click="$emit('click')"
       >
         Detalles
       </v-btn>
@@ -24,13 +34,13 @@
 <script>
 export default {
   name: "Exercise",
-
   props: {
-    exercise: {
-      id: Number,
-      name: String,
-      detail: String,
-    },
+    exercise: Object,
+  },
+  data() {
+    return {
+      imgError: false,
+    };
   },
 };
 </script>

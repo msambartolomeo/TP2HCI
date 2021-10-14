@@ -87,7 +87,6 @@ import BirthdatePicker from "../components/BirthdatePicker";
 import rules from "../jsmodules/rules";
 
 export default {
-
   name: "Register",
   components: { BirthdatePicker },
   data() {
