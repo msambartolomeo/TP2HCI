@@ -173,6 +173,7 @@ import CicloEnRutina from "./CicloEnRutina";
 import { Routine, RoutineCycle } from "../../api/routines";
 import { mapActions } from "vuex";
 import NewCycle from "./NewCycle";
+import { Category } from "../../api/categories";
 
 export default {
   name: "NuevaRutina",
@@ -201,6 +202,7 @@ export default {
     }),
     verifyData() {
       this.$refs.form.validate();
+      this.createRoutine();
     },
     reset() {
       this.$refs.form.resetValidation();
@@ -218,11 +220,12 @@ export default {
         null,
         this.nombre,
         this.descripcion,
-        false,
+        this.isPublic,
         this.dificultad,
-        this.categoria
+        new Category(this.categoria)
       );
       try {
+        console.log(JSON.stringify(routine))
         this.routine = await this.$createRoutine(routine);
       } catch (e) {
         //
