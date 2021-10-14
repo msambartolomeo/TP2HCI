@@ -6,40 +6,40 @@
     hide-overlay
     transition="dialog-bottom-transition"
   >
-    <v-card>
-      <v-toolbar dark color="primary">
-        <v-btn dark icon @click="confirmedExit = true">
-          <v-icon>close</v-icon>
-        </v-btn>
-        <ConfirmedExit
-          title="¿Está seguro que quiere salir?"
-          text="Si continua perderá la información agregada de la rutina."
-          v-model="confirmedExit"
-          @confirm="$emit('input', false)"
-        />
-        <v-toolbar-title>
-          {{ id ? "Modificar Rutina" : "Crear Nueva Rutina" }}
-        </v-toolbar-title>
-        <v-spacer></v-spacer>
-        <v-toolbar-items>
-          <v-btn dark text @click="verifyData"> Guardar </v-btn>
-        </v-toolbar-items>
-      </v-toolbar>
-      <v-row>
-        <v-col cols="12" md="6">
+    <v-form v-model="valid" ref="form" lazy-validation>
+      <v-card>
+        <v-toolbar dark color="primary">
+          <v-btn dark icon @click="confirmedExit = true">
+            <v-icon>close</v-icon>
+          </v-btn>
+          <ConfirmedExit
+            title="¿Está seguro que quiere salir?"
+            text="Si continua perderá la información agregada de la rutina."
+            v-model="confirmedExit"
+            @confirm="$emit('input', false)"
+          />
+          <v-toolbar-title>
+            {{ id ? "Modificar Rutina" : "Crear Nueva Rutina" }}
+          </v-toolbar-title>
+          <v-spacer></v-spacer>
+          <v-toolbar-items>
+            <v-btn dark text @click="verifyData"> Guardar </v-btn>
+          </v-toolbar-items>
+        </v-toolbar>
+        <v-row>
+          <v-col cols="12" md="6">
+            <v-row justify="center">
+              <v-col cols="10">
+                <v-card-title class="text-h4 ml-1">
+                  Información de la rutina
+                </v-card-title>
+              </v-col>
+            </v-row>
+          </v-col>
+        </v-row>
+        <v-card-text>
           <v-row justify="center">
-            <v-col cols="10">
-              <v-card-title class="text-h4 ml-1">
-                Información de la rutina
-              </v-card-title>
-            </v-col>
-          </v-row>
-        </v-col>
-      </v-row>
-      <v-card-text>
-        <v-row justify="center">
-          <v-col cols="10" md="5">
-            <v-form v-model="valid" ref="form" lazy-validation>
+            <v-col cols="10" md="5">
               <v-row no-gutters>
                 <v-col cols="12">
                   <v-text-field
@@ -79,71 +79,68 @@
                 <h5 class="text-h5 ml-4 mt-1">Compartir rutina</h5>
                 <v-switch class="mt-1 ml-4" v-model="isPublic" />
               </v-row>
-            </v-form>
-          </v-col>
+            </v-col>
+            <v-col cols="12" md="6">
+              <v-row justify="center">
+                <v-col cols="8">
+                  <v-card elevation="10">
+                    <v-img
+                      alt="routine_logo"
+                      :lazy-src="require('../assets/routine picture.jpg')"
+                      :src="
+                        imgError
+                          ? require('../assets/routine picture.jpg')
+                          : routineUrl
+                      "
+                      @error="imgError = true"
+                      contain
+                      height="350"
+                      width="350"
+                      class="mx-auto"
+                    />
+                  </v-card>
+                </v-col>
+                <v-col cols="8">
+                  <InputField
+                    label="Link para foto de rutina"
+                    v-model="routineUrl"
+                    hint="Puede utilizar una pagina como igmur para subir sus fotos"
+                    @input="imgError = false"
+                  />
+                </v-col>
+              </v-row>
+            </v-col>
+          </v-row>
+        </v-card-text>
+        <v-row>
           <v-col cols="12" md="6">
             <v-row justify="center">
-              <v-col cols="8">
-                <v-card elevation="10">
-                  <v-img
-                    alt="routine_logo"
-                    :lazy-src="require('../assets/routine picture.jpg')"
-                    :src="
-                      imgError
-                        ? require('../assets/routine picture.jpg')
-                        : routineUrl
-                    "
-                    @error="imgError = true"
-                    contain
-                    height="350"
-                    width="350"
-                    class="mx-auto"
-                  />
-                </v-card>
+              <v-col cols="12" md="10">
+                <v-card-title class="text-h4 ml-1">
+                  Ciclos y ejercicios
+                  <TextButton class="ml-5" @click="newCycle">
+                    <v-icon>add</v-icon>
+                    Agregar Ciclo
+                  </TextButton>
+                  <NewCycle v-model="newDialog" @confirm="addCycle"></NewCycle>
+                </v-card-title>
               </v-col>
-              <v-col cols="8">
-                <InputField
-                  label="Link para foto de rutina"
-                  v-model="routineUrl"
-                  hint="Puede utilizar una pagina como igmur para subir sus fotos"
-                  @input="imgError = false"
-                />
-              </v-col>
-            </v-row>
-          </v-col>
-        </v-row>
-      </v-card-text>
-      <v-row>
-        <v-col cols="12" md="6">
-          <v-row justify="center">
-            <v-col cols="12" md="10">
-              <v-card-title class="text-h4 ml-1">
-                Ciclos y ejercicios
-                <TextButton class="ml-5" @click="newDialog = true">
-                  <v-icon>add</v-icon>
-                  Agregar Ciclo
-                </TextButton>
-                <NewCycle v-model="newDialog" @confirm="addCycle"></NewCycle>
-              </v-card-title>
-            </v-col>
-            <v-col cols="12" md="3">
-              <template v-for="(cycle, index) in cycles">
-                <v-timeline dense :key="index">
+              <v-col cols="12" md="3">
+                <v-timeline dense v-for="cycle in cycles" :key="cycle.id">
                   <v-timeline-item>
-                    <TextButton @click="selected = index + 1">
-                      {{ cycle.name }}
+                    <TextButton @click="selected = cycle.id + 1">
+                      {{ cycle.cycle.name }}
                     </TextButton>
                   </v-timeline-item>
                 </v-timeline>
-              </template>
-            </v-col>
-          </v-row>
-        </v-col>
-        <v-col cols="12" md="5">
-          <template v-for="(cycle, index) in cycles">
+              </v-col>
+            </v-row>
+          </v-col>
+          <v-col cols="12" md="5">
             <v-card
-              v-if="selected === index + 1"
-              :key="index"
+              v-for="cycle in cycles"
+              v-show="selected === cycle.id + 1"
+              :key="cycle.id"
               outlined
               elevation="20"
             >
@@ -151,31 +148,35 @@
                 <v-row class="mt-5">
                   <v-col cols="6">
                     <h1 class="text-h5 mt-2">
-                      {{ cycle.name }}
+                      {{ cycle.cycle.name }}
                     </h1>
                   </v-col>
                   <v-spacer />
                   <v-col cols="6" md="4" align-self="center">
-                    <v-text-field
-                      v-model="cycle.repetitions"
-                      outlined
+                    <NumberField
+                      v-model="cycle.cycle.repetitions"
                       label="Nro de Repeticiones"
-                    ></v-text-field>
+                      :min="2"
+                      :rules="[rules.required, rules.isNumber, rules.mayora2]"
+                    />
                   </v-col>
                   <v-col cols="1" class="hidden-sm-and-down"></v-col>
                 </v-row>
                 <v-divider />
                 <CicloEnRutina
-                  v-model="cycle.name"
-                  :type="cycle.type"
+                  :type="cycle.cycle.type"
                   @click="removeCycle(cycle)"
+                  :guardado="guardarExercices"
+                  :id="cycle.id"
+                  @guardar="getExercises"
                 />
               </v-card-text>
             </v-card>
-          </template>
-        </v-col>
-      </v-row>
-    </v-card>
+            <SnackBar v-model="error" error> {{ errorText }} </SnackBar>
+          </v-col>
+        </v-row>
+      </v-card>
+    </v-form>
   </v-dialog>
 </template>
 
@@ -190,10 +191,14 @@ import ConfirmedExit from "./ConfirmedExit";
 import InputField from "./user/InputField";
 import TextButton from "./TextButton";
 import { Category } from "../../api/categories";
+import SnackBar from "./SnackBar";
+import NumberField from "./NumberField";
 
 export default {
   name: "ModifyRoutine",
   components: {
+    NumberField,
+    SnackBar,
     TextButton,
     InputField,
     ConfirmedExit,
@@ -218,10 +223,15 @@ export default {
     categoriaNombre: null,
     isPublic: false,
     cycles: [],
-    selected: 1,
+    selected: 0,
     confirmedExit: false,
     imgError: false,
     routineUrl: null,
+    errorText: "",
+    error: false,
+    order: 1,
+    guardarExercices: false,
+    cycleId: 1,
   }),
   computed: {
     dialog: {
@@ -248,8 +258,10 @@ export default {
       $getRoutines: "getRoutines",
     }),
     verifyData() {
-      this.$refs.form.validate();
-      this.createRoutine();
+      this.guardarExercices = true;
+      if (this.$refs.form.validate()) {
+        this.createRoutine();
+      }
     },
     async createRoutine() {
       const routine = new Routine(
@@ -268,21 +280,49 @@ export default {
     },
     addCycle(name) {
       const lastCycle = this.cycles.at(this.cycles.length - 1);
-      const cycle = new RoutineCycle(name, "exercise", lastCycle.order, 2);
-      this.cycles.splice(this.cycles.length - 1, 0, cycle);
-      lastCycle.order++;
+      const cycle = new RoutineCycle(
+        name,
+        "exercise",
+        lastCycle.cycle.order,
+        2
+      );
+      this.cycles.splice(this.cycles.length - 1, 0, {
+        id: this.id++,
+        cycle: cycle,
+        exercises: [],
+      });
+      lastCycle.cycle.order++;
+    },
+    newCycle() {
+      if (this.cycles.length < 10) {
+        this.newDialog = true;
+      } else {
+        this.errorText = "El máximo de ciclos es 10";
+        this.error = true;
+      }
     },
     removeCycle(cycle) {
       let aux = this.cycles.indexOf(cycle);
+      let oldOrder = this.cycles[aux].cycle.order;
       if (aux > -1) this.cycles.splice(aux, 1);
+      this.order--;
+      for (const cycle in this.cycles) {
+        if (this.cycles[cycle].cycle.order > oldOrder) {
+          this.cycles[cycle].cycle.order--;
+        }
+      }
+    },
+    getExercises(agregados, id) {
+      const idx = this.cycles.findIndex((element) => element.id === id);
+      this.cycles[idx].exercises = agregados;
     },
   },
   async beforeMount() {
     if (this.id == null) {
       const start = new RoutineCycle("Entrada en calor", "warmup", 1, 2);
       const end = new RoutineCycle("Enfriamiento", "cooldown", 2, 2);
-      this.cycles.push(start);
-      this.cycles.push(end);
+      this.cycles.push({ id: this.cycleId++, cycle: start, exercises: [] });
+      this.cycles.push({ id: this.cycleId++, cycle: end, exercises: [] });
     } else {
       // store get input id routine etc y guardarlo en cycles
     }

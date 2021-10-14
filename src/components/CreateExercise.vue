@@ -121,8 +121,8 @@ export default {
             //mostrar error
           }
         }
-        await this.$router.push("/ejercicios");
         this.dialogState = false;
+        await this.$router.push("/ejercicios");
       }
     },
   },

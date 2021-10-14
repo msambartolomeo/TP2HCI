@@ -1,38 +1,55 @@
 <template>
   <div>
-    <v-row class="mt-2" v-for="ej in agregados" :key="ej.id">
-      <v-col cols="12" sm="6">
-        <v-text-field
-          label="Ejercicio"
-          outlined
-          append-icon="expand_more"
-          v-model="ej.ejercicio"
-          readonly
-        />
-      </v-col>
-      <v-col cols="5" sm="2" offset-sm="1">
-        <v-text-field outlined label="Series" v-model="ej.series" />
-      </v-col>
-      <v-col cols="5" sm="2">
-        <v-text-field
-          outlined
-          label="Tiempo"
-          hint="Tiempo en segundos"
-          v-model="ej.tiempo"
-        />
-      </v-col>
-      <v-col cols="1">
-        <v-btn
-          icon
-          color="error"
-          class="mt-3"
-          @click="removeEj(ej)"
-          v-show="agregados.length > 1"
-        >
-          <v-icon>close</v-icon>
-        </v-btn>
-      </v-col>
-    </v-row>
+    <template v-for="(ej, index) in agregados">
+      <v-row class="mt-2" :key="index">
+        <v-col cols="12" sm="6">
+          <v-text-field
+            label="Ejercicio"
+            outlined
+            append-icon="expand_more"
+            v-model="ej.ejercicio"
+            readonly
+            :rules="[rules.required]"
+            @click="
+              chooseExercise = true;
+              idx = ej.cycleExercise.order - 1;
+            "
+          />
+          <ChooseExercise
+            v-model="chooseExercise"
+            @ejercicio="setExercise"
+          ></ChooseExercise>
+        </v-col>
+        <v-col cols="5" sm="2" offset-sm="1">
+          <NumberField
+            v-model="ej.cycleExercise.repetitions"
+            label="Series"
+            :min="2"
+            :rules="[rules.required, rules.isNumber]"
+          />
+        </v-col>
+        <v-col cols="5" sm="2">
+          <NumberField
+            v-model="ej.cycleExercise.duration"
+            label="Tiempo"
+            hint="Tiempo en segundos"
+            :min="1"
+            :rules="[rules.required, rules.isNumber]"
+          />
+        </v-col>
+        <v-col cols="1">
+          <v-btn
+            icon
+            color="error"
+            class="mt-3"
+            @click="removeEj(ej)"
+            v-show="agregados.length > 1"
+          >
+            <v-icon>close</v-icon>
+          </v-btn>
+        </v-col>
+      </v-row>
+    </template>
     <v-row>
       <v-btn color="primary" text @click="agregaEjercicio">
         <v-icon>add</v-icon>
@@ -47,39 +64,95 @@
         <v-icon>close</v-icon>
       </v-btn>
     </v-row>
+    <SnackBar v-model="error" error> {{ errorText }} </SnackBar>
   </div>
 </template>
 
 <script>
+import ChooseExercise from "./ChooseExercise";
+import SnackBar from "./SnackBar";
+import rules from "../jsmodules/rules";
+import NumberField from "./NumberField";
 export default {
   name: "CicloEnRutina",
+  components: { NumberField, SnackBar, ChooseExercise },
   data: () => ({
-    id: 1,
-    agregados: [{ id: 1, ejercicio: null, series: null, tiempo: null }],
-    ejerciciosDisponibles: ["Sentadilla", "Abdominales"],
+    order: 1,
+    agregados: [],
+    chooseExercise: false,
+    idx: null,
+    error: false,
+    errorText: "",
+    rules: rules.rules,
   }),
   props: {
     type: {
       type: String,
       required: true,
     },
+    guardado: Boolean,
+    id: Number,
+    callApi: Boolean,
+  },
+  computed: {
+    guardar() {
+      return this.guardado;
+    },
   },
   methods: {
     agregaEjercicio() {
-      this.agregados.push({
-        id: this.id,
-        ejercicio: null,
-        series: null,
-        tiempo: null,
-      });
-      this.id++;
+      if (this.agregados.length < 10) {
+        this.agregados.push({
+          id: null,
+          ejercicio: null,
+          cycleExercise: {
+            order: this.order++,
+            duration: null,
+            repetitions: null,
+          },
+        });
+      } else {
+        this.errorText = "El máximo de ejercicios por ciclo es 10";
+        this.error = true;
+      }
     },
     removeEj(ej) {
       if (this.agregados.length > 1) {
         let aux = this.agregados.indexOf(ej);
+        let oldOrder = this.agregados[aux].cycleExercise.order;
         if (aux > -1) this.agregados.splice(aux, 1);
+        this.order--;
+        for (const ej in this.agregados) {
+          if (this.agregados[ej].cycleExercise.order > oldOrder) {
+            this.agregados[ej].cycleExercise.order--;
+          }
+        }
       }
     },
+    setExercise(exercise) {
+      this.agregados[this.idx].ejercicio = exercise.name;
+      this.agregados[this.idx].id = exercise.id;
+    },
+  },
+  watch: {
+    guardar() {
+      this.$emit("guardar", this.agregados, this.id);
+    },
+  },
+  async beforeMount() {
+    if (!this.callApi) {
+      this.agregados.push({
+        id: null,
+        ejercicio: null,
+        cycleExercise: {
+          order: this.order++,
+          duration: null,
+          repetitions: null,
+        },
+      });
+    } else {
+      // store get input id routine cycle etc y guardarlo en agregados
+    }
   },
 };
 </script>
