@@ -69,9 +69,7 @@ export default {
 
     async deleteRoutines({ getters, commit }, routinesId) {
       await RoutineApi.deleteRoutine(routinesId);
-      alert(routinesId);
       const index = getters.findIndex(routinesId);
-      alert(index);
       if (index === undefined) return;
       commit("splice", index);
     },

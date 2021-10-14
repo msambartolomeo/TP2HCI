@@ -55,7 +55,9 @@
           />
         </v-col>
         <v-col>
-          <v-btn block color="error" @click="confirmedExit = true"  > Eliminar </v-btn>
+          <v-btn block color="error" @click="confirmedExit = true">
+            Eliminar
+          </v-btn>
         </v-col>
       </v-row>
       <v-row><v-divider></v-divider></v-row>

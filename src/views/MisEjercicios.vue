@@ -9,7 +9,11 @@
           <v-btn block color="primary" @click="newExercise = true">
             Crear Ejercicio
           </v-btn>
-          <CreateExercise v-model="newExercise" v-if="newExercise" @snackbar="snackbarHandle"/>
+          <CreateExercise
+            v-model="newExercise"
+            v-if="newExercise"
+            @snackbar="snackbarHandle"
+          />
         </v-col>
       </v-row>
       <v-row>
@@ -20,12 +24,14 @@
     </v-container>
     <SnackBar v-model="snackbar" :error="error">
       {{
-        error
-          ? "Se ha producido un error, intente nuevamente"
-          : successMessage
+        error ? "Se ha producido un error, intente nuevamente" : successMessage
       }}
     </SnackBar>
-    <router-view :key="$route.path" @DeleteClick="deleteButton" @snackbar="snackbarHandle" />
+    <router-view
+      :key="$route.path"
+      @DeleteClick="deleteButton"
+      @snackbar="snackbarHandle"
+    />
   </div>
 </template>
 
@@ -53,7 +59,7 @@ export default {
   methods: {
     ...mapActions("exercise", ["getExercises", "deleteExercise"]),
 
-    snackbarHandle(data){
+    snackbarHandle(data) {
       this.successMessage = "¡El ejercicio se ha guardado con exito!";
       this.error = data;
       this.snackbar = true;

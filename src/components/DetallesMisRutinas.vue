@@ -71,19 +71,29 @@
           >
         </v-col>
         <v-col>
-          <v-btn block color="error" elevation="1" @click="DeleteClick">
+          <v-btn
+            block
+            color="error"
+            elevation="1"
+            @click="confirmedExit = true"
+          >
             Eliminar
           </v-btn>
         </v-col>
       </v-row>
       <v-row><v-divider></v-divider></v-row>
-
       <v-row justify="center">
         <v-col cols="10" class="mt-4">
           <h4>Descripcion</h4>
           <h5>{{ routine.detail }}</h5>
         </v-col>
       </v-row>
+      <ConfirmedExit
+        title="¿seguro que quiere eliminar?"
+        text="Si continua perderá la información."
+        v-model="confirmedExit"
+        @confirm="DeleteClick"
+      />
     </v-container>
   </v-navigation-drawer>
 </template>
@@ -91,9 +101,10 @@
 <script>
 import RatingScore from "./RatingScore";
 import RatingDificultad from "./RatingDificultad";
+import ConfirmedExit from "./ConfirmedExit";
 export default {
   name: "DetallesMisRutinas",
-  components: { RatingDificultad, RatingScore },
+  components: { ConfirmedExit, RatingDificultad, RatingScore },
 
   props: {
     routine: Object,
@@ -102,6 +113,7 @@ export default {
   data() {
     return {
       state: false,
+      confirmedExit: false,
     };
   },
 
