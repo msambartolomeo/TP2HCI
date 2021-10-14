@@ -24,7 +24,9 @@ export default {
   },
   mutations: {
     push(state, routine) {
+      alert();
       state.routines.push(routine);
+      alert();
     },
     replace(state, index, routine) {
       state.routines[index] = routine;
@@ -46,9 +48,9 @@ export default {
     },
   },
   actions: {
-    async create({ getters, commit }, routine) {
+    async create({ state, dispatch }, routine) {
       const result = await RoutineApi.add(routine);
-      if (!getters.findIndex(result)) commit("push", result);
+      dispatch("getRoutinesUser", { page: state.page, size: state.size });
       return result;
     },
     async modify({ getters, commit }, routine) {

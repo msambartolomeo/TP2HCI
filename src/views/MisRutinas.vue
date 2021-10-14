@@ -8,7 +8,11 @@
         <MainButton @click="modifyRoutine = true">
           Crear nueva rutina
         </MainButton>
-        <ModifyRoutine v-model="modifyRoutine" :id="0" v-if="modifyRoutine" />
+        <ModifyRoutine
+          v-model="modifyRoutine"
+          :id="null"
+          v-if="modifyRoutine"
+        />
       </v-col>
     </v-row>
     <v-row>

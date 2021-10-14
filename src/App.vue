@@ -23,13 +23,19 @@ export default {
   computed: mapGetters("user", {
     $isLoggedIn: "isLoggedIn",
   }),
-  methods: mapActions("user", {
-    $getCurrentUser: "getCurrentUser",
-  }),
+  methods: {
+    ...mapActions("user", {
+      $getCurrentUser: "getCurrentUser",
+    }),
+    ...mapActions("categories", {
+      $getCategories: "getCategories",
+    }),
+  },
   async beforeMount() {
     if (this.$isLoggedIn) {
       await this.$getCurrentUser();
     }
+    await this.$getCategories();
     this.flag = true;
   },
 };

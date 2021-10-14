@@ -56,11 +56,11 @@
                     :rules="[rules.required]"
                   />
                   <v-select
-                    :items="categorias"
+                    :items="categoriesName"
                     label="Categoría"
                     outlined
                     append-icon="expand_more"
-                    v-model="categoria"
+                    v-model="categoriaNombre"
                     :rules="[rules.required]"
                   />
                 </v-col>
@@ -184,7 +184,7 @@ import RatingDificultad from "./RatingDificultad";
 import rules from "../jsmodules/rules";
 import CicloEnRutina from "./CicloEnRutina";
 import { Routine, RoutineCycle } from "../../api/routines";
-import { mapActions } from "vuex";
+import { mapActions, mapGetters, mapState } from "vuex";
 import NewCycle from "./NewCycle";
 import ConfirmedExit from "./ConfirmedExit";
 import InputField from "./user/InputField";
@@ -209,15 +209,13 @@ export default {
     },
   },
   data: () => ({
-    routine: null,
     newDialog: false,
     nombre: null,
     descripcion: null,
     dificultad: null,
     valid: true,
     rules: rules.rules,
-    categoria: null,
-    categorias: ["hola", "chau"],
+    categoriaNombre: null,
     isPublic: false,
     cycles: [],
     selected: 1,
@@ -234,6 +232,13 @@ export default {
         this.$emit("input", value);
       },
     },
+    ...mapState("categories", {
+      categories: (state) => state.categories,
+      categoriesName: (state) => state.categoriesName,
+    }),
+    ...mapGetters("categories", {
+      $findIdByName: "findIdByName",
+    }),
   },
   methods: {
     ...mapActions("routines", {
@@ -248,19 +253,18 @@ export default {
     },
     async createRoutine() {
       const routine = new Routine(
-        null,
         this.nombre,
         this.descripcion,
         this.isPublic,
         this.dificultad,
-        new Category(this.categoria)
+        new Category(this.$findIdByName(this.categoriaNombre))
       );
       try {
-        console.log(JSON.stringify(routine));
-        this.routine = await this.$createRoutine(routine);
+        await this.$createRoutine(routine);
       } catch (e) {
         //
       }
+      this.dialog = false;
     },
     addCycle(name) {
       const lastCycle = this.cycles.at(this.cycles.length - 1);

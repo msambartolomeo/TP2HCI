@@ -37,22 +37,11 @@ class RoutineApi {
 }
 
 export class Routine {
-  constructor(id, name, detail, isPublic, difficulty, category) {
-    if (id) this.id = id;
+  constructor(name, detail, isPublic, difficulty, category) {
     this.name = name;
     this.detail = detail;
     this.isPublic = isPublic;
-    switch (difficulty) {
-      case 1:
-        this.difficulty = "rookie";
-        break;
-      case 2:
-        this.difficulty = "intermediate";
-        break;
-      case 3:
-        this.difficulty = "expert";
-        break;
-    }
+    this.difficulty = difficulty;
     this.category = category;
   }
 }

@@ -35,7 +35,7 @@ export default {
   props: {
     title: String,
     score: Number,
-    difficulty: Number,
+    difficulty: String,
     img: String,
   },
 };

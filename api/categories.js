@@ -8,7 +8,7 @@ class CategoryApi {
   }
 
   static async getAll(controller) {
-    return Api.get(CategoryApi.getUrl(), true, controller);
+    return Api.get(CategoryApi.getUrl(), false, controller);
   }
 }
 
