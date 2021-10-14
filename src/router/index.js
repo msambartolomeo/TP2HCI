@@ -1,5 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+import store from "../store";
 
 Vue.use(VueRouter);
 
@@ -24,6 +25,31 @@ const routes = [
     component: () =>
       import(/* webpackChunkName: "Ejercicios" */ "../views/MisEjercicios"),
     meta: { requiresAuth: true },
+    children: [
+      {
+        path: ":slug",
+        name: "DetallesEjercicios",
+        props: true,
+        component: () =>
+          import(
+            /* webpackChunkName: "experience" */ "../components/DetallesEjercicios"
+          ),
+        beforeEnter: (to, from, next) => {
+          if (to.params.exercise) {
+            const exists = store.getters["exercise/findIndex"](
+              to.params.exercise.id
+            );
+            if (exists === -1) {
+              next("/ejercicios");
+            } else {
+              next();
+            }
+          } else {
+            next("/ejercicios");
+          }
+        },
+      },
+    ],
   },
   {
     path: "/rutinas",
