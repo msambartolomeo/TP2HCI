@@ -9,6 +9,7 @@
             append-icon="expand_more"
             v-model="ej.ejercicio"
             readonly
+            :rules="[rules.required]"
             @click="
               chooseExercise = true;
               idx = ej.cycleExercise.order - 1;
@@ -20,18 +21,20 @@
           ></ChooseExercise>
         </v-col>
         <v-col cols="5" sm="2" offset-sm="1">
-          <v-text-field
-            outlined
-            label="Series"
+          <NumberField
             v-model="ej.cycleExercise.repetitions"
+            label="Series"
+            :min="2"
+            :rules="[rules.required, rules.isNumber]"
           />
         </v-col>
         <v-col cols="5" sm="2">
-          <v-text-field
-            outlined
+          <NumberField
+            v-model="ej.cycleExercise.duration"
             label="Tiempo"
             hint="Tiempo en segundos"
-            v-model="ej.cycleExercise.duration"
+            :min="1"
+            :rules="[rules.required, rules.isNumber]"
           />
         </v-col>
         <v-col cols="1">
@@ -61,37 +64,57 @@
         <v-icon>close</v-icon>
       </v-btn>
     </v-row>
+    <SnackBar v-model="error" error> {{ errorText }} </SnackBar>
   </div>
 </template>
 
 <script>
 import ChooseExercise from "./ChooseExercise";
+import SnackBar from "./SnackBar";
+import rules from "../jsmodules/rules";
+import NumberField from "./NumberField";
 export default {
   name: "CicloEnRutina",
-  components: { ChooseExercise },
+  components: { NumberField, SnackBar, ChooseExercise },
   data: () => ({
     order: 1,
     agregados: [],
     chooseExercise: false,
     idx: null,
+    error: false,
+    errorText: "",
+    rules: rules.rules,
   }),
   props: {
     type: {
       type: String,
       required: true,
     },
+    guardado: Boolean,
+    id: Number,
+    callApi: Boolean,
+  },
+  computed: {
+    guardar() {
+      return this.guardado;
+    },
   },
   methods: {
     agregaEjercicio() {
-      this.agregados.push({
-        id: null,
-        ejercicio: null,
-        cycleExercise: {
-          order: this.order++,
-          duration: null,
-          repetitions: null,
-        },
-      });
+      if (this.agregados.length < 10) {
+        this.agregados.push({
+          id: null,
+          ejercicio: null,
+          cycleExercise: {
+            order: this.order++,
+            duration: null,
+            repetitions: null,
+          },
+        });
+      } else {
+        this.errorText = "El máximo de ejercicios por ciclo es 10";
+        this.error = true;
+      }
     },
     removeEj(ej) {
       if (this.agregados.length > 1) {
@@ -111,8 +134,13 @@ export default {
       this.agregados[this.idx].id = exercise.id;
     },
   },
+  watch: {
+    guardar() {
+      this.$emit("guardar", this.agregados, this.id);
+    },
+  },
   async beforeMount() {
-    if (this.id == null) {
+    if (!this.callApi) {
       this.agregados.push({
         id: null,
         ejercicio: null,

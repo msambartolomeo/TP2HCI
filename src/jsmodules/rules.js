@@ -8,6 +8,8 @@ export default {
     length50: (v) => (v && v.length <= 50) || this.getLengthMsg(50),
     length200: (v) => (v && v.length <= 200) || this.getLengthMsg(200),
     length255: (v) => (v && v.length <= 255) || this.getLengthMsg(255),
+    isNumber: (v) => (v && v > 0 && v < 1000) || "Solamente numeros positivos",
+    mayora2: (v) => (v && v > 1) || "Minimo 2",
   },
   methods: {
     getLengthMsg(length) {
