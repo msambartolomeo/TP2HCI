@@ -9,7 +9,7 @@
           <v-btn block color="primary" @click="newExercise = true">
             Crear Ejercicio
           </v-btn>
-          <CreateExercise v-model="newExercise" v-if="newExercise" />
+          <CreateExercise v-model="newExercise" v-if="newExercise" @snackbar="snackbarHandle"/>
         </v-col>
       </v-row>
       <v-row>
@@ -18,13 +18,21 @@
         </v-col>
       </v-row>
     </v-container>
-    <router-view :key="$route.path" @DeleteClick="deleteButton" />
+    <SnackBar v-model="snackbar" :error="error">
+      {{
+        error
+          ? "Se ha producido un error, intente nuevamente"
+          : successMessage
+      }}
+    </SnackBar>
+    <router-view :key="$route.path" @DeleteClick="deleteButton" @snackbar="snackbarHandle" />
   </div>
 </template>
 
 <script>
 import Exercise from "../components/Exercise";
 import CreateExercise from "../components/CreateExercise";
+import SnackBar from "../components/SnackBar";
 import { mapActions, mapState } from "vuex";
 
 export default {
@@ -32,18 +40,35 @@ export default {
   components: {
     Exercise,
     CreateExercise,
+    SnackBar,
   },
   data() {
     return {
       newExercise: false,
+      snackbar: false,
+      error: false,
+      successMessage: null,
     };
   },
   methods: {
     ...mapActions("exercise", ["getExercises", "deleteExercise"]),
 
-    deleteButton(id) {
-      //preguntar si esta seguro
-      this.deleteExercise(id);
+    snackbarHandle(data){
+      this.successMessage = "¡El ejercicio se ha guardado con exito!";
+      this.error = data;
+      this.snackbar = true;
+    },
+
+    async deleteButton(id) {
+      this.successMessage = "¡El ejercicio se ha eliminado con exito!";
+      try {
+        await this.deleteExercise(id);
+        this.error = false;
+      } catch (e) {
+        this.error = true;
+      } finally {
+        this.snackbar = true;
+      }
     },
   },
   computed: {

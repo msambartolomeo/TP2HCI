@@ -51,10 +51,11 @@
             v-model="editExercise"
             v-if="editExercise"
             :exercise="exercise"
+            @snackbar="snackbar"
           />
         </v-col>
         <v-col>
-          <v-btn block color="error" @click="DeleteClick"> Eliminar </v-btn>
+          <v-btn block color="error" @click="confirmedExit = true"  > Eliminar </v-btn>
         </v-col>
       </v-row>
       <v-row><v-divider></v-divider></v-row>
@@ -64,15 +65,22 @@
           <h5>{{ exercise.detail }}</h5>
         </v-col>
       </v-row>
+      <ConfirmedExit
+        title="¿seguro que quiere eliminar?"
+        text="Si continua perderá la información."
+        v-model="confirmedExit"
+        @confirm="DeleteClick"
+      />
     </v-container>
   </v-navigation-drawer>
 </template>
 
 <script>
 import CreateExercise from "./CreateExercise";
+import ConfirmedExit from "./ConfirmedExit";
 export default {
   name: "DetallesEjercicios",
-  components: { CreateExercise },
+  components: { ConfirmedExit, CreateExercise },
   props: {
     exercise: Object,
   },
@@ -81,6 +89,7 @@ export default {
       state: false,
       editExercise: false,
       imgError: false,
+      confirmedExit: false,
     };
   },
   computed: {
@@ -97,6 +106,10 @@ export default {
     },
   },
   methods: {
+    snackbar(data) {
+      this.$emit("snackbar", data);
+    },
+
     DeleteClick() {
       this.$emit("DeleteClick", this.exercise.id);
       this.state = false;

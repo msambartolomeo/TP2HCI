@@ -105,7 +105,7 @@
             </v-col>
           </v-row>
         </v-col>
-      </v-row>
+      </v-row>º
       <SnackBar v-model="snackbar" :error="error">
         {{
           error

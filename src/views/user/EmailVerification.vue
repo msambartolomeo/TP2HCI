@@ -66,7 +66,7 @@ export default {
         try {
           const code = this.code;
           await this.$verifyEmail({ code });
-          await this.$router.push("/login");
+          await this.$router.push("/");
         } catch (e) {
           this.apiError = true;
           this.$refs.form.validate();
