@@ -1,6 +1,6 @@
 <template>
   <div>
-      <v-container fluid class="container">
+    <v-container fluid class="container">
       <v-row>
         <v-col>
           <v-row justify="center">
@@ -19,19 +19,20 @@
               xl="2"
             >
               <Routine
-                :title="routine.name"
+                :routine="routine"
+                :name="routine.name"
                 :difficulty="1"
                 :score="routine.score"
-                @click="drawer = true"
               />
             </v-col>
           </v-row>
         </v-col>
       </v-row>
     </v-container>
-    <v-navigation-drawer v-model="drawer" absolute width="400" right>
-      <DetallesRutinas @click="drawer = false" />
-    </v-navigation-drawer>
+    <router-view :key="$route.path" @DeleteClick="deleteButton" />
+    <!--    <v-navigation-drawer v-model="drawer" absolute width="400" right>-->
+    <!--      <DetallesRutinas :editable="false" @click="drawer = false" />-->
+    <!--    </v-navigation-drawer>-->
     <v-footer padless>
       <v-col class="text-center" cols="12">
         <v-pagination
@@ -46,14 +47,14 @@
 
 <script>
 import Routine from "@/components/Routine";
-import DetallesRutinas from "../components/DetallesRutinas";
+// import DetallesRutinas from "../components/DetallesRutinas";
 import { mapActions, mapGetters } from "vuex";
 
 const DEFAULT_PAGE_SIZE = 12;
 export default {
   name: "Inicio",
   components: {
-    DetallesRutinas,
+    // DetallesRutinas,
     Routine,
   },
   data: () => ({
@@ -70,6 +71,7 @@ export default {
     ...mapActions("routines", {
       $getRoutinesPage: "getRoutinesPage",
     }),
+
     async updateRoutines() {
       await this.$getRoutinesPage({
         page: this.pagination - 1,
@@ -83,9 +85,8 @@ export default {
 };
 </script>
 
-
 <style scoped>
 .container {
-  height: 80vh;
+  min-height: 80vh;
 }
 </style>

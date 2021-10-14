@@ -1,5 +1,11 @@
 <template>
-  <div>
+  <v-navigation-drawer
+    v-model="drawerState"
+    absolute
+    temporary
+    width="400"
+    right
+  >
     <v-container fluid>
       <v-row>
         <v-img :src="require('../assets/routine picture.jpg')" />
@@ -10,19 +16,20 @@
           fab
           small
           color="primary"
-          @click="$emit('click')"
+          @click="state = false"
         >
           <v-icon dark> mdi-close </v-icon>
         </v-btn>
       </v-row>
+
       <v-row justify="center" class="mt-2" dense>
-        <h2>Detalle de Rutina</h2>
+        <h2>{{ routine.name }}</h2>
       </v-row>
 
       <v-row><v-divider></v-divider></v-row>
 
       <v-row justify="center" class="mb-4">
-        <v-col class="mt-4" cols="5">
+        <v-col class="mt-4 mb-2" cols="5">
           <v-row align="center" justify="star">
             <h5>Creador: juancito</h5>
           </v-row>
@@ -48,21 +55,33 @@
         </v-col>
       </v-row>
 
-      <v-row><v-divider></v-divider></v-row>
+      <div v-show="editable">
+        <v-row><v-divider></v-divider></v-row>
+        <v-row>
+          <v-col>
+            <v-btn
+              block
+              color="primary"
+              text
+              elevation="1"
+              @click="DeleteClick"
+            >
+              Editar</v-btn
+            >
+          </v-col>
+          <v-col>
+            <v-btn block color="error" text elevation="1"> Eliminar </v-btn>
+          </v-col>
+        </v-row>
+        <v-row><v-divider></v-divider></v-row>
+      </div>
 
-      <v-row>
-        <v-col>
-          <v-btn block color="primary" text elevation="1"> Editar</v-btn>
-        </v-col>
-        <v-col>
-          <v-btn block color="error" text elevation="1"> Eliminar </v-btn>
-        </v-col>
-      </v-row>
-
-      <v-row><v-divider></v-divider></v-row>
+      <div v-show="!editable">
+        <v-row><v-divider></v-divider></v-row>
+      </div>
 
       <v-row justify="center">
-        <v-col cols="10">
+        <v-col cols="10" class="mt-4">
           <h4>Descripcion</h4>
           <h5>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed id
@@ -73,7 +92,7 @@
         </v-col>
       </v-row>
     </v-container>
-  </div>
+  </v-navigation-drawer>
 </template>
 
 <script>
@@ -82,6 +101,42 @@ import RatingDificultad from "./RatingDificultad";
 export default {
   name: "DetallesRutinas",
   components: { RatingDificultad, RatingScore },
+
+  props: {
+    routine: Object,
+    editable: Boolean,
+  },
+
+  data() {
+    return {
+      state: false,
+    };
+  },
+
+  computed: {
+    drawerState: {
+      get() {
+        return this.state;
+      },
+      set(value) {
+        this.state = value;
+        if (!value) {
+          setTimeout(() => this.$router.push("/"), 100);
+        }
+      },
+    },
+  },
+
+  methods: {
+    DeleteClick() {
+      this.$emit("DeleteClick");
+      this.state = false;
+    },
+  },
+
+  mounted() {
+    setTimeout(() => (this.state = true), 1);
+  },
 };
 </script>
 

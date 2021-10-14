@@ -7,7 +7,7 @@
         </v-col>
         <v-col sm="4" md="2" cols="12" class="pt-md-4">
           <MainButton @click="modifyRoutine = true">
-            Crear nueva rutina
+            Crear Rutina
           </MainButton>
           <ModifyRoutine
             v-model="modifyRoutine"
@@ -17,20 +17,12 @@
         </v-col>
       </v-row>
       <v-row>
-        <v-col
-          v-for="routine in this.$getRoutines"
-          :key="routine.id"
-          md="3"
-          xl="2"
-        >
-          <Routine
-            :title="routine.name"
-            :difficulty="routine.difficulty"
-            :score="routine.score"
-          />
+        <v-col v-for="routine in $getRoutines" :key="routine.id" md="3" xl="2">
+          <Routine :routine="routine" />
         </v-col>
       </v-row>
     </v-container>
+    <router-view :key="$route.path" @DeleteClick="deleteButton" />
     <v-footer padless>
       <v-col class="text-center" cols="12">
         <v-pagination v-model="pagination" :length="$getMaxPage"></v-pagination>
@@ -53,32 +45,44 @@ export default {
     ModifyRoutine,
     Routine,
   },
+
   data: () => ({
     pagination: 1,
     modifyRoutine: false,
     routineId: null,
+    borrar: null,
   }),
+
   computed: {
     ...mapGetters("routines", {
       $getMaxPage: "getMaxPage",
       $getRoutines: "getRoutines",
     }),
   },
+
   methods: {
-    launchNewRoutine() {
-      this.id = 0;
-      this.modifyRoutine = true;
-    },
     ...mapActions("routines", {
       $getRoutinesPage: "getRoutinesUser",
     }),
+
+    // launchNewRoutine() {
+    //   this.id = 0;
+    //   this.modifyRoutine = true;
+    // },
+
     async updateRoutines() {
       await this.$getRoutinesPage({
         page: this.pagination - 1,
         size: DEFAULT_PAGE_SIZE,
       });
     },
+
+    deleteButton(id) {
+      //preguntar si esta seguro
+      this.borrar = id;
+    },
   },
+
   async beforeMount() {
     await this.$getRoutinesPage({ page: 0, size: DEFAULT_PAGE_SIZE });
   },
@@ -87,6 +91,6 @@ export default {
 
 <style scoped>
 .container {
-  height: 80vh;
+  min-height: 80vh;
 }
 </style>

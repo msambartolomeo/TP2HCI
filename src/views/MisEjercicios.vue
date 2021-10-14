@@ -19,11 +19,6 @@
       </v-row>
     </v-container>
     <router-view :key="$route.path" @DeleteClick="deleteButton" />
-    <v-footer>
-      <v-col class="text-center" cols="12">
-        <v-pagination v-model="pagination" :length="$getMaxPage"></v-pagination>
-      </v-col>
-    </v-footer>
   </div>
 </template>
 

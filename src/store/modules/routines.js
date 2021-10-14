@@ -11,8 +11,8 @@ export default {
   },
   getters: {
     findIndex(state) {
-      return (routine) => {
-        return state.routines.findIndex((item) => (item.id = routine.id));
+      return (routineId) => {
+        return state.routines.findIndex((item) => (item.id = routineId));
       };
     },
     getMaxPage(state) {
@@ -24,9 +24,7 @@ export default {
   },
   mutations: {
     push(state, routine) {
-      alert();
       state.routines.push(routine);
-      alert();
     },
     replace(state, index, routine) {
       state.routines[index] = routine;
