@@ -19,14 +19,24 @@
       </v-row>
     </v-container>
     <router-view :key="$route.path" @DeleteClick="deleteButton" />
+    <v-row justify="center" align="end">
+      <v-col cols="8">
+        <v-pagination
+          v-model="pagination"
+          :length="getMaxPage"
+          @input="updateExercises"
+        />
+      </v-col>
+    </v-row>
   </div>
 </template>
 
 <script>
 import Exercise from "../components/Exercise";
 import CreateExercise from "../components/CreateExercise";
-import { mapActions, mapState } from "vuex";
+import {mapActions, mapGetters, mapState} from "vuex";
 
+const DEFAULT_EXERCISES_SIZE = 12;
 export default {
   name: "MisEjercicios",
   components: {
@@ -35,24 +45,37 @@ export default {
   },
   data() {
     return {
+      pagination: 1,
       newExercise: false,
     };
   },
   methods: {
-    ...mapActions("exercise", ["getExercises", "deleteExercise"]),
+    ...mapActions("exercise", {
+      $deleteExcersice: "deleteExercise",
+      $getExercisesPage: "getExercises",
+    }),
 
     deleteButton(id) {
       //preguntar si esta seguro
       this.deleteExercise(id);
+    },
+    async updateExercises() {
+      await this.$getExercisesPage({
+        page: this.pagination - 1,
+        size: DEFAULT_EXERCISES_SIZE,
+      });
     },
   },
   computed: {
     ...mapState("exercise", {
       exercises: (state) => state.exercises,
     }),
+    ...mapGetters("exercise", {
+      getMaxPage: "getMaxPage",
+    }),
   },
-  beforeMount() {
-    this.getExercises();
+  async beforeMount() {
+    await this.$getExercisesPage({ page: 0, size: DEFAULT_EXERCISES_SIZE });
   },
 };
 </script>

@@ -4,6 +4,9 @@ export default {
   namespaced: true,
   state: {
     exercises: [],
+    totalCount: null,
+    page: null,
+    size: null,
   },
 
   getters: {
@@ -13,6 +16,9 @@ export default {
           (element) => element.id === exerciseId
         );
       };
+    },
+    getMaxPage(state) {
+      return Math.ceil(state.totalCount / state.size);
     },
   },
 
@@ -28,6 +34,11 @@ export default {
     },
     replaceAll(state, result) {
       state.exercises = result.content;
+    },
+    setPagination(state, { page, size, totalCount }) {
+      state.page = page;
+      state.size = size;
+      state.totalCount = totalCount;
     },
   },
 
@@ -54,9 +65,14 @@ export default {
       return result;
     },
 
-    async getExercises({ commit }, controller) {
-      const result = await ExerciseApi.getExercises(controller);
+    async getExercises({ commit }, { page, size, controller }) {
+      const result = await ExerciseApi.getExercises(page, size, controller);
       commit("replaceAll", result);
+      commit("setPagination", {
+        page: page,
+        size: size,
+        totalCount: result.totalCount,
+      });
       return result;
     },
 
