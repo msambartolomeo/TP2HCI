@@ -5,10 +5,10 @@
     <v-card-text>
       <v-row>
         <v-col align="center">
-          <RatingScore :readonly="true" :score="routine.score" :size="20" />
+          <RatingScore readonly v-model="routine.score" :size="20" />
         </v-col>
         <v-col align="center">
-          <RatingDificultad :readonly="true" :difficulty="2" :size="20" />
+          <RatingDificultad readonly v-model="routine.difficulty" :size="20" />
         </v-col>
       </v-row>
     </v-card-text>
@@ -18,8 +18,8 @@
         color="teal accent-4"
         text
         :to="{
-          name: 'DetallesRutinas',
-          params: { routine: routine, editable: true, slug: routine.name },
+          name: this.owner ? 'DetallesMisRutinas' : 'DetallesRutinas',
+          params: { routine: routine, slug: routine.name },
         }"
       >
         Detalles
@@ -36,6 +36,10 @@ export default {
   components: { RatingDificultad, RatingScore },
   props: {
     routine: Object,
+    owner: {
+      type: Boolean,
+      default: false,
+    },
   },
 };
 </script>

@@ -15,7 +15,7 @@
 
     <v-spacer></v-spacer>
 
-    <v-btn text to="/"> Inicio </v-btn>
+    <v-btn text to="/inicio"> Inicio </v-btn>
     <v-btn text to="/rutinas" class="ml-2"> Mis Rutinas </v-btn>
     <v-btn text to="/ejercicios" class="ml-2"> Mis Ejercicios </v-btn>
 

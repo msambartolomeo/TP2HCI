@@ -6,9 +6,7 @@
           <v-text-field solo label="Buscar" prepend-inner-icon="search" />
         </v-col>
         <v-col sm="4" md="2" cols="12" class="pt-md-4">
-          <MainButton @click="modifyRoutine = true">
-            Crear Rutina
-          </MainButton>
+          <MainButton @click="modifyRoutine = true"> Crear Rutina </MainButton>
           <ModifyRoutine
             v-model="modifyRoutine"
             :id="null"
@@ -18,7 +16,7 @@
       </v-row>
       <v-row>
         <v-col v-for="routine in $getRoutines" :key="routine.id" md="3" xl="2">
-          <Routine :routine="routine" />
+          <Routine :routine="routine" owner />
         </v-col>
       </v-row>
     </v-container>
@@ -64,11 +62,6 @@ export default {
     ...mapActions("routines", {
       $getRoutinesPage: "getRoutinesUser",
     }),
-
-    // launchNewRoutine() {
-    //   this.id = 0;
-    //   this.modifyRoutine = true;
-    // },
 
     async updateRoutines() {
       await this.$getRoutinesPage({

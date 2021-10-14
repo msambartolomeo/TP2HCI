@@ -18,21 +18,13 @@
               md="3"
               xl="2"
             >
-              <Routine
-                :routine="routine"
-                :name="routine.name"
-                :difficulty="1"
-                :score="routine.score"
-              />
+              <Routine :routine="routine" />
             </v-col>
           </v-row>
         </v-col>
       </v-row>
     </v-container>
-    <router-view :key="$route.path" @DeleteClick="deleteButton" />
-    <!--    <v-navigation-drawer v-model="drawer" absolute width="400" right>-->
-    <!--      <DetallesRutinas :editable="false" @click="drawer = false" />-->
-    <!--    </v-navigation-drawer>-->
+    <router-view :key="$route.path" />
     <v-footer padless>
       <v-col class="text-center" cols="12">
         <v-pagination
@@ -47,26 +39,27 @@
 
 <script>
 import Routine from "@/components/Routine";
-// import DetallesRutinas from "../components/DetallesRutinas";
 import { mapActions, mapGetters } from "vuex";
 
 const DEFAULT_PAGE_SIZE = 12;
 export default {
   name: "Inicio",
   components: {
-    // DetallesRutinas,
     Routine,
   },
+
   data: () => ({
     pagination: 1,
     drawer: false,
   }),
+
   computed: {
     ...mapGetters("routines", {
       $getMaxPage: "getMaxPage",
       $getRoutines: "getRoutines",
     }),
   },
+
   methods: {
     ...mapActions("routines", {
       $getRoutinesPage: "getRoutinesPage",

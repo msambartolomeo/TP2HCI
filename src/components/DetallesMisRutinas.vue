@@ -37,9 +37,6 @@
 
       <v-row justify="center" class="mb-4">
         <v-col class="mt-4 mb-2" cols="5">
-          <v-row align="center" justify="star">
-            <h5>Creador: {{ routine.user.username }}</h5>
-          </v-row>
           <v-row align="center" justify="start">
             <h5 class="mr-2">Dificultad:</h5>
             <RatingDificultad
@@ -47,6 +44,12 @@
               v-model="routine.difficulty"
               :size="20"
             />
+          </v-row>
+          <v-row align="center" justify="start">
+            <h5>{{ routine.isPublic ? "Privada" : "No es privada" }}</h5>
+            <v-icon small class="ml-2">
+              {{ routine.isPublic ? "https" : "lock_open" }}
+            </v-icon>
           </v-row>
         </v-col>
         <v-col class="mt-4 mb-2" cols="5">
@@ -59,7 +62,20 @@
           </v-row>
         </v-col>
       </v-row>
+
       <v-row><v-divider></v-divider></v-row>
+      <v-row>
+        <v-col>
+          <v-btn block color="primary" text elevation="1" @click="DeleteClick">
+            Editar</v-btn
+          >
+        </v-col>
+        <v-col>
+          <v-btn block color="error" text elevation="1"> Eliminar </v-btn>
+        </v-col>
+      </v-row>
+      <v-row><v-divider></v-divider></v-row>
+
       <v-row justify="center">
         <v-col cols="10" class="mt-4">
           <h4>Descripcion</h4>
@@ -74,7 +90,7 @@
 import RatingScore from "./RatingScore";
 import RatingDificultad from "./RatingDificultad";
 export default {
-  name: "DetallesRutinas",
+  name: "DetallesMisRutinas",
   components: { RatingDificultad, RatingScore },
 
   props: {
@@ -95,7 +111,7 @@ export default {
       set(value) {
         this.state = value;
         if (!value) {
-          setTimeout(() => this.$router.push("/inicio"), 100);
+          setTimeout(() => this.$router.push("/rutinas"), 100);
         }
       },
     },
