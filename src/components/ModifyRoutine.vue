@@ -248,8 +248,9 @@ export default {
       $getRoutines: "getRoutines",
     }),
     verifyData() {
-      this.$refs.form.validate();
-      this.createRoutine();
+      if (this.$refs.form.validate()) {
+        this.createRoutine();
+      }
     },
     async createRoutine() {
       const routine = new Routine(
