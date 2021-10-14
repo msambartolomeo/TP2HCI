@@ -63,6 +63,7 @@ export default {
     }),
 
     async updateRoutines() {
+
       await this.$getRoutinesPage({
         page: this.pagination - 1,
         size: DEFAULT_PAGE_SIZE,
