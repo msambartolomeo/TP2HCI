@@ -34,7 +34,7 @@
 <script>
 import Exercise from "../components/Exercise";
 import CreateExercise from "../components/CreateExercise";
-import {mapActions, mapGetters, mapState} from "vuex";
+import { mapActions, mapGetters, mapState } from "vuex";
 
 const DEFAULT_EXERCISES_SIZE = 12;
 export default {

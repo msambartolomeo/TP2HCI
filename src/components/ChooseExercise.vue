@@ -14,15 +14,25 @@
             <ExerciseToChose :exercise="exercise" @click="chosen" />
           </v-col>
         </v-row>
+        <v-row justify="center" align="end">
+          <v-col cols="8">
+            <v-pagination
+              v-model="pagination"
+              :length="getMaxPage"
+              @input="updateExercises"
+            />
+          </v-col>
+        </v-row>
       </v-container>
     </v-card>
   </v-dialog>
 </template>
 
 <script>
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapGetters, mapState } from "vuex";
 import ExerciseToChose from "./ExerciseToChose";
 
+const DEFAULT_EXERCISES_SIZE = 12;
 export default {
   name: "ChooseExercise",
   components: { ExerciseToChose },
@@ -31,19 +41,30 @@ export default {
   },
   data() {
     return {
-      newExercise: false,
+      pagination: 1,
     };
   },
   methods: {
-    ...mapActions("exercise", ["getExercises"]),
+    ...mapActions("exercise", {
+      $getExercisesPage: "getExercises",
+    }),
     chosen(exercise) {
       this.$emit("ejercicio", exercise);
       this.dialog = false;
+    },
+    async updateExercises() {
+      await this.$getExercisesPage({
+        page: this.pagination - 1,
+        size: DEFAULT_EXERCISES_SIZE,
+      });
     },
   },
   computed: {
     ...mapState("exercise", {
       exercises: (state) => state.exercises,
+    }),
+    ...mapGetters("exercise", {
+      getMaxPage: "getMaxPage",
     }),
     dialog: {
       get() {
@@ -55,7 +76,7 @@ export default {
     },
   },
   async beforeMount() {
-    await this.getExercises();
+    await this.$getExercisesPage({ page: 0, size: DEFAULT_EXERCISES_SIZE });
   },
 };
 </script>

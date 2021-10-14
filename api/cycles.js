@@ -12,10 +12,6 @@ class CycleApi {
     return await Api.get(CycleApi.getUrl(routineID), true, cycle, controller);
   }
   static async delete(routineID, cycleID, controller) {
-    return await Api.get(
-      CycleApi.getUrl(routineID, cycleID),
-      true,
-      controller
-    );
+    return await Api.get(CycleApi.getUrl(routineID, cycleID), true, controller);
   }
 }
