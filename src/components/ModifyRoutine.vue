@@ -189,6 +189,7 @@ import NewCycle from "./NewCycle";
 import ConfirmedExit from "./ConfirmedExit";
 import InputField from "./user/InputField";
 import TextButton from "./TextButton";
+import { Category } from "../../api/categories";
 
 export default {
   name: "ModifyRoutine",
@@ -243,17 +244,19 @@ export default {
     }),
     verifyData() {
       this.$refs.form.validate();
+      this.createRoutine();
     },
     async createRoutine() {
       const routine = new Routine(
         null,
         this.nombre,
         this.descripcion,
-        false,
+        this.isPublic,
         this.dificultad,
-        this.categoria
+        new Category(this.categoria)
       );
       try {
+        console.log(JSON.stringify(routine));
         this.routine = await this.$createRoutine(routine);
       } catch (e) {
         //

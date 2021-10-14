@@ -12,10 +12,15 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col v-for="routine in $getRoutines" :key="routine.name" md="3" xl="2">
+      <v-col
+        v-for="routine in this.$getRoutines"
+        :key="routine.id"
+        md="3"
+        xl="2"
+      >
         <Routine
           :title="routine.name"
-          :difficulty="switchDifficulty(routine.difficulty)"
+          :difficulty="routine.difficulty"
           :score="routine.score"
         />
       </v-col>
@@ -31,8 +36,8 @@
 <script>
 import Routine from "../components/Routine";
 import ModifyRoutine from "../components/ModifyRoutine";
-import { mapActions, mapGetters, mapState } from "vuex";
 import MainButton from "../components/MainButton";
+import { mapActions, mapGetters } from "vuex";
 
 const DEFAULT_PAGE_SIZE = 12;
 export default {
@@ -43,7 +48,7 @@ export default {
     Routine,
   },
   data: () => ({
-    pagination: null,
+    pagination: 1,
     modifyRoutine: false,
     routineId: null,
   }),
@@ -53,30 +58,19 @@ export default {
       $getRoutines: "getRoutines",
     }),
   },
-  ...mapState("routines", {
-    $routines: (state) => state.routines,
-    $totalCount: (state) => state.totalCount,
-    $page: (state) => state.page,
-    $size: (state) => state.size,
-  }),
   methods: {
     launchNewRoutine() {
       this.id = 0;
       this.modifyRoutine = true;
     },
     ...mapActions("routines", {
-      $getRoutines: "getRoutines",
-      $getRoutinesPage: "getRoutinesPage",
+      $getRoutinesPage: "getRoutinesUser",
     }),
-    switchDifficulty(diff) {
-      switch (diff) {
-        case "rookie":
-          return 1;
-        case "intermediate":
-          return 2;
-        case "expert":
-          return 3;
-      }
+    async updateRoutines() {
+      await this.$getRoutinesPage({
+        page: this.pagination - 1,
+        size: DEFAULT_PAGE_SIZE,
+      });
     },
   },
   async beforeMount() {

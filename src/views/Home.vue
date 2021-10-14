@@ -13,14 +13,14 @@
           </v-row>
           <v-row>
             <v-col
-              v-for="routine in routines"
-              :key="routine.title"
+              v-for="routine in $getRoutines"
+              :key="routine.id"
               md="3"
               xl="2"
             >
               <Routine
-                :title="routine.title"
-                :difficulty="routine.diffi"
+                :title="routine.name"
+                :difficulty="1"
                 :score="routine.score"
                 @click="drawer = true"
               />
@@ -32,34 +32,53 @@
     <v-navigation-drawer v-model="drawer" absolute width="400" right>
       <DetallesRutinas @click="drawer = false" />
     </v-navigation-drawer>
+    <v-row justify="center" align="end">
+      <v-col cols="8">
+        <v-pagination
+          v-model="pagination"
+          :length="$getMaxPage"
+          @input="updateRoutines"
+        ></v-pagination>
+      </v-col>
+    </v-row>
   </div>
 </template>
 
 <script>
 import Routine from "@/components/Routine";
 import DetallesRutinas from "../components/DetallesRutinas";
+import { mapActions, mapGetters } from "vuex";
 
+const DEFAULT_PAGE_SIZE = 12;
 export default {
   name: "Inicio",
   components: {
     DetallesRutinas,
     Routine,
   },
-
   data: () => ({
-    routines: [
-      { tile: "Rutina A", diffi: 1, score: 3 },
-      { tile: "Rutina B", diffi: 1, score: 3 },
-      { tile: "Rutina C", diffi: 3, score: 3 },
-      { tile: "Rutina D", diffi: 2, score: 3 },
-      { tile: "Rutina E", diffi: 2, score: 2 },
-      { tile: "Rutina F", diffi: 1, score: 5 },
-      { tile: "Rutina G", diffi: 1, score: 2 },
-      { tile: "Rutina H", diffi: 2, score: 1 },
-      { tile: "Rutina I", diffi: 1, score: 4 },
-      { tile: "Rutina J", diffi: 2, score: 3 },
-    ],
+    pagination: 1,
     drawer: false,
   }),
+  computed: {
+    ...mapGetters("routines", {
+      $getMaxPage: "getMaxPage",
+      $getRoutines: "getRoutines",
+    }),
+  },
+  methods: {
+    ...mapActions("routines", {
+      $getRoutinesPage: "getRoutinesPage",
+    }),
+    async updateRoutines() {
+      await this.$getRoutinesPage({
+        page: this.pagination - 1,
+        size: DEFAULT_PAGE_SIZE,
+      });
+    },
+  },
+  async beforeMount() {
+    await this.$getRoutinesPage({ page: 0, size: DEFAULT_PAGE_SIZE });
+  },
 };
 </script>
