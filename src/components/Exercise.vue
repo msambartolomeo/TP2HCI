@@ -30,7 +30,6 @@ export default {
       id: Number,
       name: String,
       detail: String,
-      type: String,
     },
   },
 };

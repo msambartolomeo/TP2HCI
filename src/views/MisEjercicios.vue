@@ -6,7 +6,7 @@
           <v-text-field solo label="Buscar" prepend-inner-icon="search" />
         </v-col>
         <v-col sm="4" md="2" cols="12" class="pt-md-4">
-          <NuevoEjercicio />
+          <CreateExercise />
         </v-col>
       </v-row>
       <v-row>
@@ -26,7 +26,6 @@
         :key="$route.path"
         @closeClick="closeDrawer"
         @DeleteClick="deleteButton"
-        @ModifyClick="modifyExercise"
       >
       </router-view>
     </v-navigation-drawer>
@@ -35,7 +34,7 @@
 
 <script>
 import Exercise from "@/components/Exercise";
-import NuevoEjercicio from "@/components/NuevoEjercicio";
+import CreateExercise from "@/components/CreateExercise";
 import { mapActions, mapState } from "vuex";
 
 export default {
@@ -43,12 +42,11 @@ export default {
 
   components: {
     Exercise,
-    NuevoEjercicio,
+    CreateExercise,
   },
 
   data: () => ({
     drawerState: false,
-    borrar: 0,
   }),
 
   methods: {
@@ -67,11 +65,6 @@ export default {
       //preguntar si esta seguro
       this.deleteExercise(id);
       this.closeDrawer();
-    },
-
-    modifyExercise(id) {
-      this.borrar = id;
-      alert(`modificar`);
     },
   },
 

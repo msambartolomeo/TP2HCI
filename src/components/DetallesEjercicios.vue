@@ -10,7 +10,7 @@
           fab
           small
           color="primary"
-          @click="$emit('closeClick')"
+          @click="closeDrawer"
         >
           <v-icon dark> mdi-close </v-icon>
         </v-btn>
@@ -21,12 +21,10 @@
       <v-row><v-divider></v-divider></v-row>
       <v-row>
         <v-col>
-          <v-btn block color="primary" text elevation="1" @click="handleModify">
-            Editar</v-btn
-          >
+          <EditExercias :exercise="exercise" @closeDrawer="closeDrawer" />
         </v-col>
         <v-col>
-          <v-btn block color="error" text elevation="1" @click="handleDelete">
+          <v-btn block color="error" text elevation="1" @click="DeleteClick">
             Eliminar
           </v-btn>
         </v-col>
@@ -43,26 +41,27 @@
 </template>
 
 <script>
+import EditExercias from "./EditExercias";
 export default {
   name: "DetallesEjercicios",
+  components: { EditExercias },
 
   props: {
     exercise: {
       id: Number,
       name: String,
       detail: String,
-      type: String,
+      isExercise: Boolean,
     },
   },
 
-
   methods: {
-    handleDelete() {
+    DeleteClick() {
       this.$emit("DeleteClick", this.exercise.id);
     },
 
-    handleModify() {
-      this.$emit("ModifyClick", this.exercise.id);
+    closeDrawer() {
+      this.$emit("closeClick");
     },
   },
 };

@@ -3,13 +3,15 @@ import { ExerciseApi } from "../../../api/exercise";
 export default {
   namespaced: true,
   state: {
-    exercises: null,
+    exercises: [],
   },
 
   getters: {
     findIndex(state) {
       return (exerciseId) => {
-        return state.exercises.findIndex((element) => element.id === exerciseId);
+        return state.exercises.findIndex(
+          (element) => element.id === exerciseId
+        );
       };
     },
   },
@@ -18,7 +20,7 @@ export default {
     push(state, exercise) {
       state.exercises.push(exercise);
     },
-    replace(state, index, exercise) {
+    replace(state, { index, exercise }) {
       state.exercises[index] = exercise;
     },
     splice(state, index) {
@@ -30,22 +32,21 @@ export default {
   },
 
   actions: {
-    async create({ commit }, exercise) {
+    async create({ commit, getters }, exercise) {
       const result = await ExerciseApi.addExercise(exercise);
-      //if (!getters.findIndex(result)) commit("push", result);
+      if (!getters.findIndex(result)) commit("push", result);
       commit("push", result);
       return result;
     },
 
-    async modify({ getters, commit }, exercise) {
-      const result = await ExerciseApi.modifyExercise(exercise);
-      const index = getters.findIndex(result);
-      if (index >= 0) commit("replace", index, result);
+    async editExercise({ getters, commit }, { exercise, id, controller }) {
+      const result = await ExerciseApi.editExercise(exercise, id, controller);
+      const index = getters.findIndex(result.id);
+      if (index >= 0) commit("replace", { index: index, exercise: result });
       return result;
     },
 
     async getExercise({ state, getters, commit }, exerciseId) {
-      //return state.exercises.find((element) => element.id === exerciseId);
       const index = getters.findIndex(exerciseId);
       if (index >= 0) return state.exercises[index];
       const result = await ExerciseApi.getExerciseById(exerciseId);
@@ -59,12 +60,11 @@ export default {
       return result;
     },
 
-    async deleteExercise({ getters, commit }, exerciseId, controller) {
-      const result = await ExerciseApi.deleteExercise(exerciseId, controller);
+    async deleteExercise({ getters, commit }, exerciseId) {
+      await ExerciseApi.deleteExercise(exerciseId);
       const index = getters.findIndex(exerciseId);
       if (index === undefined) return;
       commit("splice", index);
-      return result;
     },
   },
 };

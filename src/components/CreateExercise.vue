@@ -6,12 +6,12 @@
     transition="dialog-bottom-transition"
   >
     <template v-slot:activator="{ on }">
-      <v-btn block slot="activator" v-on="on" color="primary"
-        >Crear Ejercicio</v-btn
-      >
+      <v-btn block slot="activator" v-on="on" color="primary" elevation="1">
+        Crear Ejercicio
+      </v-btn>
     </template>
     <v-card>
-      <v-card-title class="text-h5">Nuevo Ejercicio</v-card-title>
+      <v-card-title class="text-h5">Crear Nuevo Ejercicio</v-card-title>
       <v-card-text>
         <v-row>
           <v-col cols="6">
@@ -20,15 +20,15 @@
                 <v-text-field
                   outlined
                   label="Nombre"
-                  v-model="nombre"
+                  v-model="name"
                 ></v-text-field>
               </v-col>
               <v-col cols="12">
                 <v-textarea
                   auto-grow
                   outlined
-                  label="Descripción"
-                  v-model="descripcion"
+                  label="Drecripcion"
+                  v-model="detail"
                 ></v-textarea>
               </v-col>
             </v-row>
@@ -39,8 +39,12 @@
         </v-row>
       </v-card-text>
       <v-card-actions>
-        <v-btn color="red darken-1" text @click="closeDialog">Close</v-btn>
-        <v-btn color="blue darken-1" text @click="createExercise">Save</v-btn>
+        <v-btn color="red darken-1" text x-large @click="closeDialog"
+          >Close</v-btn
+        >
+        <v-btn color="blue darken-1" text x-large @click="saveDialog"
+          >Save</v-btn
+        >
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -51,44 +55,42 @@ import { mapActions } from "vuex";
 import { Exercise } from "../../api/exercise";
 
 export default {
-  name: "NuevoEjercicio",
+  name: "CreateExercise",
 
   data: () => ({
     dialogState: false,
-    nombre: null,
-    descripcion: null,
-    exerciseType: "exercise",
+    name: null,
+    detail: null,
   }),
 
   methods: {
     ...mapActions("exercise", ["create"]),
 
-    async createExercise() {
-      if (this.nombre.isEmpty) {
-        //mostrar error
+    async saveDialog() {
+      if (this.name.isEmpty) {
+        alert(`el name esta vacio`);
         return;
       }
-      if (this.descripcion.isEmpty) {
-        //mostrar error
+      if (this.detail.isEmpty) {
+        alert(`el detail esta vacio`);
         return;
       }
-      const newExercise = new Exercise(
-        null,
-        this.nombre,
-        this.descripcion,
-        this.exerciseType
-      );
+
+      const exercise = new Exercise(null, this.name, this.detail);
+
       try {
-        await this.create(newExercise);
+        await this.create(exercise);
       } catch (e) {
         //mostrar error
       }
+
       this.closeDialog();
     },
 
     closeDialog() {
-      this.nombre = null;
-      this.descripcion = null;
+      this.id = null;
+      this.name = null;
+      this.detail = null;
       this.dialogState = false;
     },
   },

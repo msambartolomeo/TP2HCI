@@ -16,7 +16,12 @@ class ExerciseApi {
   }
 
   static async editExercise(exercise, id, controller) {
-    await Api.put(`${ExerciseApi.url}/${id}`, true, exercise, controller);
+    return await Api.put(
+      `${ExerciseApi.url}/${id}`,
+      true,
+      exercise,
+      controller
+    );
   }
 
   static async addExercise(exercise, controller) {
@@ -24,16 +29,16 @@ class ExerciseApi {
   }
 
   static async deleteExercise(exerciseId, controller) {
-    await Api.delete(`${ExerciseApi.url}/${exerciseId}`, true, controller);
+    return await Api.delete(`${ExerciseApi.url}/${exerciseId}`, true, controller);
   }
 }
 
 class Exercise {
-  constructor(id, name, detail, type) {
+  constructor(id, name, detail) {
     if (id) this.id = id;
     this.name = name;
     this.detail = detail;
-    this.type = type;
+    this.type = "exercise";
     this.metadata = null;
   }
 }
