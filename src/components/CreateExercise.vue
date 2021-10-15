@@ -8,9 +8,25 @@
     >
       <v-card>
         <v-form ref="form" v-model="valid" lazy-validation>
-          <v-card-title class="text-h5">{{
-            exercise ? "Modificar Ejercicio" : "Crear Nuevo Ejercicio"
-          }}</v-card-title>
+          <v-card-title class="text-h5">
+            <v-row align="center">
+              <v-col>
+                <div v-show="!exercise">
+                  {{ `Crear Nuevo ${isRest ? "Descanso" : "Ejercicio"}` }}
+                </div>
+                <div v-show="exercise">Modificar</div>
+              </v-col>
+              <v-col>
+                <v-switch
+                  v-show="!exercise"
+                  inset
+                  v-model="isRest"
+                  :label="isRest ? 'Descanso' : 'Ejercicio'"
+                ></v-switch>
+              </v-col>
+            </v-row>
+          </v-card-title>
+
           <v-card-text>
             <v-row>
               <v-col cols="6">
@@ -42,6 +58,18 @@
               <v-col cols="6">
                 <v-card>
                   <v-img
+                    v-show="isRest"
+                    alt="exercice_logo"
+                    :lazy-src="require('../assets/descanso.jpg')"
+                    :src="imgError ? require('../assets/descanso.jpg') : imgUrl"
+                    @error="imgError = true"
+                    contain
+                    height="300"
+                    width="300"
+                    class="mx-auto"
+                  />
+                  <v-img
+                    v-show="!isRest"
                     alt="exercice_logo"
                     :lazy-src="require('../assets/exercise picture.jpg')"
                     :src="
@@ -63,12 +91,7 @@
             <v-btn color="primary" text x-large @click="saveExercise">
               Guardar
             </v-btn>
-            <v-btn
-              color="error"
-              text
-              x-large
-              @click="confirmedExit = true"
-            >
+            <v-btn color="error" text x-large @click="confirmedExit = true">
               Cerrar
             </v-btn>
           </v-card-actions>
@@ -101,10 +124,13 @@ export default {
     name: null,
     detail: null,
     imgUrl: null,
+    type: null,
     imgError: false,
     rules: rules.rules,
     valid: true,
     confirmedExit: false,
+    isRest: false,
+    title: null,
   }),
   computed: {
     dialogState: {
@@ -120,9 +146,15 @@ export default {
     ...mapActions("exercise", ["create", "editExercise"]),
     async saveExercise() {
       if (this.$refs.form.validate()) {
-        const exercise = new Exercise(this.name, this.detail, this.imgUrl);
+        const exercise = new Exercise(
+          this.name,
+          this.detail,
+          this.imgUrl,
+          this.isRest
+        );
         if (this.exercise) {
           try {
+            exercise.metadata.isRest = this.exercise.metadata.isRest;
             await this.editExercise({
               exercise: exercise,
               id: this.exercise.id,
@@ -143,6 +175,7 @@ export default {
         await this.$router.push("/ejercicios");
       }
     },
+
   },
   beforeMount() {
     if (this.exercise) {

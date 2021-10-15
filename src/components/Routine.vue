@@ -22,7 +22,6 @@
       <v-btn
         color="secondary"
         text
- 
         :to="{
           name: this.owner ? 'DetallesMisRutinas' : 'DetallesRutinas',
           params: { routine: routine, slug: routine.name },

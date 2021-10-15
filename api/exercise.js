@@ -42,10 +42,10 @@ class ExerciseApi {
 }
 
 class Exercise {
-  constructor(name, detail, imgUrl) {
+  constructor(name, detail, imgUrl, isRest) {
     this.name = name;
     this.detail = detail;
     this.type = "exercise";
-    this.metadata = { imgUrl: imgUrl ? imgUrl : "" };
+    this.metadata = { imgUrl: imgUrl ? imgUrl : "", isRest: isRest };
   }
 }
