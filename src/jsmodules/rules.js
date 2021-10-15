@@ -1,7 +1,7 @@
 export default {
   rules: {
     required: (v) => !!v || "Este ítem es obligatorio",
-    isEmail: (v) => /.+@.+\..+/.test(v) || "El email ingresado no es válido",
+    isEmail: (v) => /.+@.+\...+/.test(v) || "El email ingresado no es válido",
     isValidPassword: (v) => {
       if (v) {
         return (
