@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-container fluid>
+    <v-container fluid class="container">
       <v-row justify="center">
         <v-col sm="8" cols="12" md="6">
           <v-text-field solo label="Buscar" prepend-inner-icon="search" />
@@ -19,15 +19,15 @@
       </v-row>
     </v-container>
     <router-view :key="$route.path" @DeleteClick="deleteButton" />
-    <v-row justify="center" align="end">
-      <v-col cols="8">
+    <v-footer>
+      <v-col class="text-center" cols="12">
         <v-pagination
           v-model="pagination"
           :length="getMaxPage"
           @input="updateExercises"
-        />
+        ></v-pagination>
       </v-col>
-    </v-row>
+    </v-footer>
   </div>
 </template>
 
@@ -79,3 +79,9 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.container {
+  height: 80vh;
+}
+</style>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-container fluid>
+      <v-container fluid class="container">
       <v-row>
         <v-col>
           <v-row justify="center">
@@ -32,15 +32,15 @@
     <v-navigation-drawer v-model="drawer" absolute width="400" right>
       <DetallesRutinas @click="drawer = false" />
     </v-navigation-drawer>
-    <v-row justify="center" align="end">
-      <v-col cols="8">
+    <v-footer padless>
+      <v-col class="text-center" cols="12">
         <v-pagination
           v-model="pagination"
           :length="$getMaxPage"
           @input="updateRoutines"
         ></v-pagination>
       </v-col>
-    </v-row>
+    </v-footer>
   </div>
 </template>
 
@@ -82,3 +82,10 @@ export default {
   },
 };
 </script>
+
+
+<style scoped>
+.container {
+  height: 80vh;
+}
+</style>
