@@ -66,9 +66,12 @@
       <v-row><v-divider></v-divider></v-row>
       <v-row>
         <v-col>
-          <v-btn block color="secondary" elevation="1" @click="EditClick">
-            Editar</v-btn
-          >
+          <MainButton @click="modifyRoutine = true"> Editar </MainButton>
+          <ModifyRoutine
+            v-model="modifyRoutine"
+            :id="routine.id"
+            v-if="modifyRoutine"
+          />
         </v-col>
         <v-col>
           <v-btn
@@ -102,9 +105,17 @@
 import RatingScore from "./RatingScore";
 import RatingDificultad from "./RatingDificultad";
 import ConfirmedExit from "./ConfirmedExit";
+import MainButton from "./MainButton";
+import ModifyRoutine from "./ModifyRoutine";
 export default {
   name: "DetallesMisRutinas",
-  components: { ConfirmedExit, RatingDificultad, RatingScore },
+  components: {
+    ModifyRoutine,
+    MainButton,
+    ConfirmedExit,
+    RatingDificultad,
+    RatingScore,
+  },
 
   props: {
     routine: Object,
@@ -114,6 +125,7 @@ export default {
     return {
       state: false,
       confirmedExit: false,
+      modifyRoutine: false,
     };
   },
 
@@ -136,8 +148,6 @@ export default {
       this.$emit("DeleteClick", this.routine.id);
       this.state = false;
     },
-
-    EditClick() {},
 
     getDate(dateUTC) {
       if (dateUTC) {

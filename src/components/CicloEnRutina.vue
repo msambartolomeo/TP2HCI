@@ -1,7 +1,7 @@
 <template>
   <div>
-    <template v-for="(ej, index) in agregados">
-      <v-row class="mt-2" :key="index">
+    <template>
+      <v-row class="mt-2" v-for="ej in agregados" :key="ej.idx">
         <v-col cols="12" sm="6">
           <v-text-field
             label="Ejercicio"
@@ -12,7 +12,7 @@
             :rules="[rules.required]"
             @click="
               chooseExercise = true;
-              idx = ej.cycleExercise.order - 1;
+              exerciseIdx = ej.idx;
             "
           />
           <ChooseExercise
@@ -81,7 +81,8 @@ export default {
     order: 1,
     agregados: [],
     chooseExercise: false,
-    idx: null,
+    exerciseIdx: null,
+    idx: 0,
     error: false,
     errorText: "",
     rules: rules.rules,
@@ -134,6 +135,7 @@ export default {
       }
     },
     setExercise(exercise) {
+      this.agregados.findIndex((item) => item.idx === this.exerciseIdx);
       this.agregados[this.idx].ejercicio = exercise.name;
       this.agregados[this.idx].id = exercise.id;
     },
@@ -146,6 +148,7 @@ export default {
   async beforeMount() {
     if (!this.callApi) {
       this.agregados.push({
+        idx: this.idx++,
         id: null,
         ejercicio: null,
         cycleExercise: {
@@ -158,6 +161,7 @@ export default {
       const result = await this.$getEx(this.id);
       for (let ex of result) {
         this.agregados.push({
+          idx: this.idx++,
           id: ex.exercise.id,
           ejercicio: ex.exercise.name,
           cycleExercise: {

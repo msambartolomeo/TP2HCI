@@ -65,7 +65,8 @@ export default {
     //   return result;
     // },
 
-    async getExercises({ commit }, { page, size, controller }) {
+    async getExercises({ state, commit }, { page, size, controller }) {
+      if (page === state.page) return state.exercises;
       const result = await ExerciseApi.getExercises(page, size, controller);
       commit("replaceAll", result);
       commit("setPagination", {
