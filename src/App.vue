@@ -2,8 +2,11 @@
   <v-app>
     <div v-if="this.flag">
       <AppBar />
-      <v-main>
+      <v-main class="home">
         <router-view />
+        <h1 v-show="error">
+          No nos podemos conectar con el servidor, intentelo mas tarde
+        </h1>
       </v-main>
     </div>
   </v-app>
@@ -18,6 +21,7 @@ export default {
   data() {
     return {
       flag: false,
+      error: false,
     };
   },
   computed: mapGetters("user", {
@@ -31,12 +35,32 @@ export default {
       $getCategories: "getCategories",
     }),
   },
+
   async beforeMount() {
     if (this.$isLoggedIn) {
-      await this.$getCurrentUser();
+      try {
+        await this.$getCurrentUser();
+      } catch (e) {
+        if (e.code === 0 && e.code === 5) {
+          this.error = true;
+        }
+      }
     }
-    await this.$getCategories();
-    this.flag = true;
+    try {
+      await this.$getCategories();
+      this.flag = true;
+    } catch (e) {
+      if (e.code === 0 && e.code === 5) {
+        this.error = true;
+      }
+    }
   },
 };
 </script>
+<style scoped>
+.home {
+  background: url("./assets/background images.jpg");
+  height: 100vh;
+  background-size: cover;
+}
+</style>

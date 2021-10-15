@@ -31,7 +31,7 @@ class RoutineApi {
     return await Api.put(this.getUrl(routineId), true, routine, controller);
   }
 
-  static async delete(id, controller) {
+  static async deleteRoutine(id, controller) {
     return await Api.delete(RoutineApi.getUrl(id), true, controller);
   }
 }

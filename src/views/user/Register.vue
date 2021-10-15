@@ -10,24 +10,24 @@
               <InputField
                 label="Nombre"
                 v-model="firstName"
-                :rules="[rules.required]"
+                :rules="[rules.required, rules.length50]"
               />
               <InputField
                 label="Apellido"
                 v-model="lastName"
-                :rules="[rules.required]"
+                :rules="[rules.required, rules.length50]"
               />
               <InputField
                 label="Email"
                 v-model="email"
-                :rules="[rules.required, rules.isEmail]"
+                :rules="[rules.required, rules.isEmail, rules.length255]"
               />
               <BirthdatePicker v-model="birthdate" />
               <GenderSelect v-model="gender" />
               <PasswordField
                 v-model="password"
                 hint="Por lo menos 8 caracteres"
-                :rules="[rules.required, rules.isValidPassword]"
+                :rules="[rules.required, rules.isValidPassword, rules.length50]"
               />
               <PasswordField
                 label="Repita la contraseña"
@@ -103,7 +103,7 @@ export default {
       }
     },
     login() {
-      this.$router.push("/login");
+      this.$router.push("/");
     },
   },
 };

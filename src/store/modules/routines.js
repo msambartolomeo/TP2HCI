@@ -64,6 +64,14 @@ export default {
       commit("push", result);
       return result;
     },
+
+    async deleteRoutines({ getters, commit }, routinesId) {
+      await RoutineApi.deleteRoutine(routinesId);
+      const index = getters.findIndex(routinesId);
+      if (index === undefined) return;
+      commit("splice", index);
+    },
+
     async getRoutines({ commit }, controller) {
       const result = await RoutineApi.getRoutines(controller);
       commit("replaceAll", result.content);

@@ -57,13 +57,13 @@ export default {
       return result;
     },
 
-    async getExercise({ state, getters, commit }, exerciseId) {
-      const index = getters.findIndex(exerciseId);
-      if (index >= 0) return state.exercises[index];
-      const result = await ExerciseApi.getExerciseById(exerciseId);
-      commit("push", result);
-      return result;
-    },
+    // async getExercise({ state, getters, commit }, exerciseId) {
+    //   const index = getters.findIndex(exerciseId);
+    //   if (index >= 0) return state.exercises[index];
+    //   const result = await ExerciseApi.getExerciseById(exerciseId);
+    //   commit("push", result);
+    //   return result;
+    // },
 
     async getExercises({ commit }, { page, size, controller }) {
       const result = await ExerciseApi.getExercises(page, size, controller);

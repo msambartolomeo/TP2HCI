@@ -1,14 +1,11 @@
 <template>
-  <div>
-      <v-container fluid class="container">
+  <div >
+    <v-container fluid class="container">
       <v-row>
         <v-col>
           <v-row justify="center">
             <v-col sm="8" cols="12" md="6">
               <v-text-field solo label="Buscar" prepend-inner-icon="search" />
-            </v-col>
-            <v-col sm="4" md="2" cols="12" class="pt-md-4">
-              <v-btn block color="primary"> Orden </v-btn>
             </v-col>
           </v-row>
           <v-row>
@@ -18,20 +15,13 @@
               md="3"
               xl="2"
             >
-              <Routine
-                :title="routine.name"
-                :difficulty="1"
-                :score="routine.score"
-                @click="drawer = true"
-              />
+              <Routine :routine="routine" />
             </v-col>
           </v-row>
         </v-col>
       </v-row>
     </v-container>
-    <v-navigation-drawer v-model="drawer" absolute width="400" right>
-      <DetallesRutinas @click="drawer = false" />
-    </v-navigation-drawer>
+    <router-view :key="$route.path" />
     <v-footer padless>
       <v-col class="text-center" cols="12">
         <v-pagination
@@ -46,30 +36,32 @@
 
 <script>
 import Routine from "@/components/Routine";
-import DetallesRutinas from "../components/DetallesRutinas";
 import { mapActions, mapGetters } from "vuex";
 
 const DEFAULT_PAGE_SIZE = 12;
 export default {
   name: "Inicio",
   components: {
-    DetallesRutinas,
     Routine,
   },
+
   data: () => ({
     pagination: 1,
     drawer: false,
   }),
+
   computed: {
     ...mapGetters("routines", {
       $getMaxPage: "getMaxPage",
       $getRoutines: "getRoutines",
     }),
   },
+
   methods: {
     ...mapActions("routines", {
       $getRoutinesPage: "getRoutinesPage",
     }),
+
     async updateRoutines() {
       await this.$getRoutinesPage({
         page: this.pagination - 1,
@@ -83,9 +75,8 @@ export default {
 };
 </script>
 
-
 <style scoped>
 .container {
-  height: 80vh;
+  min-height: 80vh;
 }
 </style>

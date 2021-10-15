@@ -9,7 +9,11 @@
           <v-btn block color="primary" @click="newExercise = true">
             Crear Ejercicio
           </v-btn>
-          <CreateExercise v-model="newExercise" v-if="newExercise" />
+          <CreateExercise
+            v-model="newExercise"
+            v-if="newExercise"
+            @snackbar="snackbarHandle"
+          />
         </v-col>
       </v-row>
       <v-row>
@@ -18,7 +22,16 @@
         </v-col>
       </v-row>
     </v-container>
-    <router-view :key="$route.path" @DeleteClick="deleteButton" />
+    <SnackBar v-model="snackbar" :error="error">
+      {{
+        error ? "Se ha producido un error, intente nuevamente" : successMessage
+      }}
+    </SnackBar>
+    <router-view
+      :key="$route.path"
+      @DeleteClick="deleteButton"
+      @snackbar="snackbarHandle"
+    />
     <v-footer>
       <v-col class="text-center" cols="12">
         <v-pagination
@@ -35,6 +48,7 @@
 import Exercise from "../components/Exercise";
 import CreateExercise from "../components/CreateExercise";
 import { mapActions, mapGetters, mapState } from "vuex";
+import SnackBar from "../components/SnackBar";
 
 const DEFAULT_EXERCISES_SIZE = 12;
 export default {
@@ -42,11 +56,15 @@ export default {
   components: {
     Exercise,
     CreateExercise,
+    SnackBar,
   },
   data() {
     return {
       pagination: 1,
       newExercise: false,
+      snackbar: false,
+      error: false,
+      successMessage: null,
     };
   },
   methods: {
@@ -55,9 +73,22 @@ export default {
       $getExercisesPage: "getExercises",
     }),
 
-    deleteButton(id) {
-      //preguntar si esta seguro
-      this.deleteExercise(id);
+    snackbarHandle(data) {
+      this.successMessage = "¡El ejercicio se ha guardado con exito!";
+      this.error = data;
+      this.snackbar = true;
+    },
+
+    async deleteButton(id) {
+      this.successMessage = "¡El ejercicio se ha eliminado con exito!";
+      try {
+        await this.deleteExercise(id);
+        this.error = false;
+      } catch (e) {
+        this.error = true;
+      } finally {
+        this.snackbar = true;
+      }
     },
     async updateExercises() {
       await this.$getExercisesPage({
@@ -82,6 +113,6 @@ export default {
 
 <style scoped>
 .container {
-  height: 80vh;
+  min-height: 80vh;
 }
 </style>

@@ -6,11 +6,36 @@ Vue.use(VueRouter);
 
 const routes = [
   {
-    path: "/",
+    path: "/inicio",
     name: "Inicio",
     component: () =>
       import(/* webpackChunkName: "Inicio" */ "../views/Home.vue"),
     meta: { requiresAuth: true },
+    children: [
+      {
+        path: ":slug",
+        name: "DetallesRutinas",
+        props: true,
+        component: () =>
+          import(
+            /* webpackChunkName: "DetallesRutinas" */ "../components/DetallesRutinas"
+          ),
+        beforeEnter: (to, from, next) => {
+          if (to.params.routine) {
+            const exists = store.getters["routines/findIndex"](
+              to.params.routine.id
+            );
+            if (exists === -1) {
+              next("/inicio");
+            } else {
+              next();
+            }
+          } else {
+            next("/inicio");
+          }
+        },
+      },
+    ],
   },
   {
     path: "/perfil",
@@ -32,7 +57,7 @@ const routes = [
         props: true,
         component: () =>
           import(
-            /* webpackChunkName: "experience" */ "../components/DetallesEjercicios"
+            /* webpackChunkName: "DetallesEjercicios" */ "../components/DetallesEjercicios"
           ),
         beforeEnter: (to, from, next) => {
           if (to.params.exercise) {
@@ -57,9 +82,34 @@ const routes = [
     component: () =>
       import(/* webpackChunkName: "MisRutinas" */ "../views/MisRutinas"),
     meta: { requiresAuth: true },
+    children: [
+      {
+        path: ":slug",
+        name: "DetallesMisRutinas",
+        props: true,
+        component: () =>
+          import(
+            /* webpackChunkName: "DetallesMisRutinas" */ "../components/DetallesMisRutinas"
+          ),
+        beforeEnter: (to, from, next) => {
+          if (to.params.routine) {
+            const exists = store.getters["routines/findIndex"](
+              to.params.routine.id
+            );
+            if (exists === -1) {
+              next("/rutinas");
+            } else {
+              next();
+            }
+          } else {
+            next("/rutinas");
+          }
+        },
+      },
+    ],
   },
   {
-    path: "/login",
+    path: "/",
     name: "Login",
     component: () =>
       import(/* webpackChunkName: "login" */ "../views/user/Login.vue"),
@@ -105,7 +155,7 @@ router.beforeEach((to, from, next) => {
     next({ name: "Login", query: { redirect: to.path } });
   } else if (to.matched.some((record) => record.meta.forVisitors)) {
     if (cachedToken) {
-      next("/");
+      next("/inicio");
       return;
     }
     next();

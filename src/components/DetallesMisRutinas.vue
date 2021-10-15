@@ -37,16 +37,19 @@
 
       <v-row justify="center" class="mb-4">
         <v-col class="mt-4 mb-2" cols="5">
-          <v-row align="center" justify="star">
-            <h5>Creador: {{ routine.user.username }}</h5>
-          </v-row>
           <v-row align="center" justify="start">
             <h5 class="mr-2">Dificultad:</h5>
             <RatingDificultad
               readonly
               v-model="routine.difficulty"
-              :size="20"
+              :size="18"
             />
+          </v-row>
+          <v-row align="center" justify="start">
+            <h5>{{ routine.isPublic ? "Publica" : "Privada" }}</h5>
+            <v-icon small class="ml-2">
+              {{ routine.isPublic ? "lock_open" : "https" }}
+            </v-icon>
           </v-row>
         </v-col>
         <v-col class="mt-4 mb-2" cols="5">
@@ -59,6 +62,25 @@
           </v-row>
         </v-col>
       </v-row>
+
+      <v-row><v-divider></v-divider></v-row>
+      <v-row>
+        <v-col>
+          <v-btn block color="primary" elevation="1" @click="EditClick">
+            Editar</v-btn
+          >
+        </v-col>
+        <v-col>
+          <v-btn
+            block
+            color="error"
+            elevation="1"
+            @click="confirmedExit = true"
+          >
+            Eliminar
+          </v-btn>
+        </v-col>
+      </v-row>
       <v-row><v-divider></v-divider></v-row>
       <v-row justify="center">
         <v-col cols="10" class="mt-4">
@@ -66,6 +88,12 @@
           <h5>{{ routine.detail }}</h5>
         </v-col>
       </v-row>
+      <ConfirmedExit
+        title="¿seguro que quiere eliminar?"
+        text="Si continua perderá la información."
+        v-model="confirmedExit"
+        @confirm="DeleteClick"
+      />
     </v-container>
   </v-navigation-drawer>
 </template>
@@ -73,9 +101,10 @@
 <script>
 import RatingScore from "./RatingScore";
 import RatingDificultad from "./RatingDificultad";
+import ConfirmedExit from "./ConfirmedExit";
 export default {
-  name: "DetallesRutinas",
-  components: { RatingDificultad, RatingScore },
+  name: "DetallesMisRutinas",
+  components: { ConfirmedExit, RatingDificultad, RatingScore },
 
   props: {
     routine: Object,
@@ -84,6 +113,7 @@ export default {
   data() {
     return {
       state: false,
+      confirmedExit: false,
     };
   },
 
@@ -95,7 +125,7 @@ export default {
       set(value) {
         this.state = value;
         if (!value) {
-          setTimeout(() => this.$router.push("/inicio"), 100);
+          setTimeout(() => this.$router.push("/rutinas"), 100);
         }
       },
     },
@@ -103,9 +133,11 @@ export default {
 
   methods: {
     DeleteClick() {
-      this.$emit("DeleteClick");
+      this.$emit("DeleteClick", this.routine.id);
       this.state = false;
     },
+
+    EditClick() {},
 
     getDate(dateUTC) {
       if (dateUTC) {
