@@ -26,7 +26,9 @@
       />
     </v-card-text>
     <v-card-actions>
-      <div class="ml-2" >{{ exercise.metadata.isRest ? "Descanso" : "Ejercicio" }}</div>
+      <div class="ml-2">
+        {{ exercise.metadata.isRest ? "Descanso" : "Ejercicio" }}
+      </div>
       <v-spacer></v-spacer>
       <v-btn
         color="secondary"

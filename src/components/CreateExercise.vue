@@ -175,7 +175,6 @@ export default {
         await this.$router.go();
       }
     },
-
   },
   beforeMount() {
     if (this.exercise) {

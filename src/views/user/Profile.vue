@@ -4,49 +4,57 @@
       <v-row>
         <v-col cols="12" md="6">
           <v-row justify="center">
-            <v-col cols="8" lg="4">
-              <p
-                class="
-                  mt-8
-                  text-lg-h3 text-md-h2 text-h1 text-center text-lg-start
-                "
-              >
-                Mi perfil
-              </p>
-            </v-col>
-            <v-col cols="8" lg="4" align-self="center">
-              <MainButton
-                class="mt-lg-8"
-                :show="!editProfile"
-                @click="editProfile = true"
-              >
-                Editar
-              </MainButton>
-            </v-col>
-            <v-col cols="8">
-              <InputField label="Email" v-model="email" disabled />
-              <InputField
-                label="Nombre"
-                v-model="firstName"
-                :disabled="!editProfile"
-                :rules="[rules.required, rules.length50]"
-              />
-              <InputField
-                label="Apellido"
-                v-model="lastName"
-                :disabled="!editProfile"
-                :rules="[rules.required, rules.length50]"
-              />
-              <GenderSelect v-model="gender" :disabled="!editProfile" />
-              <BirthdatePicker :edit="editProfile" v-model="birthdate" />
-              <InputField
-                label="Link para foto de perfil"
-                v-model="avatarUrl"
-                :disabled="!editProfile"
-                hint="Puede utilizar una pagina como igmur para subir sus fotos"
-                @input="imgError = false"
-                :rules="[rules.length255]"
-              />
+            <v-col cols="12" />
+            <v-col cols="9">
+              <v-card>
+                <v-row justify="center">
+                  <v-col cols="10" lg="5">
+                    <p
+                      class="
+                        mt-8
+                        text-lg-h3 text-md-h2 text-h1 text-center text-lg-start
+                      "
+                    >
+                      Mi perfil
+                    </p>
+                  </v-col>
+
+                  <v-col cols="10" lg="5" align-self="center">
+                    <MainButton
+                      class="mt-lg-8"
+                      :show="!editProfile"
+                      @click="editProfile = true"
+                    >
+                      Editar
+                    </MainButton>
+                  </v-col>
+                  <v-col cols="10">
+                    <InputField label="Email" v-model="email" disabled />
+                    <InputField
+                      label="Nombre"
+                      v-model="firstName"
+                      :disabled="!editProfile"
+                      :rules="[rules.required, rules.length50]"
+                    />
+                    <InputField
+                      label="Apellido"
+                      v-model="lastName"
+                      :disabled="!editProfile"
+                      :rules="[rules.required, rules.length50]"
+                    />
+                    <GenderSelect v-model="gender" :disabled="!editProfile" />
+                    <BirthdatePicker :edit="editProfile" v-model="birthdate" />
+                    <InputField
+                      label="Link para foto de perfil"
+                      v-model="avatarUrl"
+                      :disabled="!editProfile"
+                      hint="Puede utilizar una pagina como igmur para subir sus fotos"
+                      @input="imgError = false"
+                      :rules="[rules.length255]"
+                    />
+                  </v-col>
+                </v-row>
+              </v-card>
             </v-col>
           </v-row>
         </v-col>
@@ -72,7 +80,7 @@
             </v-col>
           </v-row>
         </v-col>
-        <v-col cols="12" md="6">
+        <v-col cols="12" md="6" class="mt-4">
           <v-row justify="center">
             <v-col cols="8" lg="4" v-show="editProfile">
               <MainButton
