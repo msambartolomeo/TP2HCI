@@ -1,14 +1,14 @@
 <template>
   <v-app-bar app color="primary" dark>
     <div class="d-flex align-center">
-<!--      <v-img-->
-<!--        alt="Vuetify Logo"-->
-<!--        class="shrink mr-2"-->
-<!--        contain-->
-<!--        :src="require('../assets/logo.JPG')"-->
-<!--        transition="scale-transition"-->
-<!--        width="40"-->
-<!--      />-->
+      <!--      <v-img-->
+      <!--        alt="Vuetify Logo"-->
+      <!--        class="shrink mr-2"-->
+      <!--        contain-->
+      <!--        :src="require('../assets/logo.JPG')"-->
+      <!--        transition="scale-transition"-->
+      <!--        width="40"-->
+      <!--      />-->
 
       <h2 class="ml-2 hidden-sm-and-down">WorkIn</h2>
     </div>

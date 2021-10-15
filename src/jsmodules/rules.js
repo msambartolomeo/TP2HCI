@@ -15,6 +15,5 @@ export default {
     getLengthMsg(length) {
       return `Se ha exedido del maximo numero de caracteres, el maximo es ${length}`;
     },
-
   },
 };
