@@ -26,7 +26,6 @@ export default {
     },
     async addAll({ state, commit, dispatch }, { cycleArray, controller }) {
       dispatch("deleteAll");
-      alert(state.routineID);
       for (let cycle of cycleArray) {
         let result = await CycleApi.add(
           state.routineID,

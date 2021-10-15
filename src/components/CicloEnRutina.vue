@@ -135,9 +135,11 @@ export default {
       }
     },
     setExercise(exercise) {
-      this.agregados.findIndex((item) => item.idx === this.exerciseIdx);
-      this.agregados[this.idx].ejercicio = exercise.name;
-      this.agregados[this.idx].id = exercise.id;
+      const index = this.agregados.findIndex(
+        (item) => item.idx === this.exerciseIdx
+      );
+      this.agregados[index].ejercicio = exercise.name;
+      this.agregados[index].id = exercise.id;
     },
   },
   watch: {

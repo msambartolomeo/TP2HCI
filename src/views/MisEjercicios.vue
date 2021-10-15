@@ -70,7 +70,7 @@ export default {
   },
   methods: {
     ...mapActions("exercise", {
-      $deleteExcersice: "deleteExercise",
+      $deleteExcercise: "deleteExercise",
       $getExercisesPage: "getExercises",
     }),
 
@@ -83,7 +83,7 @@ export default {
     async deleteButton(id) {
       this.successMessage = "¡El ejercicio se ha eliminado con exito!";
       try {
-        await this.deleteExercise(id);
+        await this.$deleteExcercise(id);
         this.error = false;
       } catch (e) {
         this.error = true;

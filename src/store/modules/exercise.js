@@ -65,8 +65,7 @@ export default {
     //   return result;
     // },
 
-    async getExercises({ state, commit }, { page, size, controller }) {
-      if (page === state.page) return state.exercises;
+    async getExercises({ commit }, { page, size, controller }) {
       const result = await ExerciseApi.getExercises(page, size, controller);
       commit("replaceAll", result);
       commit("setPagination", {
@@ -80,7 +79,7 @@ export default {
     async deleteExercise({ getters, commit }, exerciseId) {
       await ExerciseApi.deleteExercise(exerciseId);
       const index = getters.findIndex(exerciseId);
-      if (index === undefined) return;
+      if (index === -1) return;
       commit("splice", index);
     },
   },

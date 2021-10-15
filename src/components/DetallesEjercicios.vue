@@ -44,7 +44,7 @@
       <v-row><v-divider></v-divider></v-row>
       <v-row>
         <v-col>
-          <v-btn block color="secondary"  @click="editExercise = true">
+          <v-btn block color="secondary" @click="editExercise = true">
             Editar
           </v-btn>
           <CreateExercise
@@ -55,7 +55,7 @@
           />
         </v-col>
         <v-col>
-          <v-btn block color="error"  @click="confirmedExit = true">
+          <v-btn block color="error" @click="confirmedExit = true">
             Eliminar
           </v-btn>
         </v-col>

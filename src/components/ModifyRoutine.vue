@@ -388,7 +388,7 @@ export default {
       const cycles = await this.$getCycles(this.id);
       for (const cy of cycles) {
         this.cycles.push({
-          id: cy.id,
+          id: this.cycleId++,
           cycle: new RoutineCycle(cy.name, cy.type, cy.order, cy.repetitions),
           exercises: [],
         });
