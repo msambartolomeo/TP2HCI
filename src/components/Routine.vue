@@ -5,7 +5,12 @@
     <v-card-text>
       <v-row>
         <v-col align="center">
-          <RatingScore readonly v-model="routine.score" :size="20" />
+          <RatingScore
+            v-if="routine.isPublic"
+            readonly
+            v-model="routine.score"
+            :size="20"
+          />
         </v-col>
         <v-col align="center">
           <RatingDificultad readonly v-model="routine.difficulty" :size="20" />
