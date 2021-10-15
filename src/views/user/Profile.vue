@@ -29,13 +29,13 @@
                 label="Nombre"
                 v-model="firstName"
                 :disabled="!editProfile"
-                :rules="[rules.required]"
+                :rules="[rules.required, rules.length50]"
               />
               <InputField
                 label="Apellido"
                 v-model="lastName"
                 :disabled="!editProfile"
-                :rules="[rules.required]"
+                :rules="[rules.required, rules.length50]"
               />
               <GenderSelect v-model="gender" :disabled="!editProfile" />
               <BirthdatePicker :edit="editProfile" v-model="birthdate" />
@@ -45,6 +45,7 @@
                 :disabled="!editProfile"
                 hint="Puede utilizar una pagina como igmur para subir sus fotos"
                 @input="imgError = false"
+                :rules="[rules.length255]"
               />
             </v-col>
           </v-row>

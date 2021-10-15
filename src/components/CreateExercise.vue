@@ -20,14 +20,14 @@
                       outlined
                       label="Nombre"
                       v-model="name"
-                      :rules="[rules.required]"
+                      :rules="[rules.required, rules.length100]"
                     />
                     <v-textarea
                       auto-grow
                       outlined
                       label="Drecripcion"
                       v-model="detail"
-                      :rules="[rules.required]"
+                      :rules="[rules.required, rules.length200]"
                     />
                     <v-text-field
                       outlined
