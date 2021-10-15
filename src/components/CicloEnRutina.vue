@@ -135,6 +135,14 @@ export default {
       }
     },
     setExercise(exercise) {
+      for (let i = 0; i < this.agregados.length; i++) {
+        if (this.agregados[i].id === exercise.id) {
+          this.errorText =
+            "Un ejercicio no puede aparecer dos veces en el mismo ciclo";
+          this.error = true;
+          return;
+        }
+      }
       const index = this.agregados.findIndex(
         (item) => item.idx === this.exerciseIdx
       );
