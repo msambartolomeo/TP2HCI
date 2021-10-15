@@ -13,19 +13,23 @@ export default {
     push(state, cycle) {
       state.cycles.push(cycle);
     },
+    replace(state, cycles) {
+      state.cycles = cycles;
+    },
     deleteAll(state) {
       state.cycles = [];
     },
   },
   actions: {
-    async deleteAll({ state, commit }, controller) {
-      commit("deleteAll");
+    async deleteAll({ state, commit, dispatch }, controller) {
+      dispatch("get", state.routineID);
       for (let cycle of state.cycles) {
         await CycleApi.delete(state.routineID, cycle.id, controller);
+        commit("deleteAll");
       }
     },
     async addAll({ state, commit, dispatch }, { cycleArray, controller }) {
-      dispatch("deleteAll");
+      await dispatch("deleteAll");
       for (let cycle of cycleArray) {
         let result = await CycleApi.add(
           state.routineID,
@@ -35,13 +39,10 @@ export default {
         commit("push", result);
       }
     },
-    async get({ state, commit }, routineID) {
-      if (routineID === state.routineID) return state.cycles;
+    async get({ commit }, routineID) {
       const result = await CycleApi.get(routineID);
       commit("setRoutineID", routineID);
-      for (let ex of result.content) {
-        commit("push", ex);
-      }
+      commit("replace", result.content);
       return result.content;
     },
   },

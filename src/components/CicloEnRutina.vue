@@ -24,7 +24,7 @@
           <NumberField
             v-model="ej.cycleExercise.repetitions"
             label="Series"
-            :min="2"
+            :min="1"
             :rules="[rules.required, rules.isNumber]"
           />
         </v-col>
@@ -33,8 +33,8 @@
             v-model="ej.cycleExercise.duration"
             label="Tiempo"
             hint="Tiempo en segundos"
-            :min="1"
-            :rules="[rules.required, rules.isNumber]"
+            :min="0"
+            :rules="[rules.isNumber]"
           />
         </v-col>
         <v-col cols="1">
@@ -78,7 +78,6 @@ export default {
   name: "CicloEnRutina",
   components: { NumberField, SnackBar, ChooseExercise },
   data: () => ({
-    order: 1,
     agregados: [],
     chooseExercise: false,
     exerciseIdx: null,
@@ -94,7 +93,7 @@ export default {
     },
     guardado: Boolean,
     id: Number,
-    callApi: Boolean,
+    apiCycleId: Number,
   },
   computed: {
     guardar() {
@@ -107,13 +106,15 @@ export default {
     }),
     agregaEjercicio() {
       if (this.agregados.length < 10) {
+        const lastEx = this.agregados.at(this.agregados.length - 1);
         this.agregados.push({
+          idx: this.idx++,
           id: null,
           ejercicio: null,
           cycleExercise: {
-            order: this.order++,
-            duration: null,
-            repetitions: null,
+            order: lastEx.cycleExercise.order + 1,
+            duration: 0,
+            repetitions: 1,
           },
         });
       } else {
@@ -126,7 +127,6 @@ export default {
         let aux = this.agregados.indexOf(ej);
         let oldOrder = this.agregados[aux].cycleExercise.order;
         if (aux > -1) this.agregados.splice(aux, 1);
-        this.order--;
         for (const ej in this.agregados) {
           if (this.agregados[ej].cycleExercise.order > oldOrder) {
             this.agregados[ej].cycleExercise.order--;
@@ -135,9 +135,18 @@ export default {
       }
     },
     setExercise(exercise) {
+      for (let i = 0; i < this.agregados.length; i++) {
+        if (this.agregados[i].id === exercise.id) {
+          this.errorText =
+            "Un ejercicio no puede aparecer dos veces en el mismo ciclo";
+          this.error = true;
+          return;
+        }
+      }
       const index = this.agregados.findIndex(
         (item) => item.idx === this.exerciseIdx
       );
+      if (index === -1) return;
       this.agregados[index].ejercicio = exercise.name;
       this.agregados[index].id = exercise.id;
     },
@@ -148,19 +157,19 @@ export default {
     },
   },
   async beforeMount() {
-    if (!this.callApi) {
+    if (this.apiCycleId == null) {
       this.agregados.push({
         idx: this.idx++,
         id: null,
         ejercicio: null,
         cycleExercise: {
-          order: this.order++,
-          duration: null,
-          repetitions: null,
+          order: 1,
+          duration: 0,
+          repetitions: 1,
         },
       });
     } else {
-      const result = await this.$getEx(this.id);
+      const result = await this.$getEx(this.apiCycleId);
       for (let ex of result) {
         this.agregados.push({
           idx: this.idx++,

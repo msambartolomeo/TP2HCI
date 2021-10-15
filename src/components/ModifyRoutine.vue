@@ -168,6 +168,7 @@
                   @click="removeCycle(cycle)"
                   :guardado="guardarExercices"
                   :id="cycle.id"
+                  :api-cycle-id="cycle.apiId"
                   @guardar="getExercises"
                   :call-api="id != null"
                 />
@@ -230,7 +231,6 @@ export default {
     routineUrl: null,
     errorText: "",
     error: false,
-    order: 1,
     guardarExercices: false,
     cycleId: 1,
   }),
@@ -284,18 +284,19 @@ export default {
 
         try {
           await this.$putCycles({ cycleArray: this.cycles });
-          await this.cycles.forEach((cy, index) => {
-            this.$putExercises({
+          let index = 0;
+          for (let cy of this.cycles) {
+            await this.$putExercises({
               exercisesArray: cy.exercises,
-              cycleID: this.cyclesState[index].id,
+              cycleID: this.cyclesState[index++].id,
             });
-          });
+          }
           this.dialog = false;
+          await this.$router.go();
         } catch (e) {
           this.errorText = "No se ha podido agregar los ciclos";
           this.error = true;
         }
-        // await this.$router.go();
       }
     },
     async createRoutine() {
@@ -325,7 +326,11 @@ export default {
         this.routineUrl
       );
       try {
-        await this.$modifyRoutine({ routine: routine, routineId: this.id });
+        const newRoutine = await this.$modifyRoutine({
+          routine: routine,
+          routineId: this.id,
+        });
+        this.setRoutineID(newRoutine.id);
       } catch (e) {
         this.errorText = "No se ha podido modificar la rutina";
         this.error = true;
@@ -341,6 +346,7 @@ export default {
       );
       this.cycles.splice(this.cycles.length - 1, 0, {
         id: this.cycleId++,
+        apiId: null,
         cycle: cycle,
         exercises: [],
       });
@@ -358,7 +364,6 @@ export default {
       let aux = this.cycles.indexOf(cycle);
       let oldOrder = this.cycles[aux].cycle.order;
       if (aux > -1) this.cycles.splice(aux, 1);
-      this.order--;
       for (const cycle in this.cycles) {
         if (this.cycles[cycle].cycle.order > oldOrder) {
           this.cycles[cycle].cycle.order--;
@@ -374,8 +379,18 @@ export default {
     if (this.id == null) {
       const start = new RoutineCycle("Entrada en calor", "warmup", 1, 2);
       const end = new RoutineCycle("Enfriamiento", "cooldown", 2, 2);
-      this.cycles.push({ id: this.cycleId++, cycle: start, exercises: [] });
-      this.cycles.push({ id: this.cycleId++, cycle: end, exercises: [] });
+      this.cycles.push({
+        id: this.cycleId++,
+        apiId: null,
+        cycle: start,
+        exercises: [],
+      });
+      this.cycles.push({
+        id: this.cycleId++,
+        apiId: null,
+        cycle: end,
+        exercises: [],
+      });
     } else {
       const routine = await this.$getRoutine(this.id);
       this.nombre = routine.name;
@@ -389,6 +404,7 @@ export default {
       for (const cy of cycles) {
         this.cycles.push({
           id: this.cycleId++,
+          apiId: cy.id,
           cycle: new RoutineCycle(cy.name, cy.type, cy.order, cy.repetitions),
           exercises: [],
         });

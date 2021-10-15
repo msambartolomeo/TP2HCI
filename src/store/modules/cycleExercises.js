@@ -19,10 +19,10 @@ export default {
   },
   actions: {
     async deleteAll({ state, commit }, controller) {
-      commit("deleteAll");
       for (let ex of state.exercises) {
         await CycleExercisesApi.delete(state.cycleID, ex.id, controller);
       }
+      commit("deleteAll");
     },
     async addAll({ commit }, { exercisesArray, cycleID, controller }) {
       for (let ex of exercisesArray) {

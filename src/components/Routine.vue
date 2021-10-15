@@ -12,6 +12,12 @@
             :size="20"
           />
         </v-col>
+        <v-row v-show="!routine.isPublic" align="center">
+          <h5>{{ routine.isPublic ? "Publica" : "Privada" }}</h5>
+          <v-icon small class="ml-2">
+            {{ routine.isPublic ? "lock_open" : "https" }}
+          </v-icon>
+        </v-row>
         <v-col align="center">
           <RatingDificultad readonly v-model="routine.difficulty" :size="20" />
         </v-col>

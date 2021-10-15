@@ -172,7 +172,7 @@ export default {
           }
         }
         this.dialogState = false;
-        await this.$router.push("/ejercicios");
+        await this.$router.go();
       }
     },
 

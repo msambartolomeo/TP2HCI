@@ -1,12 +1,13 @@
 <template>
   <v-app>
+    <h1 v-if="this.error">
+      Lo sentimos, no se ha podido establecer conexión con el servidor, por
+      favor intentelo mas tarde
+    </h1>
     <div v-if="this.flag">
       <AppBar />
       <v-main class="home">
         <router-view />
-        <h1 v-show="error">
-          No nos podemos conectar con el servidor, intentelo mas tarde
-        </h1>
       </v-main>
     </div>
   </v-app>
@@ -41,18 +42,14 @@ export default {
       try {
         await this.$getCurrentUser();
       } catch (e) {
-        if (e.code === 0 && e.code === 5) {
-          this.error = true;
-        }
+        this.error = true;
       }
     }
     try {
       await this.$getCategories();
       this.flag = true;
     } catch (e) {
-      if (e.code === 0 && e.code === 5) {
-        this.error = true;
-      }
+      this.error = true;
     }
   },
 };

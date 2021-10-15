@@ -5,7 +5,7 @@ export { CycleApi };
 
 class CycleApi {
   static getUrl(routineID, slug) {
-    return `${RoutineApi.getUrl(routineID)}/cycles${slug ? `${slug}` : ""}`;
+    return `${RoutineApi.getUrl(routineID)}/cycles${slug ? `/${slug}` : ""}`;
   }
 
   static async add(routineID, cycle, controller) {
@@ -20,7 +20,7 @@ class CycleApi {
   }
   static async get(routineID, controller) {
     return await Api.get(
-      CycleApi.getUrl(routineID, "?orderBy=order"),
+      `${CycleApi.getUrl(routineID)}?orderBy=order`,
       true,
       controller
     );
