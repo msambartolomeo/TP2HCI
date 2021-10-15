@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div >
     <v-container fluid class="container">
       <v-row>
         <v-col>
@@ -63,7 +63,6 @@ export default {
     }),
 
     async updateRoutines() {
-
       await this.$getRoutinesPage({
         page: this.pagination - 1,
         size: DEFAULT_PAGE_SIZE,

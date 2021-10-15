@@ -2,7 +2,7 @@
   <v-app>
     <div v-if="this.flag">
       <AppBar />
-      <v-main>
+      <v-main class="home">
         <router-view />
         <h1 v-show="error">
           No nos podemos conectar con el servidor, intentelo mas tarde
@@ -57,3 +57,10 @@ export default {
   },
 };
 </script>
+<style scoped>
+.home {
+  background: url("./assets/background images.jpg");
+  height: 100vh;
+  background-size: cover;
+}
+</style>

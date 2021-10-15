@@ -17,6 +17,7 @@
       <v-btn
         color="teal accent-4"
         text
+        secunary
         :to="{
           name: this.owner ? 'DetallesMisRutinas' : 'DetallesRutinas',
           params: { routine: routine, slug: routine.name },
