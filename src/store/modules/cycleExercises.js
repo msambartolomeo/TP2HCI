@@ -24,17 +24,24 @@ export default {
         await CycleExercisesApi.delete(state.cycleID, ex.id, controller);
       }
     },
-    async addAll({ state, commit, dispatch }, { exercisesArray, controller }) {
-      dispatch("deleteAll");
+    async addAll({ commit }, { exercisesArray, cycleID, controller }) {
       for (let ex of exercisesArray) {
         await CycleExercisesApi.add(
-          state.cycleID,
+          cycleID,
           ex.id,
           ex.cycleExercise,
           controller
         );
-        commit("push", cycle);
+        commit("push", ex);
       }
+    },
+    async get({ state, commit }, cycleId) {
+      if (cycleId === state.cycleID) return state.exercises;
+      const result = await CycleExercisesApi.get(cycleId);
+      for (let ex of result.content) {
+        commit("push", ex);
+      }
+      return result.content;
     },
   },
 };

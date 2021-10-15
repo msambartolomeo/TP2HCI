@@ -11,8 +11,8 @@ export default {
   },
   getters: {
     findIndex(state) {
-      return (routine) => {
-        return state.routines.findIndex((item) => (item.id = routine.id));
+      return (routineID) => {
+        return state.routines.findIndex((item) => item.id === routineID);
       };
     },
     getMaxPage(state) {
@@ -24,9 +24,7 @@ export default {
   },
   mutations: {
     push(state, routine) {
-      alert();
       state.routines.push(routine);
-      alert();
     },
     replace(state, index, routine) {
       state.routines[index] = routine;
@@ -53,16 +51,16 @@ export default {
       dispatch("getRoutinesUser", { page: state.page, size: state.size });
       return result;
     },
-    async modify({ getters, commit }, routine) {
-      const result = await RoutineApi.modifyRoutine(routine);
-      const index = getters.findIndex(result);
+    async modify({ getters, commit }, { routine, routineId }) {
+      const result = await RoutineApi.modifyRoutine(routine, routineId);
+      const index = getters.findIndex(result.id);
       if (index >= 0) commit("replace", index, result);
       return result;
     },
-    async get({ state, getters, commit }, routine) {
-      const index = getters.findIndex(routine);
+    async get({ state, getters, commit }, routineID) {
+      const index = getters.findIndex(routineID);
       if (index >= 0) return state.routines[index];
-      const result = await RoutineApi.getRoutine();
+      const result = await RoutineApi.getRoutine(routineID);
       commit("push", result);
       return result;
     },

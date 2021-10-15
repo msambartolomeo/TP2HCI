@@ -27,8 +27,8 @@ class RoutineApi {
     return await Api.get(RoutineApi.getUrl(id), true, controller);
   }
 
-  static async modifyRoutine(routine, controller) {
-    return await Api.put(this.getUrl(routine.id), true, routine, controller);
+  static async modifyRoutine(routine, routineId, controller) {
+    return await Api.put(this.getUrl(routineId), true, routine, controller);
   }
 
   static async delete(id, controller) {
@@ -37,12 +37,13 @@ class RoutineApi {
 }
 
 export class Routine {
-  constructor(name, detail, isPublic, difficulty, category) {
+  constructor(name, detail, isPublic, difficulty, category, routineUrl) {
     this.name = name;
     this.detail = detail;
     this.isPublic = isPublic;
     this.difficulty = difficulty;
     this.category = category;
+    this.metadata = { routineUrl: routineUrl };
   }
 }
 

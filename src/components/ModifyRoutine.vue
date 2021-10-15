@@ -169,6 +169,7 @@
                   :guardado="guardarExercices"
                   :id="cycle.id"
                   @guardar="getExercises"
+                  :call-api="id != null"
                 />
               </v-card-text>
             </v-card>
@@ -185,7 +186,7 @@ import RatingDificultad from "./RatingDificultad";
 import rules from "../jsmodules/rules";
 import CicloEnRutina from "./CicloEnRutina";
 import { Routine, RoutineCycle } from "../../api/routines";
-import { mapActions, mapGetters, mapState } from "vuex";
+import { mapActions, mapGetters, mapState, mapMutations } from "vuex";
 import NewCycle from "./NewCycle";
 import ConfirmedExit from "./ConfirmedExit";
 import InputField from "./user/InputField";
@@ -242,6 +243,9 @@ export default {
         this.$emit("input", value);
       },
     },
+    ...mapState("cycles", {
+      cyclesState: (state) => state.cycles,
+    }),
     ...mapState("categories", {
       categories: (state) => state.categories,
       categoriesName: (state) => state.categoriesName,
@@ -251,16 +255,47 @@ export default {
     }),
   },
   methods: {
+    ...mapMutations("cycles", {
+      setRoutineID: "setRoutineID",
+    }),
+    ...mapActions("cycleExercises", {
+      $putExercises: "addAll",
+    }),
+    ...mapActions("cycles", {
+      $getCycles: "get",
+      $putCycles: "addAll",
+    }),
     ...mapActions("routines", {
       $createRoutine: "create",
       $modifyRoutine: "modify",
-      $get: "get",
+      $getRoutine: "get",
       $getRoutines: "getRoutines",
     }),
-    verifyData() {
-      this.guardarExercices = true;
+    async verifyData() {
       if (this.$refs.form.validate()) {
-        this.createRoutine();
+        this.guardarExercices = true;
+        if (this.id) {
+          await this.modifyRoutine();
+        } else {
+          await this.createRoutine();
+        }
+
+        if (this.error) return;
+
+        try {
+          await this.$putCycles({ cycleArray: this.cycles });
+          await this.cycles.forEach((cy, index) => {
+            this.$putExercises({
+              exercisesArray: cy.exercises,
+              cycleID: this.cyclesState[index].id,
+            });
+          });
+          this.dialog = false;
+        } catch (e) {
+          this.errorText = "No se ha podido agregar los ciclos";
+          this.error = true;
+        }
+        // await this.$router.go();
       }
     },
     async createRoutine() {
@@ -269,14 +304,32 @@ export default {
         this.descripcion,
         this.isPublic,
         this.dificultad,
-        new Category(this.$findIdByName(this.categoriaNombre))
+        new Category(this.$findIdByName(this.categoriaNombre)),
+        this.routineUrl
       );
       try {
-        await this.$createRoutine(routine);
+        const newRoutine = await this.$createRoutine(routine);
+        this.setRoutineID(newRoutine.id);
       } catch (e) {
-        //
+        this.errorText = "No se ha podido crear la rutina";
+        this.error = true;
       }
-      this.dialog = false;
+    },
+    async modifyRoutine() {
+      const routine = new Routine(
+        this.nombre,
+        this.descripcion,
+        this.isPublic,
+        this.dificultad,
+        new Category(this.$findIdByName(this.categoriaNombre)),
+        this.routineUrl
+      );
+      try {
+        await this.$modifyRoutine({ routine: routine, routineId: this.id });
+      } catch (e) {
+        this.errorText = "No se ha podido modificar la rutina";
+        this.error = true;
+      }
     },
     addCycle(name) {
       const lastCycle = this.cycles.at(this.cycles.length - 1);
@@ -287,7 +340,7 @@ export default {
         2
       );
       this.cycles.splice(this.cycles.length - 1, 0, {
-        id: this.id++,
+        id: this.cycleId++,
         cycle: cycle,
         exercises: [],
       });
@@ -324,7 +377,22 @@ export default {
       this.cycles.push({ id: this.cycleId++, cycle: start, exercises: [] });
       this.cycles.push({ id: this.cycleId++, cycle: end, exercises: [] });
     } else {
-      // store get input id routine etc y guardarlo en cycles
+      const routine = await this.$getRoutine(this.id);
+      this.nombre = routine.name;
+      this.descripcion = routine.detail;
+      this.isPublic = routine.isPublic;
+      this.dificultad = routine.difficulty;
+      this.categoriaNombre = routine.category.name;
+      this.routineUrl = routine.metadata.routineUrl;
+
+      const cycles = await this.$getCycles(this.id);
+      for (const cy of cycles) {
+        this.cycles.push({
+          id: cy.id,
+          cycle: new RoutineCycle(cy.name, cy.type, cy.order, cy.repetitions),
+          exercises: [],
+        });
+      }
     }
   },
 };

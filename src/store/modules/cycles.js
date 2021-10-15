@@ -26,10 +26,24 @@ export default {
     },
     async addAll({ state, commit, dispatch }, { cycleArray, controller }) {
       dispatch("deleteAll");
+      alert(state.routineID);
       for (let cycle of cycleArray) {
-        await CycleApi.add(state.routineID, cycle, controller);
-        commit("push", cycle);
+        let result = await CycleApi.add(
+          state.routineID,
+          cycle.cycle,
+          controller
+        );
+        commit("push", result);
       }
+    },
+    async get({ state, commit }, routineID) {
+      if (routineID === state.routineID) return state.cycles;
+      const result = await CycleApi.get(routineID);
+      commit("setRoutineID", routineID);
+      for (let ex of result.content) {
+        commit("push", ex);
+      }
+      return result.content;
     },
   },
 };

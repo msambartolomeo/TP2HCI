@@ -18,7 +18,11 @@ class CycleExercisesApi {
   }
 
   static async get(cycleID, controller) {
-    return await Api.get(CycleExercisesApi.getUrl(cycleID), true, controller);
+    return await Api.get(
+      `${CycleExercisesApi.getUrl(cycleID)}?orderBy=order`,
+      true,
+      controller
+    );
   }
 
   static async delete(cycleID, exerciseID, controller) {

@@ -10,7 +10,7 @@
         </MainButton>
         <ModifyRoutine
           v-model="modifyRoutine"
-          :id="null"
+          :id="24"
           v-if="modifyRoutine"
         />
       </v-col>
@@ -31,7 +31,11 @@
     </v-row>
     <v-row justify="center" align="end">
       <v-col cols="8">
-        <v-pagination v-model="pagination" :length="$getMaxPage"></v-pagination>
+        <v-pagination
+          v-model="pagination"
+          :length="$getMaxPage"
+          @input="updateRoutines"
+        ></v-pagination>
       </v-col>
     </v-row>
   </v-container>
@@ -63,10 +67,6 @@ export default {
     }),
   },
   methods: {
-    launchNewRoutine() {
-      this.id = 0;
-      this.modifyRoutine = true;
-    },
     ...mapActions("routines", {
       $getRoutinesPage: "getRoutinesUser",
     }),

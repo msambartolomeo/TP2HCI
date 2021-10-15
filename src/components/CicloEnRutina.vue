@@ -73,6 +73,7 @@ import ChooseExercise from "./ChooseExercise";
 import SnackBar from "./SnackBar";
 import rules from "../jsmodules/rules";
 import NumberField from "./NumberField";
+import { mapActions } from "vuex";
 export default {
   name: "CicloEnRutina",
   components: { NumberField, SnackBar, ChooseExercise },
@@ -100,6 +101,9 @@ export default {
     },
   },
   methods: {
+    ...mapActions("cycleExercises", {
+      $getEx: "get",
+    }),
     agregaEjercicio() {
       if (this.agregados.length < 10) {
         this.agregados.push({
@@ -151,7 +155,18 @@ export default {
         },
       });
     } else {
-      // store get input id routine cycle etc y guardarlo en agregados
+      const result = await this.$getEx(this.id);
+      for (let ex of result) {
+        this.agregados.push({
+          id: ex.exercise.id,
+          ejercicio: ex.exercise.name,
+          cycleExercise: {
+            order: ex.order,
+            duration: ex.duration,
+            repetitions: ex.repetitions,
+          },
+        });
+      }
     }
   },
 };
