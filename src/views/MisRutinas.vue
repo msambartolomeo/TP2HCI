@@ -6,7 +6,7 @@
           <v-text-field solo label="Buscar" prepend-inner-icon="search" />
         </v-col>
         <v-col sm="4" md="2" cols="12" class="pt-md-4">
-          <MainButton @click="modifyRoutine = true"> Crear Rutina </MainButton>
+          <MainButton @click="modifyRoutine = true" color="secondary"> Crear Rutina </MainButton>
           <ModifyRoutine
             v-model="modifyRoutine"
             :id="null"
@@ -29,6 +29,7 @@
     <v-footer padless>
       <v-col class="text-center" cols="12">
         <v-pagination
+          color="secondary"
           v-model="pagination"
           :length="$getMaxPage"
           @input="updateRoutines"

@@ -25,6 +25,7 @@
     <v-footer padless>
       <v-col class="text-center" cols="12">
         <v-pagination
+          color="secondary"
           v-model="pagination"
           :length="$getMaxPage"
           @input="updateRoutines"

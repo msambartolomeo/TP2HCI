@@ -22,7 +22,7 @@
           right
           fab
           small
-          color="primary"
+          color="secondary"
           @click="state = false"
         >
           <v-icon dark> mdi-close </v-icon>
@@ -66,7 +66,7 @@
       <v-row><v-divider></v-divider></v-row>
       <v-row>
         <v-col>
-          <v-btn block color="primary" elevation="1" @click="EditClick">
+          <v-btn block color="secondary" elevation="1" @click="EditClick">
             Editar</v-btn
           >
         </v-col>

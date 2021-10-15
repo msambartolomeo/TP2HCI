@@ -17,7 +17,7 @@
     </v-card-text>
     <v-card-actions>
       <v-spacer></v-spacer>
-      <v-btn color="teal accent-4" text @click="$emit('click', exercise)">
+      <v-btn color="primary" text @click="$emit('click', exercise)">
         Seleccionar
       </v-btn>
     </v-card-actions>

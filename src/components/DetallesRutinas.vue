@@ -22,7 +22,7 @@
           right
           fab
           small
-          color="primary"
+          color="secondary"
           @click="state = false"
         >
           <v-icon dark> mdi-close </v-icon>

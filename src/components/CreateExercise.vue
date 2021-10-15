@@ -25,7 +25,7 @@
                     <v-textarea
                       auto-grow
                       outlined
-                      label="Drecripcion"
+                      label="Descripción"
                       v-model="detail"
                       :rules="[rules.required, rules.length200]"
                     />
@@ -60,16 +60,16 @@
             </v-row>
           </v-card-text>
           <v-card-actions>
+            <v-btn color="primary" text x-large @click="saveExercise">
+              Guardar
+            </v-btn>
             <v-btn
-              color="red darken-1"
+              color="error"
               text
               x-large
               @click="confirmedExit = true"
             >
               Cerrar
-            </v-btn>
-            <v-btn color="blue darken-1" text x-large @click="saveExercise">
-              Guardar
             </v-btn>
           </v-card-actions>
         </v-form>

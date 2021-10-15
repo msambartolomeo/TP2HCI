@@ -6,7 +6,7 @@
           <v-text-field solo label="Buscar" prepend-inner-icon="search" />
         </v-col>
         <v-col sm="4" md="2" cols="12" class="pt-md-4">
-          <v-btn block color="primary" @click="newExercise = true">
+          <v-btn block color="secondary" @click="newExercise = true">
             Crear Ejercicio
           </v-btn>
           <CreateExercise
@@ -35,6 +35,7 @@
     <v-footer>
       <v-col class="text-center" cols="12">
         <v-pagination
+          color="secondary"
           v-model="pagination"
           :length="getMaxPage"
           @input="updateExercises"

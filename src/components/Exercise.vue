@@ -18,7 +18,7 @@
     <v-card-actions>
       <v-spacer></v-spacer>
       <v-btn
-        color="teal accent-4"
+        color="secondary"
         text
         :to="{
           name: 'DetallesEjercicios',

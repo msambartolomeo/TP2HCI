@@ -59,7 +59,7 @@ export default {
 </script>
 <style scoped>
 .home {
-  background: url("./assets/background images.jpg");
+  background: url("./assets/pexels-la-miko-3616764.jpg");
   height: 100vh;
   background-size: cover;
 }

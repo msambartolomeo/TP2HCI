@@ -15,9 +15,9 @@
     <v-card-actions>
       <v-spacer></v-spacer>
       <v-btn
-        color="teal accent-4"
+        color="secondary"
         text
-        secunary
+ 
         :to="{
           name: this.owner ? 'DetallesMisRutinas' : 'DetallesRutinas',
           params: { routine: routine, slug: routine.name },
