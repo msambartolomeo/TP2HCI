@@ -22,6 +22,20 @@
               <v-icon dark> mdi-close </v-icon>
             </v-btn>
             <v-img
+              v-show="exercise.metadata.isRest"
+              alt="exercice_logo"
+              lazy-src="../assets/descanso.jpg"
+              :src="
+                imgError ? '../assets/descanso.jpg' : exercise.metadata.imgUrl
+              "
+              @error="imgError = true"
+              contain
+              height="300"
+              width="300"
+              class="mx-auto"
+            />
+            <v-img
+              v-show="!exercise.metadata.isRest"
               alt="exercice_logo"
               lazy-src="../assets/exercise picture.jpg"
               :src="
