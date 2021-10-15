@@ -6,10 +6,11 @@
           <v-col cols="10" dense>
             <v-form ref="form" v-model="valid" lazy-validation @submit.prevent>
               <h1 class="mt-10 text-center text-sm-h1 text-h2">WorkIn</h1>
-              <v-img
-                alt="profile_logo"
-                :src="require('../../assets/profile_logo.jpg')"
-              />
+                <v-img
+                  alt="profile_logo"
+                  :src="require('../../assets/profile_logo.jpg')"
+                  max-width="800"
+                />
               <h1 class="text-center text-sm-h5 text-h6">
                 Por favor inserte el código de verificación que fue enviado a su
                 correo electrónico

@@ -7,10 +7,13 @@
             <v-col cols="10" dense>
               <v-form ref="form" v-model="valid" lazy-validation>
                 <h1 class="mt-10 text-center text-sm-h1 text-h2">WorkIn</h1>
-                <v-img
-                  alt="profile_logo"
-                  :src="require('../../assets/profile_logo.jpg')"
-                />
+                <v-row>
+                  <v-img
+                    alt="profile_logo"
+                    :src="require('../../assets/profile_logo.jpg')"
+                  />
+                </v-row>
+
                 <InputField
                   label="Email"
                   v-model="email"
